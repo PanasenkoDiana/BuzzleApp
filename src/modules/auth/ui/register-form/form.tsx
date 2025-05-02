@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form"
 import { EmailIcon, UserIcon } from "../../../../shared/ui/icons"
 import { View } from "react-native"
 import { styles } from "./form.style"
+import { authUser } from "../../hooks"
 
 
 export function RegisterForm(){
@@ -13,7 +14,7 @@ export function RegisterForm(){
     const { control, handleSubmit } = useForm<IRegister>()
 
     function onSubmit(data: IRegister){
-        console.log(data)
+        authUser.register(data.email, data.username, data.password)
     }
 
     return (

@@ -1,5 +1,5 @@
 import { Link } from 'expo-router'
-import {StatusBar, Text} from 'react-native'
+import { Text} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { WelcomeBlock } from '../../modules/auth/ui'
 import { COLORS } from '../../shared/ui/colors'
