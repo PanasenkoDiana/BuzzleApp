@@ -5,12 +5,29 @@ import { styles } from './form.style'
 import { Input } from '../../../../shared/ui/input'
 import { ILogin } from '../../types'
 import { Button } from '../../../../shared/ui/button'
+import { authUser } from '../../hooks'
+import { useRouter } from 'expo-router'
+import { Response } from '../../types'
 
 export function LoginForm(){
-    const { control, handleSubmit } = useForm<ILogin>()
+    const { control, handleSubmit, setError} = useForm<ILogin>({defaultValues: {email: '', password: ''}})
 
-    function onSubmit(data: ILogin){
-        console.log(data)
+    const router = useRouter()
+
+    async function onSubmit(data: ILogin){
+        const response = authUser.login(data.email, data.password)
+        
+        // const response: Response<string> = await authUser.login(data.email, data.password)
+
+        // if (!response) {
+        //     setError('password', {
+        //         type: 'manual',
+        //         message: 'Incorrect email or password'
+        //     })
+        //     return
+        // }
+
+        router.push('/me')
     }
 
     return(
@@ -28,7 +45,8 @@ export function LoginForm(){
                     ({ field, fieldState })=>{
                         return(
                             <Input 
-                            value={field.value} 
+                            value={field.value}
+                            onChangeText={field.onChange} 
                             onChange={field.onChange} 
                             placeholder="buzzle@gmail.com" 
                             label="Email" 
@@ -47,7 +65,8 @@ export function LoginForm(){
                 render={
                     ({ field, fieldState })=>{
                         return(
-                            <Input.Password value={field.value} 
+                            <Input.Password value={field.value}
+                            onChangeText={field.onChange} 
                             onChange={field.onChange} 
                             placeholder="password" 
                             label="Password" 

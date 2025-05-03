@@ -4,8 +4,10 @@ import { Link } from 'expo-router';
 import { Text } from 'react-native'
 import { COLORS } from "../../shared/ui/colors";
 import { LoginForm, WelcomeBlock } from "../../modules/auth/ui";
+import { useEffect } from "react";
 
 export default function Login() {
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
             <StatusBar style="auto" />
