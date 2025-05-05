@@ -1,67 +1,82 @@
-import { createContext, useContext, ReactNode, useState } from "react"
-import { useEffect } from "react"
-import { IUser } from "../types"
-import { authUser } from "../hooks"
-import  AsyncStorage from '@react-native-async-storage/async-storage';
+import { createContext, useContext, ReactNode, useState } from "react";
+import { useEffect } from "react";
+import { IError, IUser, Result } from "../types";
+import { authUser } from "../hooks";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface IUserContext {
-    user: IUser | null
-    login: (email: string, password: string) => void
-    register: (email: string, username: string, password: string) => void
-    isAuthenticated: () => boolean
+	user: IUser | null;
+	login: (email: string, password: string) => Promise<Result<string>>;
+	register: (email: string, username: string, password: string) => Promise<IError | undefined>;
+	isAuthenticated: () => boolean;
+	setUser: (user: IUser | null) => void;
 }
 
 const initialValue: IUserContext = {
-    user: null,
-    login: (email: string, password: string) => {},
-    register: (email: string, username: string, password: string) => {},
-    isAuthenticated: () => false,
+	user: null,
+	login: async (email: string, password: string) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	register: async (email: string, username: string, password: string) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	isAuthenticated: () => false,
+	setUser: function (user: IUser | null): void {
+		throw new Error("Function not implemented.");
+	},
+};
+
+const userContext = createContext<IUserContext>(initialValue);
+
+export function useUserContext() {
+	return useContext(userContext);
 }
 
-const userContext = createContext<IUserContext>(initialValue)
-
-export function useUserContext(){
-    return useContext(userContext)
+interface IUserContextProviderProps {
+	children?: ReactNode;
 }
 
-interface IUserContextProviderProps{
-    children?: ReactNode
-}
+export function UserContextProvider(props: IUserContextProviderProps) {
+	const [user, setUser] = useState<IUser | null>(null);
 
-export function UserContextProvider(props: IUserContextProviderProps){
-    const [user, setUser] = useState<IUser | null>(null)
-    
-    useEffect(() => {
-        const fetchTokenAndUserData = async () => {
-            const token = await AsyncStorage.getItem('token');
-            if (!token) {
-                return;
-            }
-            const response = await authUser.getData(token);
+	useEffect(() => {
+		const fetchTokenAndUserData = async () => {
+			const token = await AsyncStorage.getItem("token");
+			if (!token) {
+				return;
+			}
+			const response = await authUser.getData(token);
 
-            if(!response) return
+			if (!response) return;
+			
+			if (response.status === "success") {
+                setUser(response.data);
+            } else {
+                console.log("Ошибка:", response.message);
+			}
+		};
 
-            setUser(response)
-        };
+		fetchTokenAndUserData();
+	}, []);
 
-        fetchTokenAndUserData();
-    }, []);
-    
-    function isAuthenticated() {
-        if (user === null) {
-            return false
-        }
-        return true 
-    }
+	function isAuthenticated() {
+		if (user === null) {
+			return false;
+		}
+		return true;
+	}
 
-    return <userContext.Provider
-    value={{
-        user: user,
-        login: authUser.login,
-        register: authUser.register,
-        isAuthenticated: isAuthenticated
-    }}>
-
-    {props.children}
-    </userContext.Provider> 
+	return (
+		<userContext.Provider
+			value={{
+				user: user,
+				login: authUser.login,
+				register: authUser.register,
+				isAuthenticated: isAuthenticated,
+                setUser: setUser,
+			}}
+		>
+			{props.children}
+		</userContext.Provider>
+	);
 }

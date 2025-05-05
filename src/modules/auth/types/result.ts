@@ -8,4 +8,4 @@ export interface ISuccess<T> {
     data: T
 }
 
-export type Response<T> = IError | ISuccess<T>
+export type Result<T> = IError | ISuccess<T>
