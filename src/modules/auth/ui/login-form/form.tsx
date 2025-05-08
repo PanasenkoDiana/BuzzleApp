@@ -10,14 +10,16 @@ import { useUserContext } from "../../context/userContext";
 import { authUser } from "../../hooks";
 
 export function LoginForm() {
+	
 	const { control, handleSubmit, setError } = useForm<ILogin>({
 		defaultValues: { email: "", password: "" },
 	});
 	const { login, setUser } = useUserContext();
 
 	const router = useRouter();
-
+	
 	async function onSubmit(data: ILogin) {
+		router.push("/me");
 		const response = await login(data.email, data.password);
 
 		if (response.status === "error") {
@@ -27,10 +29,10 @@ export function LoginForm() {
 					message: "User not found",
 				});
 			}
-			if (response.message === "Wrong password") {
+			if (response.message === "Incorrect password") {
 				setError("password", {
 					type: "manual",
-					message: "Wrong password",
+					message: "Incorrect password",
 				});
 			}
 			return;
@@ -46,7 +48,7 @@ export function LoginForm() {
 		}
 
 		console.log(response.data);
-		router.push("/me");
+		// router.push("/me");
 	}
 
 	return (

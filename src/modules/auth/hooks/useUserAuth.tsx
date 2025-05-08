@@ -18,7 +18,9 @@ export const authUser = {
 				return result;
 			}
 			return result;
-		} catch (error) {}
+		} catch (error) {
+			return { status: "error", message: "An unexpected error occurred" };
+		}
 	},
 
 	login: async function (
@@ -55,28 +57,42 @@ export const authUser = {
 		email: string,
 		username: string,
 		password: string
-	): Promise<IError | undefined> {
+	): Promise<IError | Result<string> | undefined> {
 		try {
-			const response = await fetch(
-				"http://192.168.3.4:8000/api/user/register",
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({
-						email: email,
-						username: username,
-						password: password,
-					}),
-				}
-			);
-
+			const response = await fetch("http://192.168.3.4:8000/api/user/register", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email, username, password }),
+			});
+	
 			const result: Result<string> = await response.json();
 			if (result.status === "error") {
 				console.log(result.message);
 				return result;
 			}
-			authUser.getData(result.data);
-			AsyncStorage.setItem("token", result.data);
-		} catch (error) {}
+	
+			return result;
+		} catch (error) {
+			return { status: "error", message: "An unexpected error occurred" };
+		}
 	},
-};
+	verifyUser: async function(email: string, code: string): Promise<IError | Result<string>> {
+		try{
+			const response = await fetch("http://192.168.3.4:8000/api/user/verify", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email, code }),
+			});
+	
+			const result: Result<string> = await response.json();
+			if (result.status === "error") {
+				console.log(result.message);
+				return result;
+			}
+
+			return result;
+		} catch (error) {
+			return { status: "error", message: "An unexpected error occurred" };
+		}
+	}
+}

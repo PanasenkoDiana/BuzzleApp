@@ -1,11 +1,11 @@
-import { IRegister } from "../../types";
-import { Button } from "../../../../shared/ui/button";
-import { Input } from "../../../../shared/ui/input";
+import { IRegister } from "../../../types";
+import { Button } from "../../../../../shared/ui/button";
+import { Input } from "../../../../../shared/ui/input";
 import { Controller, useForm } from "react-hook-form";
-import { EmailIcon, UserIcon } from "../../../../shared/ui/icons";
+import { EmailIcon, UserIcon } from "../../../../../shared/ui/icons";
 import { View } from "react-native";
 import { styles } from "./form.style";
-import { authUser } from "../../hooks";
+import { authUser } from "../../../hooks";
 import { useRouter } from "expo-router";
 
 export function RegisterForm() {
@@ -52,8 +52,12 @@ export function RegisterForm() {
 		if (response?.status === "error") {
 			console.log(`${response?.message}`);
 		}
-
-        router.push("/login");
+        router.push({
+			pathname: "/verify",
+			params: {
+				email: data.email
+			}
+		});
 	}
 
 	return (

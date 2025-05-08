@@ -7,9 +7,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 interface IUserContext {
 	user: IUser | null;
 	login: (email: string, password: string) => Promise<Result<string>>;
-	register: (email: string, username: string, password: string) => Promise<IError | undefined>;
+	register: (email: string, username: string, password: string) => Promise<Result<string> | undefined>;
 	isAuthenticated: () => boolean;
 	setUser: (user: IUser | null) => void;
+	verify: (email: string, code: string) => Promise<Result<string> | undefined>;
 }
 
 const initialValue: IUserContext = {
@@ -23,6 +24,9 @@ const initialValue: IUserContext = {
 	isAuthenticated: () => false,
 	setUser: function (user: IUser | null): void {
 		throw new Error("Function not implemented.");
+	},
+	verify: async (email: string, code: string) => {
+		return { status: 'error', message: 'Not implemented' };
 	},
 };
 
@@ -74,6 +78,7 @@ export function UserContextProvider(props: IUserContextProviderProps) {
 				register: authUser.register,
 				isAuthenticated: isAuthenticated,
                 setUser: setUser,
+				verify: authUser.verifyUser
 			}}
 		>
 			{props.children}
