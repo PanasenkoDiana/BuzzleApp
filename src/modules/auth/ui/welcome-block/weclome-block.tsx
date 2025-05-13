@@ -6,7 +6,6 @@ export function WelcomeBlock(){
     return (
         <View style={styles.container}>
             <LogoImage style={styles.image}/>
-            <Text style={styles.title}>Welcome to Buzzle!</Text>
         </View>
     )
 }

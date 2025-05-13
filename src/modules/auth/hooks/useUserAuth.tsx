@@ -62,7 +62,7 @@ export const authUser = {
 			const response = await fetch("http://192.168.3.4:8000/api/user/register", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, username, password }),
+				body: JSON.stringify({ email, password }),
 			});
 	
 			const result: Result<string> = await response.json();

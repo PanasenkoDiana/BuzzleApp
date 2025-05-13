@@ -3,13 +3,14 @@ import { Button } from "../../../../../shared/ui/button";
 import { Input } from "../../../../../shared/ui/input";
 import { Controller, useForm } from "react-hook-form";
 import { EmailIcon, UserIcon } from "../../../../../shared/ui/icons";
-import { View } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { styles } from "./form.style";
 import { authUser } from "../../../hooks";
 import { useRouter } from "expo-router";
+import { COLORS } from "../../../../../shared/ui/colors";
 
 export function RegisterForm() {
-    const router = useRouter();
+	const router = useRouter();
 
 	const { control, handleSubmit, setError } = useForm<IRegister>({
 		defaultValues: {
@@ -22,15 +23,15 @@ export function RegisterForm() {
 
 	async function onSubmit(data: IRegister) {
 		const gmailRegex = /^[^\s@]+@gmail\.com$/;
-        
+
 		if (data.password !== data.repeatPassword) {
 			setError("repeatPassword", {
 				type: "manual",
-				message: "Passwords do not match",
+				message: "Паролі на співпадають",
 			});
 			setError("password", {
 				type: "manual",
-				message: "Passwords do not match",
+				message: "Паролі на співпадають",
 			});
 			return;
 		}
@@ -38,7 +39,7 @@ export function RegisterForm() {
 		if (!gmailRegex.test(data.email)) {
 			setError("email", {
 				type: "manual",
-				message: "Invalid email address (must be @gmail.com)",
+				message: "Неправильна пошта (повинно бути @gmail.com)",
 			});
 			return;
 		}
@@ -52,126 +53,120 @@ export function RegisterForm() {
 		if (response?.status === "error") {
 			console.log(`${response?.message}`);
 		}
-        router.push({
+		router.push({
 			pathname: "/verify",
 			params: {
-				email: data.email
-			}
+				email: data.email,
+			},
 		});
 	}
 
 	return (
 		<View style={styles.container}>
-			<View>
-				<Controller
-					control={control}
-					name="username"
-					rules={{
-						required: {
-							value: true,
-							message: "Username is required",
-						},
-						maxLength: {
-							value: 50,
-							message: "Username should be less than 50",
-						},
-						minLength: {
-							value: 3,
-							message: "Username should be more than 3",
-						},
-					}}
-					render={({ field, fieldState }) => (
-						<Input
-							value={field.value}
-							onChangeText={field.onChange}
-							placeholder="Username"
-							label="Username"
-							error={fieldState.error?.message}
-							leftIcon={<UserIcon width={36} height={35} />}
-						/>
-					)}
-				/>
-
-				<Controller
-					control={control}
-					name="email"
-					rules={{
-						required: {
-							value: true,
-							message: "Email is required",
-						},
-						maxLength: {
-							value: 35,
-							message: "Email should be less than 35",
-						},
-						minLength: {
-							value: 3,
-							message: "Email should be more than 3",
-						},
-					}}
-					render={({ field, fieldState }) => (
-						<Input
-							value={field.value}
-							onChangeText={field.onChange}
-							placeholder="buzzle@gmail.com"
-							label="Email"
-							error={fieldState.error?.message}
-							leftIcon={<EmailIcon width={36} height={35} />}
-						/>
-					)}
-				/>
-
-				<Controller
-					control={control}
-					name="password"
-					rules={{
-						required: {
-							value: true,
-							message: "Password is required",
-						},
-						maxLength: {
-							value: 20,
-							message: "Password should be less than 20",
-						},
-						minLength: {
-							value: 3,
-							message: "Password should be more than 3",
-						},
-					}}
-					render={({ field, fieldState }) => (
-						<Input.Password
-							value={field.value}
-							onChangeText={field.onChange}
-							placeholder="password"
-							label="password"
-							error={fieldState.error?.message}
-						/>
-					)}
-				/>
-
-				<Controller
-					control={control}
-					name="repeatPassword"
-					rules={{
-						required: {
-							value: true,
-							message: "Repeat password is required",
-						},
-					}}
-					render={({ field, fieldState }) => (
-						<Input.Password
-							value={field.value}
-							onChangeText={field.onChange}
-							placeholder="Repeat password"
-							label="Repeat password"
-							error={fieldState.error?.message}
-						/>
-					)}
-				/>
+			<View
+				style={styles.transitionContainer}
+			>
+				<TouchableOpacity style={styles.activeTransitionText}>
+					<Text style={styles.activeTransitionButton}>
+						Реєстрація
+					</Text>
+				</TouchableOpacity>
+				<TouchableOpacity
+					onPress={() => router.push("/login")}
+					style={styles.transitionButton}
+				>
+					<Text style={styles.transitionText}>Авторизація</Text>
+				</TouchableOpacity>
 			</View>
+			<Text style={styles.pageText}>Приєднуйся до World IT</Text>
+			<View style={{gap: 20}}>
+				<View style={{gap: 10}}>
+					<Controller
+						control={control}
+						name="email"
+						rules={{
+							required: {
+								value: true,
+								message: "Пошта обов'язкова",
+							},
+							maxLength: {
+								value: 35,
+								message:
+									"Пошта повинна бути не більше 35 символів",
+							},
+							minLength: {
+								value: 3,
+								message:
+									"Пошта повинна бути не менше 3 символів",
+							},
+						}}
+						render={({ field, fieldState }) => (
+							<Input
+								value={field.value}
+								onChangeText={field.onChange}
+								placeholder="buzzle@gmail.com"
+								label="Електронна пошта"
+								error={fieldState.error?.message}
+							/>
+						)}
+					/>
 
-			<View>
-				<Button onPress={handleSubmit(onSubmit)} label="Submit" />
+					<Controller
+						control={control}
+						name="password"
+						rules={{
+							required: {
+								value: true,
+								message: "Пароль обов'язковий",
+							},
+							maxLength: {
+								value: 20,
+								message:
+									"Пароль повинен бути не більше 20 символів",
+							},
+							minLength: {
+								value: 3,
+								message:
+									"Пароль повинен бути не менше 3 символів",
+							},
+						}}
+						render={({ field, fieldState }) => (
+							<Input.Password
+								value={field.value}
+								onChangeText={field.onChange}
+								placeholder="Введи пароль"
+								label="Пароль"
+								error={fieldState.error?.message}
+							/>
+						)}
+					/>
+
+					<Controller
+						control={control}
+						name="repeatPassword"
+						rules={{
+							required: {
+								value: true,
+								message: "Підтверження паролю обов'язкове",
+							},
+						}}
+						render={({ field, fieldState }) => (
+							<Input.Password
+								value={field.value}
+								onChangeText={field.onChange}
+								placeholder="Повтори пароль"
+								label="Підтверди пароль"
+								error={fieldState.error?.message}
+							/>
+						)}
+					/>
+				</View>
+				<View style={styles.buttonContainer}>
+					<Button
+						onPress={handleSubmit(onSubmit)}
+						label="Створити акаунт"
+					/>
+				</View>
 			</View>
 		</View>
 	);

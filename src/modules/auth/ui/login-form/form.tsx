@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import { EmailIcon } from "../../../../shared/ui/icons";
 import { styles } from "./form.style";
@@ -8,6 +8,7 @@ import { Button } from "../../../../shared/ui/button";
 import { useRouter } from "expo-router";
 import { useUserContext } from "../../context/userContext";
 import { authUser } from "../../hooks";
+import { COLORS } from "../../../../shared/ui/colors";
 
 export function LoginForm() {
 	
@@ -19,20 +20,20 @@ export function LoginForm() {
 	const router = useRouter();
 	
 	async function onSubmit(data: ILogin) {
-		router.push("/me");
+        router.push("/me");
 		const response = await login(data.email, data.password);
 
 		if (response.status === "error") {
 			if (response.message === "User not found") {
 				setError("email", {
 					type: "manual",
-					message: "User not found",
+					message: "Користувача не знайдено",
 				});
 			}
 			if (response.message === "Incorrect password") {
 				setError("password", {
 					type: "manual",
-					message: "Incorrect password",
+					message: "Невірний пароль",
 				});
 			}
 			return;
@@ -46,13 +47,19 @@ export function LoginForm() {
 		} else {
 			console.log(user?.message);
 		}
-
-		console.log(response.data);
-		// router.push("/me");
 	}
 
 	return (
 		<View style={styles.container}>
+			<View style={{flexDirection: 'row', gap: 20, justifyContent: 'center', marginBottom: 20}}>
+				<TouchableOpacity onPress={() => router.push('/register')} style={{borderBottomColor: COLORS.white, borderBottomWidth: 2}}>
+					<Text style={{fontFamily: 'GTWalsheimPro-Regular', fontWeight: '500', fontSize: 24}}>Реєстрація</Text>
+				</TouchableOpacity>
+				<TouchableOpacity style={{borderBottomWidth: 2, borderBottomColor: COLORS.black}}>
+					<Text style={{fontFamily: 'GTWalsheimPro-Regular', fontWeight: '700', fontSize: 24}}>Авторизація</Text>
+				</TouchableOpacity>
+			</View>
+			<Text style={{fontSize: 24, marginBottom: 20, fontFamily: 'GTWalsheimPro-Regular'}}>Раді тебе знову бачити!</Text>
 			<View>
 				<Controller
 					control={control}
@@ -60,7 +67,7 @@ export function LoginForm() {
 					rules={{
 						required: {
 							value: true,
-							message: "Email is required",
+							message: "Електронна пошта обов'язкова",
 						},
 					}}
 					render={({ field, fieldState }) => {
@@ -69,10 +76,9 @@ export function LoginForm() {
 								value={field.value}
 								onChangeText={field.onChange}
 								onChange={field.onChange}
-								placeholder="buzzle@gmail.com"
-								label="Email"
+								placeholder="you@example.com"
+								label="Електронна пошта"
 								error={fieldState.error?.message}
-								leftIcon={<EmailIcon width={36} height={35} />}
 							/>
 						);
 					}}
@@ -84,7 +90,7 @@ export function LoginForm() {
 					rules={{
 						required: {
 							value: true,
-							message: "Password is required",
+							message: "Пароль обов'язковий",
 						},
 					}}
 					render={({ field, fieldState }) => {
@@ -93,8 +99,8 @@ export function LoginForm() {
 								value={field.value}
 								onChangeText={field.onChange}
 								onChange={field.onChange}
-								placeholder="password"
-								label="Password"
+								placeholder="Введи пароль"
+								label="Пароль"
 								error={fieldState.error?.message}
 							/>
 						);
@@ -102,8 +108,9 @@ export function LoginForm() {
 				/>
 			</View>
 			<View>
-				<Button onPress={handleSubmit(onSubmit)} label="Submit" />
+				<Button onPress={handleSubmit(onSubmit)} label="Увійти" />
 			</View>
 		</View>
 	);
 }
+

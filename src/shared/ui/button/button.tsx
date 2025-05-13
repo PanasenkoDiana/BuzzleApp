@@ -15,7 +15,7 @@ export function Button(props: IButtonProps){
         {...props}
         >
 
-            <Text>{label}</Text>
+            <Text style={{ color: disabled ? '#4B3B54' : '#FFFFFF', fontSize: 16, fontWeight: '600' }}>{label}</Text>
         </TouchableOpacity>
     )
 }

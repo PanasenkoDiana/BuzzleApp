@@ -3,19 +3,18 @@ import { COLORS } from '../colors'
 
 export const styles = StyleSheet.create({
     button: {
-        width: 150,
-        height: 50,
-        borderRadius: 16,
+        width: 311,
+        height: 52,
+        borderRadius: 1234,
+        padding: 16,
+        paddingHorizontal: 24,
+        gap: 8,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: COLORS.button,
-        borderWidth: 1,
-        borderColor: COLORS.button,
+        backgroundColor: COLORS.darkPlum
     },
     disabled: {
-        borderWidth: 2,
-        borderColor: COLORS.button,
-        backgroundColor: COLORS.white,
+        backgroundColor: COLORS.darkPlum ,
         opacity: 0.5
     }
 })

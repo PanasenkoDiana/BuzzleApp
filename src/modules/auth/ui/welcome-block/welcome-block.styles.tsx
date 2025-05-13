@@ -3,13 +3,16 @@ import { COLORS } from "../../../../shared/ui/colors";
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        // flex: 0.25,
+        height: 100,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        width: '100%',
+        backgroundColor: COLORS.white,
     },
     image:{
-        height: 88,
-        width: 154
+        height: 18,
+        width: 145
     },
     title: {
         fontSize: 32,
