@@ -9,11 +9,14 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: "100%",
+        height: 60,
         padding: 8,
-        paddingBottom: 15,
+        // paddingBottom: 15,
+        // position: 'absolute',
     },
     logo: {
-        width: 180,
+        width: 145,
+        height: 18,
     },
     othersNav: {
         gap: 5,

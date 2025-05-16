@@ -5,9 +5,13 @@ import { LogoutIcon, PlusIcon, SettingsIcon } from '../icons'
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useUserContext } from '../../../modules/auth/context/userContext';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Modal } from '../modal';
+import { useState } from 'react';
 
 export function Header(){
     const { user, setUser } = useUserContext(); 
+    const [visible, setVisible] = useState<boolean>(false) 
 
     const handleLogout = () => {
         setUser(null);
@@ -16,20 +20,20 @@ export function Header(){
     };
 
     return(
-        <View style={styles.container}>
-            <LogoImage style={styles.logo}/>
+            <View style={styles.container}>
+                <LogoImage style={styles.logo}/>
 
-            <View style={styles.othersNav}>
-                <View style={styles.navDiv}>
-                    <TouchableOpacity style={styles.navIcon}><PlusIcon style={styles.navIcon}></PlusIcon></TouchableOpacity>
-                </View>
-                <View style={styles.navDiv}>
-                    <TouchableOpacity style={styles.navIcon}><SettingsIcon style={styles.navIcon}></SettingsIcon></TouchableOpacity>
-                </View>
-                <View style={styles.navDiv}>
-                    <TouchableOpacity style={styles.navIcon} onPress={()=>handleLogout()}><LogoutIcon style={styles.navIcon}></LogoutIcon></TouchableOpacity>
+                <View style={styles.othersNav}>
+                    <View style={styles.navDiv}>
+                        <TouchableOpacity style={styles.navIcon} onPress={() => setVisible(true)}><PlusIcon style={styles.navIcon}></PlusIcon></TouchableOpacity>
+                    </View>
+                    <View style={styles.navDiv}>
+                        <TouchableOpacity style={styles.navIcon}><SettingsIcon style={styles.navIcon}></SettingsIcon></TouchableOpacity>
+                    </View>
+                    <View style={styles.navDiv}>
+                        <TouchableOpacity style={styles.navIcon} onPress={()=>handleLogout()}><LogoutIcon style={styles.navIcon}></LogoutIcon></TouchableOpacity>
+                    </View>
                 </View>
             </View>
-        </View>
     )
 }

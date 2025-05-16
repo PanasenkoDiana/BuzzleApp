@@ -8,15 +8,46 @@ import { RegisterForm } from "../../modules/auth/ui/register-form/step-one";
 import { Button } from "../../shared/ui/button";
 import { Header } from "../../shared/ui/header";
 import { Footer } from "../../shared/ui/footer";
-
+// import { Modal } from "../../shared/ui/createPostModal";
+import { useState } from "react";
+import { Modal } from "../../shared/ui/modal";
 
 export default function Register() {
+	const [modalVisible, setModalVisible] = useState(false);
+
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: COLORS.plum }}>
-			<View style={{flex: 1, backgroundColor: COLORS.plum, gap: 60}}>
-				<WelcomeBlock/>
+			<View style={{ flex: 1, backgroundColor: COLORS.plum, gap: 60 }}>
+				<WelcomeBlock />
 				<RegisterForm />
-				<View style={{ flex: 0.1}}></View>
+
+				<TouchableOpacity onPress={() => setModalVisible(true)}>
+					<Text>модалка</Text>
+				</TouchableOpacity>
+
+				<Modal
+					title="Створити пост"
+					visible={modalVisible}
+					onClose={() => setModalVisible(false)}
+				>
+					<Text>модалка</Text>
+				</Modal>
+
+				<View style={{ alignItems: "center" }}>
+					<Link href="/main">
+						<Text
+							style={{
+								color: "black",
+								fontSize: 16,
+								textDecorationLine: "underline",
+							}}
+						>
+							main
+						</Text>
+					</Link>
+				</View>
+
+				<View style={{ flex: 0.1 }} />
 			</View>
 		</SafeAreaView>
 	);

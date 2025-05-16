@@ -59,6 +59,7 @@ export function RegisterForm() {
 				email: data.email,
 			},
 		});
+		
 	}
 
 	return (
