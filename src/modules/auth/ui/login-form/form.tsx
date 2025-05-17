@@ -43,7 +43,7 @@ export function LoginForm() {
 
 		if (user?.status === "success") {
 			setUser(user.data);
-			router.push("/me");
+			router.push("/main");
 		} else {
 			console.log(user?.message);
 		}

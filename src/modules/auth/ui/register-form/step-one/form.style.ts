@@ -5,12 +5,13 @@ export const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		gap: 24,
-        margin: 20,
+        // margin: 20,
+		width: '90%',
 		alignItems: "center",
 		justifyContent: "center",
 		borderRadius: 20,
-		paddingBottom: 44,
-		paddingTop: 44,
+		// paddingBottom: 44,
+		// paddingTop: 44,
 		backgroundColor: COLORS.white,
 	},
 	pageText: {

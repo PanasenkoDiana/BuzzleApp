@@ -13,17 +13,18 @@ export function Modalka(props: IModalProps) {
             visible={visible}
             onRequestClose={onClose}
             transparent
+            // style={{flex: 1, backgroundColor: '#FFFFFF'}}
             {...otherProps}
         >
             <View style={styles.modal}>
                 <View style={styles.modalContent}>
                     <View style={styles.header}>
-                        <Text>{title}</Text>
+                        <Text style={styles.title}>{title}</Text>
                         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
                             <CloseIcon width={40} height={40} />
                         </TouchableOpacity>
                     </View>
-                    <View style={styles.content}>
+                    <View  style={{justifyContent:'flex-start', alignItems:'center'}}>
                         {children}
                     </View>
                 </View>

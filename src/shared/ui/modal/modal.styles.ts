@@ -12,21 +12,22 @@ export const styles = StyleSheet.create({
 		backgroundColor: COLORS.white,
 		borderRadius: 10,
 		padding: 20,
-		width: "80%",
+		width: "100%",
+		height: 'auto',
 		gap: 10,
+	},
+	title: {
+		fontFamily: "GTWalsheimPro-Regular",
+		fontSize: 24,
+		color: COLORS.black,
+		fontWeight: "700",
 	},
 	header: {
 		flexDirection: "row",
 		justifyContent: "space-between",
 		alignItems: "center",
-		marginBottom: 10,
 	},
 	closeButton: {
 		padding: 5,
-	},
-	content: {
-		backgroundColor: COLORS.white,
-		padding: 20,
-		gap: 10,
-	},
+	}
 });

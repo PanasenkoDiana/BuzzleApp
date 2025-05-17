@@ -8,12 +8,12 @@ import { useEffect } from "react";
 import { WelcomeBlock } from "../../modules/auth/ui";
 export default function Login() {
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.plum }}>
-            <View style={{flex: 1, backgroundColor: COLORS.plum, gap: 60}}>
+        <View style={{ flex: 1, backgroundColor: COLORS.plum }}>
+            <View style={{flex: 1, backgroundColor: COLORS.plum, gap: 60, justifyContent: 'flex-start', alignItems: 'center', flexDirection:'column'}}>
                 <WelcomeBlock/>
                 <LoginForm/>
                 <View style={{ flex: 0.3}}></View>
             </View>
-        </SafeAreaView>
+        </View>
     )
 }

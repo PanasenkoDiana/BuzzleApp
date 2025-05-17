@@ -1,10 +1,11 @@
-import { ScrollView, Text } from "react-native";
+import { Modal, ScrollView, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { PostCard } from "../../entities/post/ui/PostCard";
 import { styles } from "./UserPost.styles";
 import { Header } from "../../../../shared/ui/header";
 import { Footer } from "../../../../shared/ui/footer";
+import { useState } from "react";
 
 const POST_DATA = {
     username: "Lina Li",
@@ -22,17 +23,17 @@ const POST_DATA = {
 };
 
 export default function UserPost() {
+    
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView  showsVerticalScrollIndicator={false}>
-                {[1, 2, 3, 4].length > 0 ? (
-                    [1, 2, 3, 4].map((_, index) => (
-                        <PostCard key={index} {...POST_DATA} />
-                    ))
-                ) : (
-                    <Text>No posts available</Text>
-                )}
-            </ScrollView>
-        </SafeAreaView>
+        <ScrollView  style={styles.container} showsVerticalScrollIndicator={false}>
+            {/* <Text>123123</Text> */}
+            {[1, 2, 3, 4].length > 0 ? (
+                [1, 2, 3, 4].map((_, index) => (
+                    <PostCard key={index} {...POST_DATA} />
+                ))
+            ) : (
+                <Text>No posts available</Text>
+            )}
+        </ScrollView>
     );
 }

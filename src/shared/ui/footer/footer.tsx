@@ -14,12 +14,12 @@ export function Footer({selectedPage}: IFooterProps) {
         <View style={styles.container} >
             <TouchableOpacity onPress={()=>router.push('/main')}   style={[
                 styles.navBlock,
-                selectedPage === 'Home' && styles.selectedBlock
+                selectedPage === 'main' && styles.selectedBlock
             ]}>
                 <HomeIcon style={styles.navIcon } />
                 <Text style={styles.navText}>Головна</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>router.push('/userPost')}  style={[
+            <TouchableOpacity onPress={()=>router.push('/myPosts')}  style={[
                 styles.navBlock,
                 selectedPage === 'myPosts' && styles.selectedBlock
             ]}>

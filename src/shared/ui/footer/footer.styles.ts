@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
     container: {
         paddingBottom: 15,
         // position: 'absolute',
+        backgroundColor: COLORS.white,
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'space-around',

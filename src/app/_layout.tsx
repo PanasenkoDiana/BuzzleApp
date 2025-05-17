@@ -17,7 +17,7 @@ export default function RootLayout(){
     return(
         <UserContextProvider>
             <Providers>
-                <SafeAreaView>
+                <SafeAreaView style={{flex: 1}}>
                     <Stack>
                         <Stack.Screen name="index" options={{
                             headerShown: false

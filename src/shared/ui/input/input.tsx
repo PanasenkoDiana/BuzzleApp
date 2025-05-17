@@ -22,9 +22,10 @@ export function Input(props: IInputProps) {
 					<TextInput
 						style={[
 							styles.input,
-							rightIcon ? styles.inputWithRightIcon : undefined,
+							// rightIcon ? styles : undefined,
 							style,
 						]}
+						multiline={true}
 						{...otherProps}
 					/>
 					{rightIcon && (
@@ -56,7 +57,7 @@ function Password(props: IInputPasswordProps) {
 			<View style={{ gap: 5 }}>
 				<View style={styles.inputWrapper}>
 					<TextInput
-						style={[styles.input, styles.inputWithRightIcon, style]}
+						style={[styles.input, style]}
 						{...otherProps}
 						secureTextEntry={hidden}
 					/>

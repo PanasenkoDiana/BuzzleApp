@@ -21,6 +21,7 @@ export default function MainLayout() {
                     }}
                 />
             </View>
+            
 
             <Footer selectedPage={selectedPage} />
         </View>
@@ -30,11 +31,15 @@ export default function MainLayout() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent:'flex-start',
+        // justifyContent:'flex-start',
+        gap: 15,
     },
     content: {
         flex: 1,
-        backgroundColor: COLORS.error,
+        // borderWidth: 2,
+        // borderColor: COLORS.lightGray,
+		// borderRadius: 15,
+        // padding: 3,
         // justifyContent:'flex-start',
     },
 });

@@ -14,7 +14,8 @@ export const styles = StyleSheet.create({
 		position: "relative",
 		flexDirection: "row",
 		alignItems: "center",
-		gap: 10,
+		justifyContent: 'center',
+		// gap: 10,
 	},
 	rightIcon: {
 		position: "absolute",
@@ -22,12 +23,12 @@ export const styles = StyleSheet.create({
 		alignItems: "center",
 		width: 30,
 		height: 30,
-		right: 10,
+		right: 20,
 		zIndex: 2,
 	},
 	input: {
-		width: 311,
-		height: 42,
+		width: "95%",
+		minHeight: 42,
 		borderWidth: 1,
 		borderColor: COLORS.lightGray,
 		borderRadius: 10,
@@ -39,9 +40,9 @@ export const styles = StyleSheet.create({
 	inputWithLeftIcon: {
 		paddingLeft: 60,
 	},
-	inputWithRightIcon: {
-		paddingRight: 60,
-	},
+	// inputWithRightIcon: {
+	// 	paddingRight: 60,
+	// },
 	errorText: {
 		color: COLORS.error,
 		fontSize: 14,
