@@ -105,7 +105,7 @@ export function RegisterForm() {
 							<Input
 								value={field.value}
 								onChangeText={field.onChange}
-								placeholder="buzzle@gmail.com"
+								placeholder="your@gmail.com"
 								label="Електронна пошта"
 								error={fieldState.error?.message}
 							/>

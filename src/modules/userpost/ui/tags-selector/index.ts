@@ -1,0 +1,1 @@
+export { TagsSelector } from './selector'

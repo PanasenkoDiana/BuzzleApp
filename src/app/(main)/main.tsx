@@ -1,4 +1,4 @@
-import { View, Image, StyleSheet, ScrollView, Modal } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import { Header } from "../../shared/ui/header";
 import { Footer } from "../../shared/ui/footer";
 import { SafeAreaView } from "react-native-safe-area-context";

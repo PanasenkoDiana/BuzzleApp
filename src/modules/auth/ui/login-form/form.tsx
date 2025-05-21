@@ -20,7 +20,7 @@ export function LoginForm() {
 	const router = useRouter();
 	
 	async function onSubmit(data: ILogin) {
-        router.push("/me");
+		router.push("/main");
 		const response = await login(data.email, data.password);
 
 		if (response.status === "error") {
@@ -76,7 +76,7 @@ export function LoginForm() {
 								value={field.value}
 								onChangeText={field.onChange}
 								onChange={field.onChange}
-								placeholder="you@example.com"
+								placeholder="your@gmail.com"
 								label="Електронна пошта"
 								error={fieldState.error?.message}
 							/>
