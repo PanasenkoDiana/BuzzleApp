@@ -10,22 +10,23 @@ import {
 import { styles } from './selector.styles';
 import { ITag } from '../../types';
 
-type Props = {
-	value: ITag[];
-	onChange: (payload: { tags: ITag[]; newTags: ITag[] }) => void;
-	options: ITag[]; // из БД
+type ITagSelectorProps = {
+	value?: string[]
+	// sTags: string[];
+	onChange: (tags: string[]) => void;
+	options: string[]; // из БД
 };
 
-export function TagsSelector({ value, onChange, options }: Props) {
+export function TagsSelector({  value = [], onChange, options }: ITagSelectorProps) {
 	const [visible, setVisible] = useState(false);
 	const [customTag, setCustomTag] = useState('');
 
 	// Проверка существования тега по name
-	const exists = (name: string) => value.some((v) => v.name === name);
+	const exists = (name: string ) => value.some((v) => v === name);
 
-	const toggleTag = (tag: ITag) => {
-		if (exists(tag.name)) {
-			const newValues = value.filter((v) => v.name !== tag.name);
+	const toggleTag = (tag: string) => {
+		if (exists(tag)) {
+			const newValues = value.filter((v) => v !== tag);
 			handleChange(newValues);
 		} else {
 			handleChange([...value, tag]);
@@ -34,24 +35,30 @@ export function TagsSelector({ value, onChange, options }: Props) {
 	};
 
 	const handleRemove = (name: string) => {
-		const newValues = value.filter((v) => v.name !== name);
+		const newValues = value.filter((v) => v !== name);
 		handleChange(newValues);
 	};
 
-	const handleCustomAdd = () => {
-		const trimmed = customTag.trim();
-		if (!trimmed || exists(trimmed)) return;
+	// const handleCustomAdd = () => {
+	// 	const trimmed = customTag.trim();
+	// 	if (!trimmed || exists(trimmed)) return;
 
-		const newTag: ITag = { id: null, name: trimmed };
-		handleChange([...value, newTag]);
-		setCustomTag('');
-		setVisible(false);
-	};
+	// 	const newTag: ITag = { id: null, name: trimmed };
+	// 	handleChange([...value, newTag]);
+	// 	setCustomTag('');
+	// 	setVisible(false);
+	// };
+	const handleAdd = (tag: string) => {
+		const newValues = value.filter((v) => v !== tag);
+		handleChange(newValues);
+	}
 
-	const handleChange = (tags: ITag[]) => {
-		const existingTags = tags.filter((t) => t.id !== null);
-		const newTags = tags.filter((t) => t.id === null);
-		onChange({ tags: existingTags, newTags });
+	const handleChange = (tags: string[]) => {
+		const userTags = tags.filter((t) => t !== null)
+		// const existingTags = tags.filter((t) => t !== null);
+		// const newTags = tags.filter((t) => t === null);
+
+		onChange(userTags);
 	};
 
 	return (
@@ -61,12 +68,12 @@ export function TagsSelector({ value, onChange, options }: Props) {
 				{value.map((tag) => (
 					<View
 						style={styles.tag}
-						key={`${tag.name}_${tag.id ?? 'new'}`}
+						key={`${tag}`}
 					>
-						<Text style={styles.tagText}>{tag.name}</Text>
+						<Text style={styles.tagText}>{tag}</Text>
 						<TouchableOpacity
 							style={styles.tagDeleteButton}
-							onPress={() => handleRemove(tag.name)}
+							onPress={() => handleRemove(tag)}
 						>
 							<Text style={styles.tagDeleteButtonText}> X </Text>
 						</TouchableOpacity>
@@ -83,17 +90,30 @@ export function TagsSelector({ value, onChange, options }: Props) {
 				)}
 			</View>
 
+			<TextInput
+				// value={customTag}
+				onChangeText={handleAdd}
+				placeholder="Новый тег"
+				style={{
+					borderWidth: 1,
+					borderColor: '#ccc',
+					padding: 10,
+					marginTop: 20,
+					borderRadius: 5,
+				}}
+			/>
+
 			<Modal visible={visible} animationType="slide" transparent={false}>
 				<View style={{ flex: 1, padding: 16 }}>
 					<FlatList
 						data={options}
-						keyExtractor={(item) => item.id?.toString() ?? item.name}
+						keyExtractor={(item) => item?.toString() ?? item}
 						renderItem={({ item }) => (
 							<TouchableOpacity
 								onPress={() => toggleTag(item)}
 								style={{ padding: 10 }}
 							>
-								<Text style={{ fontSize: 16 }}>{item.name}</Text>
+								<Text style={{ fontSize: 16 }}>{item}</Text>
 							</TouchableOpacity>
 						)}
 						ItemSeparatorComponent={() => (
@@ -103,20 +123,8 @@ export function TagsSelector({ value, onChange, options }: Props) {
 						)}
 					/>
 
-					<TextInput
-						value={customTag}
-						onChangeText={setCustomTag}
-						placeholder="Новый тег"
-						style={{
-							borderWidth: 1,
-							borderColor: '#ccc',
-							padding: 10,
-							marginTop: 20,
-							borderRadius: 5,
-						}}
-					/>
-					<TouchableOpacity
-						onPress={handleCustomAdd}
+					{/* <TouchableOpacity
+						// onPress={handleCustomAdd}
 						style={{
 							backgroundColor: '#007bff',
 							padding: 10,
@@ -126,7 +134,7 @@ export function TagsSelector({ value, onChange, options }: Props) {
 						}}
 					>
 						<Text style={{ color: '#fff' }}>Добавить</Text>
-					</TouchableOpacity>
+					</TouchableOpacity> */}
 
 					<TouchableOpacity
 						onPress={() => setVisible(false)}

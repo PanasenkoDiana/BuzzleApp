@@ -36,6 +36,7 @@ export const usePost = {
 				console.log(result.message);
 				return result;
 			}
+
 			return result;
         } catch (error) {
 			return { status: "error", message: "An unexpected error occurred" };

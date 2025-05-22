@@ -25,10 +25,11 @@ interface ICreatePostModalProps {
 
 export function CreatePostModal(props: ICreatePostModalProps) {
 	const [selectedImages, setSelectedImages] = useState<string[]>([]);
+	// const [selectedTags, setSelectedTags] = useState<string[]>([])
 	const { tags } = getAllTags();
 
 	const { handleSubmit, setValue, control } = useForm<
-		IPostCart & { newTags: ITag[] }
+		IPostCart 
 	>();
 
 	function removeImage(index: number) {
@@ -52,9 +53,9 @@ export function CreatePostModal(props: ICreatePostModalProps) {
 		}
 	}
 
-	async function onSubmit(data: IPostCart & { newTags: ITag[] }) {
-		const allTags = [...(data.tags || []), ...(data.newTags || [])];
-		await usePost.createPost({ ...data, tags: allTags });
+	async function onSubmit(data: IPostCart) {
+		// const allTags = [...(data.tags || []), ...(data.newTags || [])];
+		await usePost.createPost({ ...data });
 		props.onClose();
 	}
 
@@ -129,12 +130,17 @@ export function CreatePostModal(props: ICreatePostModalProps) {
 						name="tags"
 						render={({ field: { value, onChange } }) => (
 							<TagsSelector
-								value={Array.isArray(value) ? value : []}
 								options={tags}
-								onChange={({ tags, newTags }) => {
-									onChange(tags);
-									setValue("newTags", newTags);
-								}}
+								value={value}
+								onChange={onChange}
+
+
+
+
+								// allTags={tags}
+								// onChange={({ tags }) => {
+								// 	onChange(tags);
+								// }}
 							/>
 						)}
 					/>

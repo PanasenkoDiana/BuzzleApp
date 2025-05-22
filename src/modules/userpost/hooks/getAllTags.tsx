@@ -4,7 +4,7 @@ import { ITag } from "../types";
 
 
 export function getAllTags(){
-	const [tags, setTags] = useState<ITag[]>([])
+	const [tags, setTags] = useState<string[]>([])
 	const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -18,8 +18,14 @@ export function getAllTags(){
 				console.log(result.message);
 				setError(result.message)
 			} else {
-				setTags(result.data)
+				let all_tags: string[] = []
+				result.data.map((tag)=>{
+					return all_tags.push(tag.name)
+				})
+
+				setTags(all_tags)
 			}
+
         } catch (error) {
 			return { status: "error", message: "An unexpected error occurred" };
 		}

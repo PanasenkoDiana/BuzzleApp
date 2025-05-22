@@ -4,7 +4,7 @@ export interface IPostCart {
     name: string
     topic?: string
     text?: string
-    tags?: ITag[]
+    tags?: string[]
     link?: string
     images?: string[]
 }
