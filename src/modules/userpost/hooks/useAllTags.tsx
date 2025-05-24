@@ -3,8 +3,8 @@ import { Result } from "../../auth/types";
 import { ITag } from "../types";
 
 
-export function getAllTags(){
-	const [tags, setTags] = useState<string[]>([])
+export function useAllTags(){
+	const [tags, setTags] = useState<ITag[]>([])
 	const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -18,12 +18,12 @@ export function getAllTags(){
 				console.log(result.message);
 				setError(result.message)
 			} else {
-				let all_tags: string[] = []
-				result.data.map((tag)=>{
-					return all_tags.push(tag.name)
-				})
+				// let all_tags: ITag[] = []
+				// result.data.map((tag)=>{
+				// 	return all_tags.push(tag.name)
+				// })
 
-				setTags(all_tags)
+				setTags(result.data)
 			}
 
         } catch (error) {

@@ -12,7 +12,7 @@ export default function MainPage() {
 const [modalVisible, setModalVisible] = useState(false);
 
 	return (
-			<UserPost ></UserPost>
+		<UserPost ></UserPost>
 	);
 }
 const styles = StyleSheet.create({

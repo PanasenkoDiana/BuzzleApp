@@ -11,18 +11,16 @@ import { styles } from './selector.styles';
 import { ITag } from '../../types';
 
 type ITagSelectorProps = {
-	value?: string[]
-	// sTags: string[];
+	value?: string[];
 	onChange: (tags: string[]) => void;
-	options: string[]; // из БД
+	options: ITag[]; // из БД
 };
 
-export function TagsSelector({  value = [], onChange, options }: ITagSelectorProps) {
+export function TagsSelector({ value = [], onChange, options }: ITagSelectorProps) {
 	const [visible, setVisible] = useState(false);
 	const [customTag, setCustomTag] = useState('');
 
-	// Проверка существования тега по name
-	const exists = (name: string ) => value.some((v) => v === name);
+	const exists = (name: string) => value.some((v) => v === name);
 
 	const toggleTag = (tag: string) => {
 		if (exists(tag)) {
@@ -39,25 +37,22 @@ export function TagsSelector({  value = [], onChange, options }: ITagSelectorPro
 		handleChange(newValues);
 	};
 
-	// const handleCustomAdd = () => {
-	// 	const trimmed = customTag.trim();
-	// 	if (!trimmed || exists(trimmed)) return;
+	const handleAdd = () => {
+		const trimmed = customTag.trim();
+		if (!trimmed) return;
 
-	// 	const newTag: ITag = { id: null, name: trimmed };
-	// 	handleChange([...value, newTag]);
-	// 	setCustomTag('');
-	// 	setVisible(false);
-	// };
-	const handleAdd = (tag: string) => {
-		const newValues = value.filter((v) => v !== tag);
-		handleChange(newValues);
-	}
+		// Добавить #, если его нет
+		const formatted = trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
+
+		if (exists(formatted)) return;
+
+		handleChange([...value, formatted]);
+		setCustomTag('');
+		setVisible(false);
+	};
 
 	const handleChange = (tags: string[]) => {
-		const userTags = tags.filter((t) => t !== null)
-		// const existingTags = tags.filter((t) => t !== null);
-		// const newTags = tags.filter((t) => t === null);
-
+		const userTags = tags.filter((t) => t !== null);
 		onChange(userTags);
 	};
 
@@ -66,18 +61,13 @@ export function TagsSelector({  value = [], onChange, options }: ITagSelectorPro
 			<Text style={styles.labelText}>Теги</Text>
 			<View style={styles.allTags}>
 				{value.map((tag) => (
-					<View
+					<TouchableOpacity
 						style={styles.tag}
-						key={`${tag}`}
+						onPress={() => handleRemove(tag)}
+						key={tag}
 					>
 						<Text style={styles.tagText}>{tag}</Text>
-						<TouchableOpacity
-							style={styles.tagDeleteButton}
-							onPress={() => handleRemove(tag)}
-						>
-							<Text style={styles.tagDeleteButtonText}> X </Text>
-						</TouchableOpacity>
-					</View>
+					</TouchableOpacity>
 				))}
 
 				{value.length < 10 && (
@@ -90,19 +80,6 @@ export function TagsSelector({  value = [], onChange, options }: ITagSelectorPro
 				)}
 			</View>
 
-			<TextInput
-				// value={customTag}
-				onChangeText={handleAdd}
-				placeholder="Новый тег"
-				style={{
-					borderWidth: 1,
-					borderColor: '#ccc',
-					padding: 10,
-					marginTop: 20,
-					borderRadius: 5,
-				}}
-			/>
-
 			<Modal visible={visible} animationType="slide" transparent={false}>
 				<View style={{ flex: 1, padding: 16 }}>
 					<FlatList
@@ -110,21 +87,32 @@ export function TagsSelector({  value = [], onChange, options }: ITagSelectorPro
 						keyExtractor={(item) => item?.toString() ?? item}
 						renderItem={({ item }) => (
 							<TouchableOpacity
-								onPress={() => toggleTag(item)}
+								onPress={() => toggleTag(item.name)}
 								style={{ padding: 10 }}
 							>
-								<Text style={{ fontSize: 16 }}>{item}</Text>
+								<Text style={{ fontSize: 16 }}>{item.name}</Text>
 							</TouchableOpacity>
 						)}
 						ItemSeparatorComponent={() => (
-							<View
-								style={{ height: 1, backgroundColor: '#ccc' }}
-							/>
+							<View style={{ height: 1, backgroundColor: '#ccc' }} />
 						)}
 					/>
 
-					{/* <TouchableOpacity
-						// onPress={handleCustomAdd}
+					<TextInput
+						value={customTag}
+						onChangeText={setCustomTag}
+						placeholder="Новый тег"
+						style={{
+							borderWidth: 1,
+							borderColor: '#ccc',
+							padding: 10,
+							marginTop: 20,
+							borderRadius: 5,
+						}}
+					/>
+
+					<TouchableOpacity
+						onPress={handleAdd}
 						style={{
 							backgroundColor: '#007bff',
 							padding: 10,
@@ -134,7 +122,7 @@ export function TagsSelector({  value = [], onChange, options }: ITagSelectorPro
 						}}
 					>
 						<Text style={{ color: '#fff' }}>Добавить</Text>
-					</TouchableOpacity> */}
+					</TouchableOpacity>
 
 					<TouchableOpacity
 						onPress={() => setVisible(false)}

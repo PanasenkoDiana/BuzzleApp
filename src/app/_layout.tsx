@@ -15,31 +15,29 @@ export default function RootLayout(){
     }
     
     return(
-        <UserContextProvider>
-            <Providers>
-                <SafeAreaView style={{flex: 1}}>
-                    <Stack>
-                        <Stack.Screen name="index" options={{
-                            headerShown: false
-                        }}/>
+        <Providers>
+            <SafeAreaView style={{flex: 1}}>
+                <Stack>
+                    <Stack.Screen name="index" options={{
+                        headerShown: false
+                    }}/>
 
-                        <Stack.Screen name="(auth)" options={{
-                            headerShown: false
-                        }}/>
+                    <Stack.Screen name="(auth)" options={{
+                        headerShown: false
+                    }}/>
 
-                        {/* <Stack.Screen name="main" options={{
-                            headerShown: false
-                        }}/> */}
+                    {/* <Stack.Screen name="main" options={{
+                        headerShown: false
+                    }}/> */}
 
-                        {/* <Stack.Screen name="userPost" options={{
-                            headerShown: false
-                        }}/> */}
-                        <Stack.Screen name="(main)" options={{
-                            headerShown: false
-                        }}/>
-                    </Stack>
-                </SafeAreaView>
-            </Providers>
-        </UserContextProvider>
+                    {/* <Stack.Screen name="userPost" options={{
+                        headerShown: false
+                    }}/> */}
+                    <Stack.Screen name="(main)" options={{
+                        headerShown: false
+                    }}/>
+                </Stack>
+            </SafeAreaView>
+        </Providers>
     )
 }

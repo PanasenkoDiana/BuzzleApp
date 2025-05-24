@@ -12,11 +12,12 @@ import {
 	SmileIcon,
 	TrashIcon,
 } from "../../../../shared/ui/icons";
-import { IPostCart, ITag } from "../../types";
+import { IPostCart, IPostCartForm, ITag } from "../../types";
 import { usePost } from "../../hooks";
 import { TagsSelector } from "../tags-selector";
-import { getAllTags } from "../../hooks/getAllTags";
+import { useAllTags } from "../../hooks/useAllTags";
 import { COLORS } from "../../../../shared/ui/colors";
+import { Result } from "../../../auth/types";
 
 interface ICreatePostModalProps {
 	isVisible: boolean;
@@ -24,12 +25,13 @@ interface ICreatePostModalProps {
 }
 
 export function CreatePostModal(props: ICreatePostModalProps) {
+	const { posts, createPost } = usePost()
 	const [selectedImages, setSelectedImages] = useState<string[]>([]);
 	// const [selectedTags, setSelectedTags] = useState<string[]>([])
-	const { tags } = getAllTags();
+	const { tags } = useAllTags();
 
 	const { handleSubmit, setValue, control } = useForm<
-		IPostCart 
+		IPostCartForm 
 	>();
 
 	function removeImage(index: number) {
@@ -43,19 +45,33 @@ export function CreatePostModal(props: ICreatePostModalProps) {
 			mediaTypes: ImagePicker.MediaTypeOptions.Images,
 			allowsEditing: true,
 			quality: 1,
+			base64: true,
 		});
 
 		if (!result.canceled) {
-			const imageUri = result.assets[0].uri;
+			const imageUri = `data:image/jpeg;base64,${result.assets[0].base64}`;
+			if (!imageUri) return
+
 			const updatedImages = [...selectedImages, imageUri];
+
 			setSelectedImages(updatedImages);
 			setValue("images", updatedImages);
 		}
 	}
 
-	async function onSubmit(data: IPostCart) {
+	async function onSubmit(data: IPostCartForm) {
 		// const allTags = [...(data.tags || []), ...(data.newTags || [])];
-		await usePost.createPost({ ...data });
+		await createPost({ ...data });
+
+		// if( result === undefined) return
+		
+		// if ( result.status === 'success' ){
+		// 	await refetch()
+		// 	console.log("[Интро] Ай\nРядовой MORGENSHTERN тут, сука (Слава, что ты сделал?) Ай, готовьте пушки, йей, йей, е-е-е Йей (Йей), йей\n[Припев] Pull up in the tank и я еду в бой (Йей)\nТут я капитан, боевой ковбой (Йей)\nКупил новый ТУ — это самолёт (Йей)\n«Вру-ту-ту-ту-ту-ту-туф» — это вертолёт (Йей)\nPull up in the tank и я еду в бой (Йей)\nТут я капитан, боевой ковбой (Йей)\nКупил новый ТУ — это самолёт (Йей)\n«Бэ-э» — а это ты подох\n[Куплет] А, закрутил на поле боя, будто вертик А, сука ловит пулевое на моей торпеде (На) А, тупое мясо посажу на вертель (Шаверма) А, я впереди, а ты вперде (Ха)\n[Бридж] Нахуй Lambo' (Йей), прыгну в самолёт (У-э)\nЭй, тупо лох (Лох), пососи дуло (Соси)\nНахуй Lambo' (Fuck), прыгну в самолёт (Фью)\nЭй, тупо лох (Лох), пососи дуло (Соси)\nSee MORGENSHTERN Live Get tickets as low as $51\nYou might also like Забуду (Will Forget) SLAVA MARLOW МИР ГОРИТ (WORLD IS BURNING) Oxxxymiron Рехаб (Rehab) uglystephan\n[Интерлюдия] Заходите, люди, поиграть в War Thunder\nТут, бля, очень красиво\nАлишерка стал дохуя богаче War Thunder, большое спасибо\nТанки, самолёты, вертолёт и корабль\nТут всё есть, чё тебе надо\nПоскорей беги по ссылке в описании и качай War Thunder прямо сейчас\nА я приму ванну из бабок (Йей, йей, йей)\n[Припев] Pull up in the tank и я еду в бой (Йей)\nТут я капитан, боевой ковбой (Йей)\nКупил новый ТУ — это самолёт (Йей)\n«Вру-ту-ту-ту-ту-ту-туф» — это вертолёт (Йей)\nPull up in the tank и я еду в бой (Йей)\nТут я капитан, боевой ковбой (Йей)\nКупил новый ТУ — это самолёт (Йей)\n«Бэ-э» — а это ты подох");
+		// }
+
+
+		// console.log(posts)
 		props.onClose();
 	}
 
@@ -175,7 +191,7 @@ export function CreatePostModal(props: ICreatePostModalProps) {
 								}}
 							>
 								<Image
-									source={{ uri }}
+									source={{uri}}
 									style={{
 										width: "100%",
 										height: "100%",

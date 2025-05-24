@@ -31,30 +31,33 @@ export const styles = StyleSheet.create({
         // flex:1
     },
     addButton: {
-        height: 42,
-        width: 42,
+        height: 30,
+        width: 30,
         borderColor: COLORS.black,
         justifyContent: 'center',
         alignContent: 'center',
         borderWidth: 2,
-        borderRadius: 50
+        borderRadius: 50,
+        // align
     },
     addButtonText: {
         fontWeight: '500',
-        fontSize: 30,
+        fontSize: 25,
         alignSelf: 'center',
+        alignContent: 'center',
         fontFamily: "GTWalsheimPro-Regular",
         color: COLORS.black,
     },
     tag: {
-        padding: 5,
-        height: 42,
+        padding: 6,
+        height: 28,
         flexDirection: 'row',
         justifyContent: 'flex-end',
         alignItems: 'center',
         gap: 7,
-        borderColor: COLORS.lightGray,
-        borderWidth: 2,
+        backgroundColor: COLORS.plum,
+        // borderColor: COLORS.lightGray,
+        // borderWidth: 2,
         borderRadius: 10,
     },
     tagText: {
@@ -62,7 +65,7 @@ export const styles = StyleSheet.create({
         fontWeight: '500',
         fontSize: 14,
         fontFamily: "GTWalsheimPro-Regular",
-        color: COLORS.black,
+        color: COLORS.darkPlum,
     },
     tagDeleteButton: {
         borderColor: COLORS.error,

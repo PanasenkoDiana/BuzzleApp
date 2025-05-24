@@ -1,14 +1,17 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 import { styles } from "./PostCard.styles";
 import { COLORS } from "../../../../../../shared/ui/colors";
+import { IImage, ITag } from "../../../../types";
 interface PostCardProps {
-    username: string;
-    avatarUrl: string;
+    id: number;
+    username?: string;
+    avatarUrl?: string;
     title: string;
-    description: string;
-    images: string[];
+    tags?: ITag[];
+    description?: string;
+    images?: IImage[];
     likes: number;
     views: number;
 }
@@ -17,6 +20,7 @@ export function PostCard({
     username,
     avatarUrl,
     title,
+    tags,
     description,
     images,
     likes,
@@ -38,13 +42,27 @@ export function PostCard({
             </View>
 
             <Text style={styles.postTitle}>{title}</Text>
-            <Text style={styles.postDescription}>{description}</Text>
+            <Text style={styles.postDescription}>
+                {description}
+                {'\n'}
+                <FlatList 
+                    data={tags}
+                    keyExtractor={(_, index) => index.toString()}
+                    renderItem={({ item, index }) => (
+                        <Text style={styles.postTags} >{item.name}</Text>
+                    ) }    
+                />
+                {tags?.map((tag)=>{
+                    return <Text>{tag.name}</Text>
+                })}
+
+            </Text>
 
             <View style={styles.imageGrid}>
-                {images.map((imageUrl, index) => (
+                {images?.map((imageUrl, index) => (
                     <Image
-                        key={index}
-                        source={{ uri: imageUrl }}
+                        key={imageUrl.id}
+                        source={{ uri: `http://192.168.3.4:8000/media/${imageUrl.name}` }}
                         style={[styles.gridImage, styles.largeImage]}
                     />
                 ))}

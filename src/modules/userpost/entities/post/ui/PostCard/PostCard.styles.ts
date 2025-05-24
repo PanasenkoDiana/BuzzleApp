@@ -38,6 +38,12 @@ export const styles = StyleSheet.create({
         marginBottom: 16,
         color: COLORS.black,
     },
+    postTags: {
+        fontSize: 16,
+        lineHeight: 24,
+        marginBottom: 16,
+        color: COLORS.darkPlum,
+    },
     imageGrid: {
         flexDirection: 'row',
         flexWrap: 'wrap',
