@@ -10,22 +10,21 @@ import {
 import { styles } from './selector.styles';
 import { ITag } from '../../types';
 
-type Props = {
-	value: ITag[];
-	onChange: (payload: { tags: ITag[]; newTags: ITag[] }) => void;
+type ITagSelectorProps = {
+	value?: string[];
+	onChange: (tags: string[]) => void;
 	options: ITag[]; // из БД
 };
 
-export function TagsSelector({ value, onChange, options }: Props) {
+export function TagsSelector({ value = [], onChange, options }: ITagSelectorProps) {
 	const [visible, setVisible] = useState(false);
 	const [customTag, setCustomTag] = useState('');
 
-	// Проверка существования тега по name
-	const exists = (name: string) => value.some((v) => v.name === name);
+	const exists = (name: string) => value.some((v) => v === name);
 
-	const toggleTag = (tag: ITag) => {
-		if (exists(tag.name)) {
-			const newValues = value.filter((v) => v.name !== tag.name);
+	const toggleTag = (tag: string) => {
+		if (exists(tag)) {
+			const newValues = value.filter((v) => v !== tag);
 			handleChange(newValues);
 		} else {
 			handleChange([...value, tag]);
@@ -34,24 +33,27 @@ export function TagsSelector({ value, onChange, options }: Props) {
 	};
 
 	const handleRemove = (name: string) => {
-		const newValues = value.filter((v) => v.name !== name);
+		const newValues = value.filter((v) => v !== name);
 		handleChange(newValues);
 	};
 
-	const handleCustomAdd = () => {
+	const handleAdd = () => {
 		const trimmed = customTag.trim();
-		if (!trimmed || exists(trimmed)) return;
+		if (!trimmed) return;
 
-		const newTag: ITag = { id: null, name: trimmed };
-		handleChange([...value, newTag]);
+		// Добавить #, если его нет
+		const formatted = trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
+
+		if (exists(formatted)) return;
+
+		handleChange([...value, formatted]);
 		setCustomTag('');
 		setVisible(false);
 	};
 
-	const handleChange = (tags: ITag[]) => {
-		const existingTags = tags.filter((t) => t.id !== null);
-		const newTags = tags.filter((t) => t.id === null);
-		onChange({ tags: existingTags, newTags });
+	const handleChange = (tags: string[]) => {
+		const userTags = tags.filter((t) => t !== null);
+		onChange(userTags);
 	};
 
 	return (
@@ -59,18 +61,13 @@ export function TagsSelector({ value, onChange, options }: Props) {
 			<Text style={styles.labelText}>Теги</Text>
 			<View style={styles.allTags}>
 				{value.map((tag) => (
-					<View
+					<TouchableOpacity
 						style={styles.tag}
-						key={`${tag.name}_${tag.id ?? 'new'}`}
+						onPress={() => handleRemove(tag)}
+						key={tag}
 					>
-						<Text style={styles.tagText}>{tag.name}</Text>
-						<TouchableOpacity
-							style={styles.tagDeleteButton}
-							onPress={() => handleRemove(tag.name)}
-						>
-							<Text style={styles.tagDeleteButtonText}> X </Text>
-						</TouchableOpacity>
-					</View>
+						<Text style={styles.tagText}>{tag}</Text>
+					</TouchableOpacity>
 				))}
 
 				{value.length < 10 && (
@@ -87,19 +84,17 @@ export function TagsSelector({ value, onChange, options }: Props) {
 				<View style={{ flex: 1, padding: 16 }}>
 					<FlatList
 						data={options}
-						keyExtractor={(item) => item.id?.toString() ?? item.name}
+						keyExtractor={(item) => item?.toString() ?? item}
 						renderItem={({ item }) => (
 							<TouchableOpacity
-								onPress={() => toggleTag(item)}
+								onPress={() => toggleTag(item.name)}
 								style={{ padding: 10 }}
 							>
 								<Text style={{ fontSize: 16 }}>{item.name}</Text>
 							</TouchableOpacity>
 						)}
 						ItemSeparatorComponent={() => (
-							<View
-								style={{ height: 1, backgroundColor: '#ccc' }}
-							/>
+							<View style={{ height: 1, backgroundColor: '#ccc' }} />
 						)}
 					/>
 
@@ -115,8 +110,9 @@ export function TagsSelector({ value, onChange, options }: Props) {
 							borderRadius: 5,
 						}}
 					/>
+
 					<TouchableOpacity
-						onPress={handleCustomAdd}
+						onPress={handleAdd}
 						style={{
 							backgroundColor: '#007bff',
 							padding: 10,

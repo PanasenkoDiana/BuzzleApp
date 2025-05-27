@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { Input } from "../input"
 import { useForm } from 'react-hook-form';
 import { CreatePostModal } from '../../../modules/userpost/ui/create-post-modal/modal';
+// import { useAllPosts } from '../../../modules/userpost/hooks/useAllPosts';
 
 export function Header(){
     const { user, setUser } = useUserContext(); 
