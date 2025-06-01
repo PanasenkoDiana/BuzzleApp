@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Result } from '../../auth/types';
 import { IPostCart, IPostCartForm } from '../types';
+import { ImageManipulator } from 'expo-image-manipulator';
 
 export function usePost() {
     const [posts, setPosts] = useState<IPostCart[]>([]);
@@ -11,12 +12,25 @@ export function usePost() {
     
 	async function createPost(data: IPostCartForm): Promise<Result<IPostCart> | undefined> {
 		try {
+			const { images } = data
+			const resizedImages = images?.map(async (image) =>
+				await ImageManipulator.manipulateAsync(
+					image.name,
+					[{ resize: { width: 1000, height: 1000 } }],
+					{ compress: 1, format: ImageManipulator.SaveFormat.PNG }
+				)
+			)
+
+			const newData = {
+				...data,
+				images: resizedImages
+			}
+
 			const response = await fetch("http://192.168.3.4:8000/api/posts/create", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(data),
+				body: JSON.stringify(newData),
 			});
-            // console.log(data)
 
 			const result: Result<IPostCart> = await response.json();
 
