@@ -1,0 +1,1 @@
+export { SecondRegisterModal } from './modal'

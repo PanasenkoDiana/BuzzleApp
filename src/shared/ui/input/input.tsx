@@ -32,14 +32,14 @@ export function Input(props: IInputProps) {
 						<View style={styles.rightIcon}>{rightIcon}</View>
 					)}
 				</View>
-				<View style={{ height: 20 }}>
-					{error && (
-						<View style={styles.errorBlock}>
-							<ErrorIcon width={16} height={16} />
-							<Text style={styles.errorText}>{error}</Text>
-						</View>
-					)}
-				</View>
+				{/* <View > */}
+				{error && (
+					<View style={styles.errorBlock}>
+						<ErrorIcon width={16} height={16} />
+						<Text style={styles.errorText}>{error}</Text>
+					</View>
+				)}
+				{/* </View> */}
 			</View>
 		</View>
 	);

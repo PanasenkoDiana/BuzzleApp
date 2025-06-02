@@ -4,15 +4,35 @@ import { Footer } from "../../shared/ui/footer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { UserPost } from "../../modules/userpost/pages/UserPost";
 import { COLORS } from "../../shared/ui/colors";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "expo-router/build/hooks";
+import { SecondRegisterModal } from "../../modules/auth/ui/second-register-modal";
 // import { COLORS } from "../shared/ui/colors";
 // import UserPost from "../modules/userpost/pages/UserPost/UserPost";
 
 export default function MainPage() {
-const [modalVisible, setModalVisible] = useState(false);
+	const searchParams = useSearchParams();
+	const router = useRouter();
+
+	useEffect(() => {
+		if (searchParams.get('showRegisterModal') === 'true') {
+			setIsModalOpen(true);
+
+			const newParams = new URLSearchParams(searchParams);
+			newParams.delete('showRegisterModal');
+			router.replace(`/?${newParams.toString()}`);
+		}
+	}, [searchParams, router]);
+
+	const [isModalOpen, setIsModalOpen] = useState(true);
 
 	return (
+		<>
+		<SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} />
+		{/* { isModalOpen && <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> } */}
+
 		<UserPost ></UserPost>
+		</>
 	);
 }
 const styles = StyleSheet.create({
@@ -22,14 +42,7 @@ const styles = StyleSheet.create({
         borderBottomColor: COLORS.lightGray,
 		borderRadius: 15,
 		padding: 10,
-		// justifyContent: 'flex-start',
-		// paddingBottom: 70,
-		// paddingTop:60,
-		// gap:0,
 		backgroundColor: COLORS.plum,
-		// alignContent: "center",
-		// justifyContent: "flex-start",
-		// flexDirection: "column",
 	},
 	image: {
 		width: "100%",

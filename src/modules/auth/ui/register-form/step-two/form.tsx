@@ -23,7 +23,12 @@ export function VerifyForm() {
 			});
 			return;
 		}
-		router.push("/login");
+		router.push({
+			pathname: '/main',
+			params: {
+				showRegisterModal: 'true'
+			}
+		});
 	}
 
 	return (

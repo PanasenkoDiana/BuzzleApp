@@ -29,5 +29,24 @@ export const styles = StyleSheet.create({
 	},
 	closeButton: {
 		padding: 5,
-	}
+	},
+
+
+
+
+	centerModal: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: "rgba(0, 0, 0, 0.5)",
+	},
+
+	centerModalContent: {
+		backgroundColor: COLORS.white,
+		borderRadius: 30,
+		padding: 20,
+		width: "90%",
+		height: 'auto',
+		gap: 10,
+	},
 });
