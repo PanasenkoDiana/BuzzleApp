@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Result } from "../../auth/types";
 import { ITag } from "../types";
+import { SERVER_HOST } from "../../../shared/constants"
 
 
 export function useAllTags(){
@@ -12,7 +13,7 @@ export function useAllTags(){
     async function allTags() {
         try {
 			setIsLoading(true);
-            const response = await fetch('http://192.168.3.4:8000/api/tags/all')
+            const response = await fetch(`${SERVER_HOST}api/tags/all`)
             const result: Result<ITag[]> = await response.json();
 			if (result.status === "error") {
 				console.log(result.message);

@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./PostCard.styles";
 import { COLORS } from "../../../../../../shared/ui/colors";
 import { IImage, ITag } from "../../../../types";
+import { SERVER_HOST } from "../../../../../../shared/constants";
 interface PostCardProps {
     id: number;
     username?: string;
@@ -45,16 +46,14 @@ export function PostCard({
             <Text style={styles.postDescription}>
                 {description}
                 {'\n'}
-                <FlatList 
-                    data={tags}
-                    keyExtractor={(_, index) => index.toString()}
-                    renderItem={({ item, index }) => (
-                        <Text style={styles.postTags} >{item.name}</Text>
-                    ) }    
-                />
+                <Text style={styles.postTags} >
                 {tags?.map((tag)=>{
-                    return <Text>{tag.name}</Text>
+                    return `${tag.name} ` 
                 })}
+                </Text>
+                {/* {tags?.map((tag)=>{
+                    return <Text>{tag.name}</Text>
+                })} */}
 
             </Text>
 
@@ -62,7 +61,7 @@ export function PostCard({
                 {images?.map((imageUrl, index) => (
                     <Image
                         key={imageUrl.id}
-                        source={{ uri: `http://192.168.3.4:8000/media/${imageUrl.name}` }}
+                        source={{ uri: `${SERVER_HOST}media/${imageUrl.name}` }}
                         style={[styles.gridImage, styles.largeImage]}
                     />
                 ))}
