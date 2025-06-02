@@ -37,7 +37,7 @@ export function CreatePostModal(props: ICreatePostModalProps) {
 	function removeImage(index: number) {
 		const updatedImages = selectedImages.filter((_, i) => i !== index);
 		setSelectedImages(updatedImages);
-		setValue("images", updatedImages);
+		// setValue("images", updatedImages);
 	}
 
 	async function pickImages() {
@@ -55,7 +55,7 @@ export function CreatePostModal(props: ICreatePostModalProps) {
 			const updatedImages = [...selectedImages, imageUri];
 
 			setSelectedImages(updatedImages);
-			setValue("images", updatedImages);
+			// setValue("images", updatedImages);
 		}
 	}
 
