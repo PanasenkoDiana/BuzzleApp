@@ -8,9 +8,6 @@ import { usePost } from "../../hooks";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { Button } from "../../../../shared/ui/button";
 
-
-
-
 const POST_DATA =[ {
     username: "Lina Li",
     avatarUrl: "https://www.shutterstock.com/image-photo/beautiful-woman-on-bright-gray-600nw-2459807745.jpg",
@@ -86,8 +83,6 @@ const POST_DATA =[ {
 export default function UserPost() {
     const { posts, isLoading, getAllPosts } = usePost();
     const [ refresh, setRefresh ] = useState(false)
-
-    
     const [ key, setKey ] = useState(0)
     
     function onRefresh(){

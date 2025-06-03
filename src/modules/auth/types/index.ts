@@ -1,5 +1,4 @@
 export { ILogin } from './login'
 export { IRegister } from './register'
 export { IUser } from './user'
-export { IError, ISuccess, Result } from './result'
 export { ICode } from './code'

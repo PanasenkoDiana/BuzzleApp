@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Result, IUser, IError } from "../types";
+import { IUser } from "../types";
+import { Result, Error, Success } from '../../../shared/types/result';
 
 export const authUser = {
 	getData: async function (
@@ -57,7 +58,7 @@ export const authUser = {
 		email: string,
 		username: string,
 		password: string
-	): Promise<IError | Result<string> | undefined> {
+	): Promise<Error | Result<string> | undefined> {
 		try {
 			const response = await fetch("http://192.168.3.4:8000/api/user/register", {
 				method: "POST",
@@ -76,7 +77,7 @@ export const authUser = {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-	verifyUser: async function(email: string, code: string): Promise<IError | Result<string>> {
+	verifyUser: async function(email: string, code: string): Promise<Error | Result<string>> {
 		try{
 			const response = await fetch("http://192.168.3.4:8000/api/user/verify", {
 				method: "POST",
