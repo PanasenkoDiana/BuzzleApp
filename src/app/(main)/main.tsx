@@ -24,12 +24,12 @@ export default function MainPage() {
 		}
 	}, [searchParams, router]);
 
-	const [isModalOpen, setIsModalOpen] = useState(true);
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	return (
 		<>
-		<SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} />
-		{/* { isModalOpen && <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> } */}
+		{/* <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> */}
+		{ isModalOpen && <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> }
 
 		<UserPost ></UserPost>
 		</>

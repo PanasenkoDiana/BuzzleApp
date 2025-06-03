@@ -32,7 +32,7 @@ export function Header(){
                         <TouchableOpacity style={styles.navIcon} onPress={() => {setModalVisible(true)}} ><PlusIcon style={styles.navIcon}></PlusIcon></TouchableOpacity>
                     </View>
                     <View style={styles.navDiv}>
-                        <TouchableOpacity style={styles.navIcon}><SettingsIcon style={styles.navIcon}></SettingsIcon></TouchableOpacity>
+                        <TouchableOpacity style={styles.navIcon} onPress={()=> router.push('/settings')} ><SettingsIcon style={styles.navIcon} /></TouchableOpacity>
                     </View>
                     <View style={styles.navDiv}>
                         <TouchableOpacity style={styles.navIcon} onPress={()=>handleLogout()}><LogoutIcon style={styles.navIcon}></LogoutIcon></TouchableOpacity>
