@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Result } from "../../auth/types";
 import { ITag } from "../types";
 import { SERVER_HOST } from "../../../shared/constants"
+import { Result } from "../../../shared/types/result";
 
 
 export function useAllTags(){
