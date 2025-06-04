@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Result } from '../../auth/types';
 import { IPostCart, IPostCartForm } from '../types';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import { SERVER_HOST } from '../../../shared/constants';
+import { Result } from '../../../shared/types/result';
 
 export function usePost() {
 	const [posts, setPosts] = useState<IPostCart[]>([]);

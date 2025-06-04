@@ -1,0 +1,1 @@
+import { FriendCard } from "./FriendCard";

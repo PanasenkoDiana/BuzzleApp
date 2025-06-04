@@ -1,6 +1,5 @@
 import { View, StyleSheet } from "react-native";
 import { Stack, usePathname } from "expo-router";
-
 import { Header } from "../../shared/ui/header";
 import { Footer } from "../../shared/ui/footer";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -12,7 +11,7 @@ export default function MainLayout() {
 
     return (
         <View style={styles.container}>
-            <Header />
+            <Header/>
 
             <View style={styles.content}>
                 <Stack 
@@ -22,7 +21,6 @@ export default function MainLayout() {
                 />
             </View>
             
-
             <Footer selectedPage={selectedPage} />
         </View>
     );

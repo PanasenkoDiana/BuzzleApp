@@ -11,6 +11,7 @@ import { SecondRegisterModal } from "../../modules/auth/ui/second-register-modal
 // import UserPost from "../modules/userpost/pages/UserPost/UserPost";
 
 export default function MainPage() {
+	const [modalVisible, setModalVisible] = useState(false);
 	const searchParams = useSearchParams();
 	const router = useRouter();
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,6 +24,7 @@ export default function MainPage() {
 
 
 	return (
+		<UserPost></UserPost>
 		<>
 		{/* <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> */}
 		{ isModalOpen && <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> }

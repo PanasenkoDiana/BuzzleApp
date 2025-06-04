@@ -1,0 +1,1 @@
+import { DeleteFriendModalResult } from "./DeleteFriendModalResult";

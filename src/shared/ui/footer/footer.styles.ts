@@ -22,17 +22,14 @@ export const styles = StyleSheet.create({
         paddingTop: 5,
 
     },
-
     selectedBlock: {
         borderTopColor: COLORS.darkPlum,
         borderTopWidth: 2,
     },
-
     navIcon: {
         width: 20,
         height: 20,
     },
-
     navText: {
         fontFamily: "GTWalsheimPro-Regular",
         fontSize: 14,
