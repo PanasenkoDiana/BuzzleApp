@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Result } from "../../../shared/types/result";
-import {IFriend } from "../types/friend";
+import { IFriend } from "../types/friend";
 import { SERVER_HOST } from "../../../shared/constants";
 
 export function useFriends() {
