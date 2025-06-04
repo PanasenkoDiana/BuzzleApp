@@ -1,1 +1,1 @@
-import { FriendCard } from "./friendcard";
+import { FriendCard } from "./FriendCard";

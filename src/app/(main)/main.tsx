@@ -9,10 +9,10 @@ import { useState } from "react";
 // import UserPost from "../modules/userpost/pages/UserPost/UserPost";
 
 export default function MainPage() {
-const [modalVisible, setModalVisible] = useState(false);
+	const [modalVisible, setModalVisible] = useState(false);
 
 	return (
-		<UserPost ></UserPost>
+		<UserPost></UserPost>
 	);
 }
 const styles = StyleSheet.create({

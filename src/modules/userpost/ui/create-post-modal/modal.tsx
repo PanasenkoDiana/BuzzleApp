@@ -17,7 +17,6 @@ import { usePost } from "../../hooks";
 import { TagsSelector } from "../tags-selector";
 import { useAllTags } from "../../hooks/useAllTags";
 import { COLORS } from "../../../../shared/ui/colors";
-import { Result } from "../../../auth/types";
 
 interface ICreatePostModalProps {
 	isVisible: boolean;

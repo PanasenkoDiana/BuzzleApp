@@ -1,0 +1,1 @@
+import { DeleteFriendModal } from "./DeleteFriendModal"

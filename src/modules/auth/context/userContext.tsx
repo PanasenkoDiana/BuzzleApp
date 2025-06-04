@@ -1,8 +1,9 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 import { useEffect } from "react";
-import { IError, IUser, Result } from "../types";
+import { IUser } from "../types";
 import { authUser } from "../hooks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Result } from "../../../shared/types/result";
 
 interface IUserContext {
 	user: IUser | null;

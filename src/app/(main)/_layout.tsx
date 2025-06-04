@@ -12,7 +12,7 @@ export default function MainLayout() {
 
     return (
         <View style={styles.container}>
-            <Header />
+            <Header/>
 
             <View style={styles.content}>
                 <Stack 
@@ -22,7 +22,6 @@ export default function MainLayout() {
                 />
             </View>
             
-
             <Footer selectedPage={selectedPage} />
         </View>
     );
