@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     deleteButton: {
         backgroundColor: COLORS.white,
         borderWidth: 1,
-        borderColor: COLORS.red,
+        borderColor: COLORS.darkPlum,
     },
     buttonText: {
         color: COLORS.white,
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     deleteButtonText: {
-        color: COLORS.red,
+        color: COLORS.darkPlum,
     },
     albumButton: {
         flexDirection: 'row',
