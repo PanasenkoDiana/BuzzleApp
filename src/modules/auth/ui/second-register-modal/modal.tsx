@@ -1,11 +1,11 @@
 import { TouchableOpacity, View, Text } from "react-native"
-import { Modal } from "../../../../shared/ui/modal"
 import { ISecondRegisterForm } from "./modal.types"
 import { Controller, useForm } from "react-hook-form"
 import { Input } from "../../../../shared/ui/input"
 import { styles } from "./modal.styles"
 import { COLORS } from "../../../../shared/ui/colors"
 import { useUserContext } from "../../context/userContext"
+import { Modalka } from "../../../../shared/ui/modal/modal"
 
 interface ISecondRegisterModalProps {
 	isVisible: boolean
@@ -23,7 +23,7 @@ export function SecondRegisterModal(props: ISecondRegisterModalProps) {
 	}
 
 	return (
-		<Modal.InCenter
+		<Modalka.InCenter
 			visible={props.isVisible}
 			onClose={props.onClose}
 			title="Додай деталі про себе"
@@ -102,6 +102,6 @@ export function SecondRegisterModal(props: ISecondRegisterModalProps) {
 						<Text style={styles.submitButtonText}>Продовжити</Text>
 					</TouchableOpacity>
 				</View>
-		</Modal.InCenter>
+		</Modalka.InCenter>
 	)
 }
