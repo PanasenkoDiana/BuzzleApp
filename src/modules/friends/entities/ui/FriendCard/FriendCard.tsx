@@ -5,15 +5,24 @@ import { DeleteFriendModal } from "../DeleteFriendModal/DeleteFriendModal";
 import { useState } from "react";
 import { PeopleIcon } from "../../../../../shared/ui/icons";
 import { DeleteFriendModalResult } from "../DeleteFriendModalResult/DeleteFriendModalResult";
+import { useUserContext } from "../../../../auth/context/userContext";
+import { useFriends } from "../../../hooks/useFriends";
 
 interface IFriendCard extends IFriend {
-	variant: "friend" | "request" | "notFriend";
+	variant: "friend" | "request" | "notFriend" | "myRequest";
 }
 
 export function FriendCard(props: IFriendCard) {
 	const [modalVisible, setModalVisible] = useState<boolean>(false);
 	const [resultVisible, setResultVisible] = useState<boolean>(false);
 	const [status, setStatus] = useState(0);
+	const { user } = useUserContext();
+	const {
+		deleteFriend,
+		sendFriendRequest,
+		cancelFriendRequest,
+		acceptFriendRequest,
+	} = useFriends();
 
 	return (
 		<View style={styles.container}>
@@ -44,7 +53,11 @@ export function FriendCard(props: IFriendCard) {
 						style={[styles.button, styles.rightButton]}
 						onPress={() => setModalVisible(true)}
 					>
-						<Text style={styles.rightButtonText}>Видалити</Text>
+						<Text
+							style={styles.rightButtonText}
+						>
+							Видалити
+						</Text>
 					</TouchableOpacity>
 				</View>
 			)}
@@ -53,12 +66,23 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
+						onPress={() =>
+							acceptFriendRequest(
+								props.username,
+								user?.username || ""
+							)
+						}
 					>
 						<Text style={styles.leftButtonText}>Підтвердити</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
-						onPress={() => setModalVisible(true)}
+						onPress={() =>
+							cancelFriendRequest(
+								props.username,
+								user?.username || ""
+							)
+						}
 					>
 						<Text style={styles.rightButtonText}>Відхилити</Text>
 					</TouchableOpacity>
@@ -69,8 +93,30 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
+						onPress={() =>
+							sendFriendRequest(
+								props.username,
+								user?.username || ""
+							)
+						}
 					>
 						<Text style={styles.leftButtonText}>Додати</Text>
+					</TouchableOpacity>
+				</View>
+			)}
+
+			{props.variant == "myRequest" && (
+				<View style={styles.buttons}>
+					<TouchableOpacity
+						style={[styles.button, styles.rightButton]}
+						onPress={() =>
+							cancelFriendRequest(
+								props.username,
+								user?.username || ""
+							)
+						}
+					>
+						<Text style={styles.rightButtonText}>Скасувати</Text>
 					</TouchableOpacity>
 				</View>
 			)}

@@ -46,11 +46,65 @@ export function useFriends() {
 		}
 	}
 
+	async function sendFriendRequest(friendUsername: string, username: string) {
+		try {
+			const response = await fetch(`${SERVER_HOST}api/posts/send`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({friendUsername, username}),
+			});
+
+			const result: Result<string> = await response.json();
+
+			return result
+		} catch (err) {
+			console.log(err);
+			throw err
+		}
+	}
+
+	async function cancelFriendRequest(friendUsername: string, username: string) {
+		try {
+			const response = await fetch(`${SERVER_HOST}api/posts/dismiss`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({friendUsername, username}),
+			});
+
+			const result: Result<string> = await response.json();
+
+			return result
+		} catch (err) {
+			console.log(err);
+			throw err
+		}
+	}
+
+	async function acceptFriendRequest(friendUsername: string, username: string) {
+		try {
+			const response = await fetch(`${SERVER_HOST}api/posts/dismiss`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({friendUsername, username}),
+			});
+
+			const result: Result<string> = await response.json();
+
+			return result
+		} catch (err) {
+			console.log(err);
+			throw err
+		}
+	}
+
     return {
         friends,
         isLoading,
         error,
         getAllFriends,
-		deleteFriend
+		deleteFriend,
+		sendFriendRequest,
+		cancelFriendRequest,
+		acceptFriendRequest
     }
 }
