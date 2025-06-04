@@ -7,7 +7,7 @@ export const authUser = {
 	): Promise<Result<IUser> | undefined> {
 		try {
 			const response = await fetch(
-				"http://192.168.3.4:8000/api/user/me",
+				"http://localhost:8000/api/user/me",
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}
@@ -29,7 +29,7 @@ export const authUser = {
 	): Promise<Result<string>> {
 		try {
 			const response = await fetch(
-				"http://192.168.3.4:8000/api/user/login",
+				"http://localhost:8000/api/user/login",
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
@@ -59,7 +59,7 @@ export const authUser = {
 		password: string
 	): Promise<IError | Result<string> | undefined> {
 		try {
-			const response = await fetch("http://192.168.3.4:8000/api/user/register", {
+			const response = await fetch("http://localhost:8000/api/user/register", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, password }),
@@ -78,7 +78,7 @@ export const authUser = {
 	},
 	verifyUser: async function(email: string, code: string): Promise<IError | Result<string>> {
 		try{
-			const response = await fetch("http://192.168.3.4:8000/api/user/verify", {
+			const response = await fetch("http://localhost:8000/api/user/verify", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, code }),
