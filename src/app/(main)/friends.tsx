@@ -1,9 +1,22 @@
-import { Friends } from "../../modules/friends/pages/AllFriends/AllFriends";
+import { useEffect, useState } from "react";
+import { FriendsLayout } from "../../modules/friends/entities/ui/FriendsLayout/FriendsLayout";
+import { FriendsPage } from "../../modules/friends/pages/FriendsPage/FriendsPage";
 
-export default function FriendsPage() {
+export default function Friends() {
+	const [selectedPage, setSelectedPage] = useState<string>("all")
+
+	useEffect(()=>{
+		console.log(selectedPage)
+	},[selectedPage])
+
 	return (
-		<Friends>
-            
-        </Friends>
+		<FriendsLayout
+			selectedPage={selectedPage}
+			setSelectedPage={(page) => setSelectedPage(page)}
+		>
+			<FriendsPage
+				page={selectedPage}
+			/>
+		</FriendsLayout>
 	);
 }

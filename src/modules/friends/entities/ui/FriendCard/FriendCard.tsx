@@ -6,7 +6,11 @@ import { useState } from "react";
 import { PeopleIcon } from "../../../../../shared/ui/icons";
 import { DeleteFriendModalResult } from "../DeleteFriendModalResult/DeleteFriendModalResult";
 
-export function FriendCard(props: IFriend) {
+interface IFriendCard extends IFriend {
+	variant: "friend" | "request" | "notFriend";
+}
+
+export function FriendCard(props: IFriendCard) {
 	const [modalVisible, setModalVisible] = useState<boolean>(false);
 	const [resultVisible, setResultVisible] = useState<boolean>(false);
 	const [status, setStatus] = useState(0);
@@ -28,17 +32,49 @@ export function FriendCard(props: IFriend) {
 					<Text style={styles.username}>@{props.username}</Text>
 				</View>
 			</TouchableOpacity>
-			<View style={styles.buttons}>
-				<TouchableOpacity style={[styles.button, styles.leftButton]}>
-					<Text style={styles.leftButtonText}>Повідомлення</Text>
-				</TouchableOpacity>
-				<TouchableOpacity
-					style={[styles.button, styles.rightButton]}
-					onPress={() => setModalVisible(true)}
-				>
-					<Text style={styles.rightButtonText}>Видалити</Text>
-				</TouchableOpacity>
-			</View>
+
+			{props.variant == "friend" && (
+				<View style={styles.buttons}>
+					<TouchableOpacity
+						style={[styles.button, styles.leftButton]}
+					>
+						<Text style={styles.leftButtonText}>Повідомлення</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={[styles.button, styles.rightButton]}
+						onPress={() => setModalVisible(true)}
+					>
+						<Text style={styles.rightButtonText}>Видалити</Text>
+					</TouchableOpacity>
+				</View>
+			)}
+
+			{props.variant == "request" && (
+				<View style={styles.buttons}>
+					<TouchableOpacity
+						style={[styles.button, styles.leftButton]}
+					>
+						<Text style={styles.leftButtonText}>Підтвердити</Text>
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={[styles.button, styles.rightButton]}
+						onPress={() => setModalVisible(true)}
+					>
+						<Text style={styles.rightButtonText}>Відхилити</Text>
+					</TouchableOpacity>
+				</View>
+			)}
+
+			{props.variant == "notFriend" && (
+				<View style={styles.buttons}>
+					<TouchableOpacity
+						style={[styles.button, styles.leftButton]}
+					>
+						<Text style={styles.leftButtonText}>Додати</Text>
+					</TouchableOpacity>
+				</View>
+			)}
+
 			<DeleteFriendModal
 				isVisible={modalVisible}
 				onClose={() => setModalVisible(false)}
@@ -47,12 +83,12 @@ export function FriendCard(props: IFriend) {
 			/>
 			<DeleteFriendModalResult
 				friendUsername={props.username}
-                onClose={() => {
-                  setResultVisible(false);
-                  setStatus(0);
-                }}
-                isVisible={resultVisible}
-                status={status}
+				onClose={() => {
+					setResultVisible(false);
+					setStatus(0);
+				}}
+				isVisible={resultVisible}
+				status={status}
 			/>
 		</View>
 	);

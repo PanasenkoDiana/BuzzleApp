@@ -52,7 +52,7 @@ export function DeleteFriendModal(props: IDeleteFriendModal) {
 			visible={props.isVisible}
 		>
 			<View style={styles.container}>
-				<Text style={[styles.text, { fontSize: 15 }]}>
+				<Text style={styles.text}>
 					Ви дійсно хочете видалити користувача @
 					{props.friendUsername}?
 				</Text>

@@ -29,8 +29,8 @@ export function DeleteFriendModalResult(props: IDeleteFriendModalResult) {
 						? `Ви успішно видалили користувача @${props.friendUsername} з друзів`
 						: `Не вдалося видалити користувача @${props.friendUsername} з друзів`}
 				</Text>
-				<TouchableOpacity onPress={props.onClose}>
-					<Text style={styles.text}>Ок</Text>
+				<TouchableOpacity style={styles.button} onPress={props.onClose}>
+					<Text style={[styles.text, styles.buttonText]}>Ок</Text>
 				</TouchableOpacity>
 			</View>
 		</Modal>

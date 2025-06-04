@@ -4,7 +4,8 @@ import { COLORS } from "../../../../../shared/ui/colors"
 export const styles = StyleSheet.create({
     text: {
         fontWeight: "bold",
-        textAlign: "center"
+        textAlign: "center",
+        fontSize: 15
     },
     container: {
         gap: 5,

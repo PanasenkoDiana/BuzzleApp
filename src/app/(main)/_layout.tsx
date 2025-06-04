@@ -1,6 +1,5 @@
 import { View, StyleSheet } from "react-native";
 import { Stack, usePathname } from "expo-router";
-
 import { Header } from "../../shared/ui/header";
 import { Footer } from "../../shared/ui/footer";
 import { SafeAreaView } from "react-native-safe-area-context";
