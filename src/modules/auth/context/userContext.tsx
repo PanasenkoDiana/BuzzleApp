@@ -1,6 +1,6 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 import { useEffect } from "react";
-import { IError, IUser, Result } from "../types";
+import { IChangeUserPartOne, IChangeUserPartTwo, IError, IUser, Result } from "../types";
 import { authUser } from "../hooks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -11,6 +11,8 @@ interface IUserContext {
 	isAuthenticated: () => boolean;
 	setUser: (user: IUser | null) => void;
 	verify: (email: string, code: string) => Promise<Result<string> | undefined>;
+	changeUserPartOne: (data: IChangeUserPartOne) => Promise<Result<IUser>>
+	changeUserPartTwo: (data: IChangeUserPartTwo) => Promise<Result<IUser>>
 }
 
 const initialValue: IUserContext = {
@@ -26,6 +28,12 @@ const initialValue: IUserContext = {
 		throw new Error("Function not implemented.");
 	},
 	verify: async (email: string, code: string) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	changeUserPartOne: async (data:IChangeUserPartOne) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	changeUserPartTwo: async (data:IChangeUserPartTwo) => {
 		return { status: 'error', message: 'Not implemented' };
 	},
 };
@@ -78,7 +86,10 @@ export function UserContextProvider(props: IUserContextProviderProps) {
 				register: authUser.register,
 				isAuthenticated: isAuthenticated,
                 setUser: setUser,
-				verify: authUser.verifyUser
+				verify: authUser.verifyUser,
+				changeUserPartOne: authUser.changeUserPartOne,
+				changeUserPartTwo: authUser.changeUserPartTwo,
+
 			}}
 		>
 			{props.children}

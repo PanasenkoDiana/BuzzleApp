@@ -9,19 +9,21 @@ import {
 	useClearByFocusCell,
 	Cursor,
 } from "react-native-confirmation-code-field";
+import { COLORS } from "../colors";
 
 export function Input(props: IInputProps) {
-	const { label, error, rightIcon, style, ...otherProps } = props;
+	const { label, error, rightIcon, style, disabled, ...otherProps } = props;
 
 	return (
 		<View>
-			{label && <Text style={styles.label}>{label}</Text>}
+			{label && <Text style={[styles.label, disabled ? {color: COLORS.lightGray } : null ]}>{label}</Text>}
 
 			<View style={{ gap: 5 }}>
 				<View style={styles.inputWrapper}>
 					<TextInput
 						style={[
 							styles.input,
+							disabled ? { borderColor: COLORS.lightGray } : null,
 							// rightIcon ? styles : undefined,
 							style,
 						]}
@@ -46,18 +48,21 @@ export function Input(props: IInputProps) {
 }
 
 function Password(props: IInputPasswordProps) {
-	const { label, error, style, ...otherProps } = props;
+	const { label, error, style, disabled, ...otherProps } = props;
 
 	const [hidden, setHidden] = useState(true);
 
 	return (
 		<View>
-			{label && <Text style={styles.label}>{label}</Text>}
+			{label && <Text style={[styles.label, disabled ? {color: COLORS.lightGray } : null ]}>{label}</Text>}
 
 			<View style={{ gap: 5 }}>
 				<View style={styles.inputWrapper}>
 					<TextInput
-						style={[styles.input, style]}
+						placeholderTextColor={disabled ? COLORS.lightGray : COLORS.black}
+						style={[styles.input, style,
+							disabled ? { borderColor: COLORS.lightGray, color: COLORS.lightGray } : null,
+						]}
 						{...otherProps}
 						secureTextEntry={hidden}
 					/>

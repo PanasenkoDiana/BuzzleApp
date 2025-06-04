@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Result, IUser, IError } from "../types";
+import { Result, IUser, IError, IChangeUser, IChangeUserPartTwo, IChangeUserPartOne } from "../types";
 
 export const authUser = {
 	getData: async function (
@@ -94,5 +94,43 @@ export const authUser = {
 		} catch (error) {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
-	}
+	},
+	changeUserPartOne: async function(data: IChangeUserPartOne): Promise<Result<IUser>> {
+		try {
+			const response = await fetch("http://localhost:8000/api/user/change/part-one", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data)
+			})
+
+			const result: Result<IUser> = await response.json();
+			if (result.status === "error") {
+				console.log(result.message);
+				return result;
+			}
+
+			return result;
+		} catch (error) {
+			return { status: "error", message: "An unexpected error occurred" };
+		}
+	},
+	changeUserPartTwo: async function(data: IChangeUserPartTwo): Promise<Result<IUser>> {
+		try {
+			const response = await fetch("http://localhost:8000/api/user/change/part-two", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data)
+			})
+
+			const result: Result<IUser> = await response.json();
+			if (result.status === "error") {
+				console.log(result.message);
+				return result;
+			}
+
+			return result;
+		} catch (error) {
+			return { status: "error", message: "An unexpected error occurred" };
+		}
+	},
 }
