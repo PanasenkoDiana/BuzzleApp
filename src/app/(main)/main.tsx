@@ -13,18 +13,14 @@ import { SecondRegisterModal } from "../../modules/auth/ui/second-register-modal
 export default function MainPage() {
 	const searchParams = useSearchParams();
 	const router = useRouter();
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (searchParams.get('showRegisterModal') === 'true') {
 			setIsModalOpen(true);
-
-			const newParams = new URLSearchParams(searchParams);
-			newParams.delete('showRegisterModal');
-			router.replace(`/?${newParams.toString()}`);
 		}
-	}, [searchParams, router]);
+	}, []);
 
-	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	return (
 		<>

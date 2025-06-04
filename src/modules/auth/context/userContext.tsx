@@ -1,8 +1,9 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 import { useEffect } from "react";
-import { IError, IUser, Result } from "../types";
+import { IChangeUserPartOne, IChangeUserPartTwo, IError, IUser, Result } from "../types";
 import { authUser } from "../hooks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ISecondRegisterForm } from "../ui/second-register-modal/modal.types";
 
 interface IUserContext {
 	user: IUser | null;
@@ -11,6 +12,10 @@ interface IUserContext {
 	isAuthenticated: () => boolean;
 	setUser: (user: IUser | null) => void;
 	verify: (email: string, code: string) => Promise<Result<string> | undefined>;
+	changeUserPartOne: (data: IChangeUserPartOne, id: number) => Promise<Result<IUser>>
+	changeUserPartTwo: (data: IChangeUserPartTwo, id: number) => Promise<Result<IUser>>
+	addSecondUserInfo: (data: ISecondRegisterForm, id: number) => Promise<Result<IUser>>
+
 }
 
 const initialValue: IUserContext = {
@@ -26,6 +31,15 @@ const initialValue: IUserContext = {
 		throw new Error("Function not implemented.");
 	},
 	verify: async (email: string, code: string) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	changeUserPartOne: async (data:IChangeUserPartOne, id: number) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	changeUserPartTwo: async (data:IChangeUserPartTwo, id: number) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	addSecondUserInfo: async (data:ISecondRegisterForm, id: number) => {
 		return { status: 'error', message: 'Not implemented' };
 	},
 };
@@ -78,7 +92,10 @@ export function UserContextProvider(props: IUserContextProviderProps) {
 				register: authUser.register,
 				isAuthenticated: isAuthenticated,
                 setUser: setUser,
-				verify: authUser.verifyUser
+				verify: authUser.verifyUser,
+				changeUserPartOne: authUser.changeUserPartOne,
+				changeUserPartTwo: authUser.changeUserPartTwo,
+				addSecondUserInfo: authUser.addSecondUserInfo,
 			}}
 		>
 			{props.children}
