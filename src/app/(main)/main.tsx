@@ -17,19 +17,20 @@ export default function MainPage() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	useEffect(() => {
-		if (searchParams.get('showRegisterModal') === 'true') {
+		if (searchParams.get("showRegisterModal") === "true") {
 			setIsModalOpen(true);
 		}
 	}, []);
 
-
 	return (
-		<UserPost></UserPost>
 		<>
-		{/* <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> */}
-		{ isModalOpen && <SecondRegisterModal isVisible={isModalOpen} onClose={()=>setIsModalOpen(false)} /> }
-
-		<UserPost ></UserPost>
+			{isModalOpen && (
+				<SecondRegisterModal
+					isVisible={isModalOpen}
+					onClose={() => setIsModalOpen(false)}
+				/>
+			)}
+			<UserPost />
 		</>
 	);
 }
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		borderBottomWidth: 2,
-        borderBottomColor: COLORS.lightGray,
+		borderBottomColor: COLORS.lightGray,
 		borderRadius: 15,
 		padding: 10,
 		backgroundColor: COLORS.plum,

@@ -3,7 +3,6 @@ import { ITag } from "../types";
 import { SERVER_HOST } from "../../../shared/constants"
 import { Result } from "../../../shared/types/result";
 
-
 export function useAllTags(){
 	const [tags, setTags] = useState<ITag[]>([])
 	const [isLoading, setIsLoading] = useState(false);
