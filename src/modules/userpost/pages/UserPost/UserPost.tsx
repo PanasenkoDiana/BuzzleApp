@@ -1,9 +1,7 @@
-import { FlatList, Modal, ScrollView, Text, View,ActivityIndicator, TouchableOpacity, RefreshControl } from "react-native";
-
+import { FlatList, ScrollView, Text, View, ActivityIndicator, TouchableOpacity, RefreshControl, Image } from "react-native";
 import { PostCard } from "../../entities/post/ui/PostCard";
 import { styles } from "./UserPost.styles";
-import { COLORS } from "../../../../shared/ui/colors";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePost } from "../../hooks";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { Button } from "../../../../shared/ui/button";
@@ -88,18 +86,17 @@ export default function UserPost() {
     function onRefresh(){
         setRefresh(true)
         setTimeout(()=>{setRefresh(false)}, 2000)
+    const [refresh, setRefresh] = useState(false);
+    const [key, setKey] = useState(0);
+
+    function onRefresh() {
+        setRefresh(true);
+        setTimeout(() => { setRefresh(false); }, 2000);
     }
-    // const [localPosts, setLocalPosts] = useState(posts);
 
-    // useFocusEffect(()=>{
-    //     useCallback(()=>{
-    //         getAllPosts()
-    //     }, [])
-    // }, )
-
-    useEffect(()=>{
-        console.log(isLoading)
-    }, [isLoading])
+    useEffect(() => {
+        // console.log(isLoading)
+    }, [isLoading]);
 
     if (isLoading) {
         return <View><Text>Loading...</Text></View>;
