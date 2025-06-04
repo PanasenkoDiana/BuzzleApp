@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Result, IUser, IError, IChangeUser, IChangeUserPartTwo, IChangeUserPartOne } from "../types";
+import { ISecondRegisterForm } from "../ui/second-register-modal/modal.types";
 
 export const authUser = {
 	getData: async function (
@@ -95,9 +96,9 @@ export const authUser = {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-	changeUserPartOne: async function(data: IChangeUserPartOne): Promise<Result<IUser>> {
+	addSecondUserInfo: async function(data: ISecondRegisterForm, id: number): Promise<Result<IUser>> {
 		try {
-			const response = await fetch("http://localhost:8000/api/user/change/part-one", {
+			const response = await fetch(`http://localhost:8000/api/user/register/second/${id}`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data)
@@ -114,9 +115,28 @@ export const authUser = {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-	changeUserPartTwo: async function(data: IChangeUserPartTwo): Promise<Result<IUser>> {
+	changeUserPartOne: async function(data: IChangeUserPartOne, id: number): Promise<Result<IUser>> {
 		try {
-			const response = await fetch("http://localhost:8000/api/user/change/part-two", {
+			const response = await fetch(`http://localhost:8000/api/user/change/part-one/${id}`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data)
+			})
+
+			const result: Result<IUser> = await response.json();
+			if (result.status === "error") {
+				console.log(result.message);
+				return result;
+			}
+
+			return result;
+		} catch (error) {
+			return { status: "error", message: "An unexpected error occurred" };
+		}
+	},
+	changeUserPartTwo: async function(data: IChangeUserPartTwo, id:number): Promise<Result<IUser>> {
+		try {
+			const response = await fetch(`http://localhost:8000/api/user/change/part-two/${id}`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(data)

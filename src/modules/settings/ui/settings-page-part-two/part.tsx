@@ -15,7 +15,8 @@ export function SettingsPagePartTwo() {
 	const [ isRedact, setIsRedact ] = useState(false)
 
 	async function onSubmit(data: IChangeUserPartTwo) {
-		const response = changeUserPartTwo(data)
+		if (!user) return
+		const response = changeUserPartTwo(data, user.id)
 		console.log(response)
 	}
 

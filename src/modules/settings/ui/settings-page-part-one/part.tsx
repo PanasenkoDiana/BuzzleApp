@@ -36,7 +36,8 @@ export function SettingsPagePartOne() {
 
 	async function onSubmit(data: IChangeUserPartOne) {
 		if (!image) return
-		const response = changeUserPartOne(data)
+		if (!user) return
+		const response = changeUserPartOne(data, user.id)
 	}
 
 	useEffect(() => {

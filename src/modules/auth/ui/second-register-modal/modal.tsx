@@ -5,6 +5,7 @@ import { Controller, useForm } from "react-hook-form"
 import { Input } from "../../../../shared/ui/input"
 import { styles } from "./modal.styles"
 import { COLORS } from "../../../../shared/ui/colors"
+import { useUserContext } from "../../context/userContext"
 
 interface ISecondRegisterModalProps {
 	isVisible: boolean
@@ -13,9 +14,12 @@ interface ISecondRegisterModalProps {
 
 export function SecondRegisterModal(props: ISecondRegisterModalProps) {
 	const { handleSubmit, control } = useForm<ISecondRegisterForm>()
+	const { user, addSecondUserInfo } = useUserContext()
 
-	function onSubmit(data: ISecondRegisterForm) {
+	async function onSubmit(data: ISecondRegisterForm) {
 		console.log(data)
+		if (!user) return
+		await addSecondUserInfo(data, user.id)
 	}
 
 	return (

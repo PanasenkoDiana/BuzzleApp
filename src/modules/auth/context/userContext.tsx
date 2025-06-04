@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { IChangeUserPartOne, IChangeUserPartTwo, IError, IUser, Result } from "../types";
 import { authUser } from "../hooks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ISecondRegisterForm } from "../ui/second-register-modal/modal.types";
 
 interface IUserContext {
 	user: IUser | null;
@@ -11,8 +12,10 @@ interface IUserContext {
 	isAuthenticated: () => boolean;
 	setUser: (user: IUser | null) => void;
 	verify: (email: string, code: string) => Promise<Result<string> | undefined>;
-	changeUserPartOne: (data: IChangeUserPartOne) => Promise<Result<IUser>>
-	changeUserPartTwo: (data: IChangeUserPartTwo) => Promise<Result<IUser>>
+	changeUserPartOne: (data: IChangeUserPartOne, id: number) => Promise<Result<IUser>>
+	changeUserPartTwo: (data: IChangeUserPartTwo, id: number) => Promise<Result<IUser>>
+	addSecondUserInfo: (data: ISecondRegisterForm, id: number) => Promise<Result<IUser>>
+
 }
 
 const initialValue: IUserContext = {
@@ -30,10 +33,13 @@ const initialValue: IUserContext = {
 	verify: async (email: string, code: string) => {
 		return { status: 'error', message: 'Not implemented' };
 	},
-	changeUserPartOne: async (data:IChangeUserPartOne) => {
+	changeUserPartOne: async (data:IChangeUserPartOne, id: number) => {
 		return { status: 'error', message: 'Not implemented' };
 	},
-	changeUserPartTwo: async (data:IChangeUserPartTwo) => {
+	changeUserPartTwo: async (data:IChangeUserPartTwo, id: number) => {
+		return { status: 'error', message: 'Not implemented' };
+	},
+	addSecondUserInfo: async (data:ISecondRegisterForm, id: number) => {
 		return { status: 'error', message: 'Not implemented' };
 	},
 };
@@ -89,7 +95,7 @@ export function UserContextProvider(props: IUserContextProviderProps) {
 				verify: authUser.verifyUser,
 				changeUserPartOne: authUser.changeUserPartOne,
 				changeUserPartTwo: authUser.changeUserPartTwo,
-
+				addSecondUserInfo: authUser.addSecondUserInfo,
 			}}
 		>
 			{props.children}
