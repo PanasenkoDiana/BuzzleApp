@@ -1,9 +1,10 @@
 import { createContext, useContext, ReactNode, useState } from "react";
 import { useEffect } from "react";
-import { IChangeUserPartOne, IChangeUserPartTwo, IError, IUser, Result } from "../types";
+import { IChangeUserPartOne, IChangeUserPartTwo, IUser} from "../types";
 import { authUser } from "../hooks";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ISecondRegisterForm } from "../ui/second-register-modal/modal.types";
+import { Result } from "../../../shared/types/result";
 
 interface IUserContext {
 	user: IUser | null;

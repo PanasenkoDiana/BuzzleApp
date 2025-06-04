@@ -1,13 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
-	Result,
 	IUser,
-	IError,
 	IChangeUserPartOne,
 	IChangeUserPartTwo,
 } from "../types";
 import { ISecondRegisterForm } from "../ui/second-register-modal/modal.types";
 import { SERVER_HOST } from "../../../shared/constants";
+import { Result } from "../../../shared/types/result";
 
 export const authUser = {
 	getData: async (token: string): Promise<Result<IUser> | undefined> => {
