@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Result, IUser, IError, IChangeUser, IChangeUserPartTwo, IChangeUserPartOne } from "../types";
+import { Result, IUser, IError, IChangeUserPartOne, IChangeUserPartTwo } from "../types";
 import { ISecondRegisterForm } from "../ui/second-register-modal/modal.types";
+import { SERVER_HOST } from "../../../shared/constants";
+
 
 export const authUser = {
 	getData: async function (
@@ -8,7 +10,7 @@ export const authUser = {
 	): Promise<Result<IUser> | undefined> {
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/user/me",
+				`${SERVER_HOST}api/user/me`,
 				{
 					headers: { Authorization: `Bearer ${token}` },
 				}
@@ -30,11 +32,11 @@ export const authUser = {
 	): Promise<Result<string>> {
 		try {
 			const response = await fetch(
-				"http://localhost:8000/api/user/login",
+				`${SERVER_HOST}api/user/login`,
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ email: email, password: password }),
+					body: JSON.stringify({ email, password }),
 				}
 			);
 
@@ -60,31 +62,35 @@ export const authUser = {
 		password: string
 	): Promise<IError | Result<string> | undefined> {
 		try {
-			const response = await fetch("http://localhost:8000/api/user/register", {
+			const response = await fetch(`${SERVER_HOST}api/user/register`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, password }),
 			});
-	
+
 			const result: Result<string> = await response.json();
 			if (result.status === "error") {
 				console.log(result.message);
 				return result;
 			}
-	
+
 			return result;
 		} catch (error) {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-	verifyUser: async function(email: string, code: string): Promise<IError | Result<string>> {
-		try{
-			const response = await fetch("http://localhost:8000/api/user/verify", {
+
+	verifyUser: async function (
+		email: string,
+		code: string
+	): Promise<IError | Result<string>> {
+		try {
+			const response = await fetch(`${SERVER_HOST}api/user/verify`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, code }),
 			});
-	
+
 			const result: Result<string> = await response.json();
 			if (result.status === "error") {
 				console.log(result.message);
@@ -96,13 +102,17 @@ export const authUser = {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-	addSecondUserInfo: async function(data: ISecondRegisterForm, id: number): Promise<Result<IUser>> {
+
+	addSecondUserInfo: async function (
+		data: ISecondRegisterForm,
+		id: number
+	): Promise<Result<IUser>> {
 		try {
-			const response = await fetch(`http://localhost:8000/api/user/register/second/${id}`, {
+			const response = await fetch(`${SERVER_HOST}api/user/register/second/${id}`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(data)
-			})
+				body: JSON.stringify(data),
+			});
 
 			const result: Result<IUser> = await response.json();
 			if (result.status === "error") {
@@ -115,13 +125,17 @@ export const authUser = {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-	changeUserPartOne: async function(data: IChangeUserPartOne, id: number): Promise<Result<IUser>> {
+
+	changeUserPartOne: async function (
+		data: IChangeUserPartOne,
+		id: number
+	): Promise<Result<IUser>> {
 		try {
-			const response = await fetch(`http://localhost:8000/api/user/change/part-one/${id}`, {
+			const response = await fetch(`${SERVER_HOST}api/user/change/part-one/${id}`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(data)
-			})
+				body: JSON.stringify(data),
+			});
 
 			const result: Result<IUser> = await response.json();
 			if (result.status === "error") {
@@ -134,13 +148,17 @@ export const authUser = {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-	changeUserPartTwo: async function(data: IChangeUserPartTwo, id:number): Promise<Result<IUser>> {
+
+	changeUserPartTwo: async function (
+		data: IChangeUserPartTwo,
+		id: number
+	): Promise<Result<IUser>> {
 		try {
-			const response = await fetch(`http://localhost:8000/api/user/change/part-two/${id}`, {
+			const response = await fetch(`${SERVER_HOST}api/user/change/part-two/${id}`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(data)
-			})
+				body: JSON.stringify(data),
+			});
 
 			const result: Result<IUser> = await response.json();
 			if (result.status === "error") {
@@ -153,4 +171,4 @@ export const authUser = {
 			return { status: "error", message: "An unexpected error occurred" };
 		}
 	},
-}
+};
