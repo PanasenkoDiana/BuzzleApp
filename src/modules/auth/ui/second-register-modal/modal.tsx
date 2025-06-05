@@ -16,7 +16,8 @@ export function SecondRegisterModal(props: ISecondRegisterModalProps) {
 	const { user, addSecondUserInfo } = useUserContext()
 
 	async function onSubmit(data: ISecondRegisterForm) {
-		console.log(data)
+		console.log(user)
+
 		if (!user) return
 		await addSecondUserInfo(data, user.id)
 	}

@@ -6,7 +6,6 @@ import { Input } from "../../../../shared/ui/input"
 import { useUserContext } from "../../../auth/context/userContext"
 import { styles } from "./part.styles"
 import { useEffect, useState } from "react"
-import { COLORS } from "../../../../shared/ui/colors"
 import { IChangeUserPartTwo } from "../../../auth/types"
 
 export function SettingsPagePartTwo() {
@@ -22,7 +21,7 @@ export function SettingsPagePartTwo() {
 
 	useEffect(() => {
 		const submitIfNeeded = async () => {
-			if (isRedact){
+			if (!isRedact){
 				handleSubmit(onSubmit)()
 			}
 		}
@@ -47,13 +46,62 @@ export function SettingsPagePartTwo() {
 							onChangeText={onChange}
 							disabled={isRedact ? false : true}
 							placeholder="Ім'я"
-							defaultValue={user?.username}
+							defaultValue={user?.name}
 							onBlur={onBlur}
 							error={error?.message}
 						/>
 					)}
 				/>
 				<Controller
+					control={control}
+					name="surname"
+					render={({
+						field: { value, onChange, onBlur },
+						fieldState: { error },
+					}) => (
+						<Input.Password
+							label="Прізвище"
+							value={value}
+							onChangeText={onChange}
+							disabled={isRedact ? false : true}
+							placeholder="Прізвище"
+							defaultValue={user?.surname}
+							onBlur={onBlur}
+							error={error?.message}
+						/>
+					)}
+				/>
+				<Input.Password
+					label="Дата народження"
+					// value={value}
+					// onChangeText={onChange}
+					disabled={isRedact ? false : true}
+					placeholder="Дата народження"
+					defaultValue={`${Date.now()}`}
+					// onBlur={onBlur}
+					// error={error?.message}
+				/>
+				<Input.Password
+					label="Електронна адреса"
+					disabled={isRedact ? false : true}
+					// value={value}
+					// onChangeText={onChange}
+					placeholder="Електронна адреса"
+					defaultValue={user?.email}
+					// onBlur={onBlur}
+					// error={error?.message}
+				/>
+				<Input.Password
+					label="Пароль"
+					disabled={isRedact ? false : true}
+					// value={value}
+					// onChangeText={onChange}
+					placeholder="Електронна адреса"
+					defaultValue={user?.username}
+					// onBlur={onBlur}
+					// error={error?.message}
+				/>
+				{/* <Controller
 					control={control}
 					name="name"
 					render={({
@@ -63,45 +111,6 @@ export function SettingsPagePartTwo() {
 						<Input.Password
 							label="Ім’я"
 							value={value}
-							onChangeText={onChange}
-							disabled={isRedact ? false : true}
-							placeholder="Ім'я"
-							defaultValue={user?.username}
-							onBlur={onBlur}
-							error={error?.message}
-						/>
-					)}
-				/>
-				<Input.Password
-					label="Ім’я"
-					// value={value}
-					// onChangeText={onChange}
-					disabled={isRedact ? false : true}
-					placeholder="Ім'я"
-					defaultValue={user?.username}
-					// onBlur={onBlur}
-					// error={error?.message}
-				/>
-				<Input.Password
-					label="Ім’я"
-					disabled={isRedact ? false : true}
-					// value={value}
-					// onChangeText={onChange}
-					placeholder="Ім'я"
-					defaultValue={user?.username}
-					// onBlur={onBlur}
-					// error={error?.message}
-				/>
-				<Controller
-					control={control}
-					name="name"
-					render={({
-						field: { value, onChange, onBlur },
-						fieldState: { error },
-					}) => (
-						<Input.Password
-							label="Ім’я"
-							value={value}
 							disabled={isRedact ? false : true}
 							onChangeText={onChange}
 							placeholder="Ім'я"
@@ -110,7 +119,7 @@ export function SettingsPagePartTwo() {
 							error={error?.message}
 						/>
 					)}
-				/>
+				/> */}
 			</View>
 		</View>
 	)

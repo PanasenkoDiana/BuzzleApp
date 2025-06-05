@@ -1,5 +1,5 @@
 export interface IChangeUserPartOne {
-    image: string
+    profileImage: string
 }
 
 export interface IChangeUserPartTwo {

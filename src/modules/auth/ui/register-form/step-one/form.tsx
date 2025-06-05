@@ -8,9 +8,11 @@ import { styles } from "./form.style";
 import { authUser } from "../../../hooks";
 import { useRouter } from "expo-router";
 import { COLORS } from "../../../../../shared/ui/colors";
+import { useUserContext } from "../../../context/userContext";
 
 export function RegisterForm() {
 	const router = useRouter();
+	const { register } = useUserContext();
 
 	const { control, handleSubmit, setError } = useForm<IRegister>({
 		defaultValues: {
@@ -44,7 +46,7 @@ export function RegisterForm() {
 			return;
 		}
 
-		const response = await authUser.register(
+		const response = await register(
 			data.email,
 			data.username,
 			data.password

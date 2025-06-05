@@ -17,6 +17,10 @@ export function SettingsPagePartOne() {
 	const [isRedact, setIsRedact] = useState(false)
 	const [image, setImage] = useState<string | null>(null)
 
+	useEffect(()=>{
+		if(!user) return
+	}, [])
+
 	async function onSearch() {
 		const result = await requestMediaLibraryPermissionsAsync()
 		if (result.status === "granted") {
@@ -37,13 +41,13 @@ export function SettingsPagePartOne() {
 	async function onSubmit(data: IChangeUserPartOne) {
 		if (!image) return
 		if (!user) return
-		const response = changeUserPartOne(data, user.id)
+		const response = await changeUserPartOne(data, user.id)
 	}
 
 	useEffect(() => {
 		const submitIfNeeded = async () => {
-			if (isRedact && image) {
-				await onSubmit({ image })
+			if (!isRedact && image) {
+				await onSubmit({ profileImage: image })
 			}
 		}
 
@@ -65,16 +69,16 @@ export function SettingsPagePartOne() {
 						style={styles.profileAvatarImage}
 						source={{
 							uri: !image
-								? `${SERVER_HOST}media/${user?.image}`
+								? `${SERVER_HOST}media/${user?.profileImage}`
 								: image,
 						}}
 					/>
 				</TouchableOpacity>
 				<Text style={styles.profileAvatarName}>
-					{user?.username}Name
+					{user?.name}
 				</Text>
 				<Text style={styles.profileAvatarIndex}>
-					@{user?.username}username
+					@{user?.username}
 				</Text>
 			</View>
 		</View>
