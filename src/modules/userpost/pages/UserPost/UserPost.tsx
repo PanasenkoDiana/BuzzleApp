@@ -3,9 +3,15 @@ import { PostCard } from "../../entities/post/ui/PostCard";
 import { styles } from "./UserPost.styles";
 import { useEffect, useState } from "react";
 import { usePost } from "../../hooks";
+import { useUserContext } from "../../../auth/context/userContext";
 
-export default function UserPost() {
-  const { posts, isLoading, getAllPosts } = usePost();
+interface UserPostProps {
+  userPostsOnly?: boolean;
+}
+
+export default function UserPost({ userPostsOnly = false }: UserPostProps) {
+  const { posts, isLoading, getAllPosts } = usePost(userPostsOnly);
+  const { user } = useUserContext();
   const [refresh, setRefresh] = useState(false);
   const [key, setKey] = useState(0);
 
@@ -41,8 +47,8 @@ export default function UserPost() {
         renderItem={({ item }) => (
           <PostCard
             id={item.id}
-            username={"1"}
-            avatarUrl={"1"}
+            username={item.userId === user?.id ? user.username : "Пользователь"}
+            avatarUrl={item.userId === user?.id ? user.avatar : ""}
             title={item.name}
             tags={item.tags}
             description={item.text}

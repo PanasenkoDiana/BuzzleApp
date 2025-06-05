@@ -1,7 +1,18 @@
 import { UserPost } from "../../modules/userpost/pages/UserPost";
+import { View, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function MyPostsPage() {
 	return (
-		<UserPost ></UserPost>
+		<SafeAreaView style={styles.container}>
+			<UserPost userPostsOnly={true} />
+		</SafeAreaView>
 	);
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#fff'
+	}
+});

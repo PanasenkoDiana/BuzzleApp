@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "expo-router/build/hooks";
 import { SecondRegisterModal } from "../../modules/auth/ui/second-register-modal";
 import { Ionicons } from "@expo/vector-icons";
+import { useUserContext } from "../../modules/auth/context/userContext";
 
 export default function MainPage() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -13,15 +14,16 @@ export default function MainPage() {
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const { user } = useUserContext();
   const userProfile = {
-    avatar: "https://example.com/avatar.jpg",
-    firstName: "Іван",
-    lastName: "Петренко",
-    username: "@ivanp",
+    avatar: user?.avatar || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    username: user?.username || "",
     stats: {
-      posts: 12,
-      followers: 245,
-      friends: 89,
+      posts: 0, // Это можно обновить, когда будет доступна статистика
+      followers: 0,
+      friends: 0,
     },
   };
 
