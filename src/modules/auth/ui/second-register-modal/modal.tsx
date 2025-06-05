@@ -3,7 +3,6 @@ import { ISecondRegisterForm } from "./modal.types"
 import { Controller, useForm } from "react-hook-form"
 import { Input } from "../../../../shared/ui/input"
 import { styles } from "./modal.styles"
-import { COLORS } from "../../../../shared/ui/colors"
 import { useUserContext } from "../../context/userContext"
 import { Modalka } from "../../../../shared/ui/modal/modal"
 
