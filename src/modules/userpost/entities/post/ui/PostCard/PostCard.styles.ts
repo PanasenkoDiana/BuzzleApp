@@ -28,7 +28,9 @@ export const styles = StyleSheet.create({
 	cardContainer: {
 		padding: 10,
 		backgroundColor: "#fff",
-		borderRadius: 8,
+		borderRadius: 4,
+		borderWidth: 1,
+		borderColor: COLORS.lightGray,
 	},
 	postTitle: {
 		fontSize: 20,
@@ -57,7 +59,7 @@ export const styles = StyleSheet.create({
 	gridImage: {
 		flex: 1,
 		height: 200,
-		borderRadius: 12,
+		borderRadius: 6,
 	},
 	largeImage: {
 		flex: 1,

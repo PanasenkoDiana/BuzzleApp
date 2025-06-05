@@ -166,9 +166,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
-    padding: 12,
-    backgroundColor: COLORS.lightGray,
-    borderRadius: 12,
+    marginTop: 16,
+    paddingHorizontal: 20,
+    alignSelf: "flex-start",
   },
   albumButtonText: {
     fontSize: 16,

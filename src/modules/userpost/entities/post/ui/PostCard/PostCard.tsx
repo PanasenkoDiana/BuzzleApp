@@ -41,19 +41,28 @@ export function PostCard({
 	onDeleted,
 }: PostCardProps) {
 	const [modalVisible, setModalVisible] = useState(false);
+	const [editModalVisible, setEditModalVisible] = useState(false);
 	const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
+	const [currentTitle, setTitle] = useState(title);
+	const [currentDescription, setDescription] = useState(description);
+	const [editTitle, setEditTitle] = useState(title);
+	const [editDescription, setEditDescription] = useState(description);
 	const threeDotsRef = useRef(null);
 
-	const handleEdit = async () => {
+	const handleEdit = () => {
 		setModalVisible(false);
+		setEditModalVisible(true);
+	};
+
+const handleSaveEdit = async () => {
 		try {
 			const response = await fetch(`${SERVER_HOST}api/posts/change`, {
 				method: "PUT",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					id,
-					name: title,
-					text: description,
+					name: editTitle,
+					text: editDescription,
 					tags: tags?.map((tag) => tag.name),
 				}),
 			});
@@ -62,7 +71,16 @@ export function PostCard({
 				throw new Error("Failed to update post");
 			}
 
-			Alert.alert("Успіх", "Пост успішно оновлено");
+			const result = await response.json();
+			if (result.status === 'success') {
+				setEditModalVisible(false);
+				Alert.alert("Успіх", "Пост успішно оновлено");
+				// Обновляем локальное состояние
+				setTitle(editTitle);
+				setDescription(editDescription);
+			} else {
+				throw new Error(result.message || "Failed to update post");
+			}
 		} catch (error) {
 			Alert.alert("Помилка", "Не вдалося оновити пост");
 			console.error("Error updating post:", error);
@@ -151,9 +169,9 @@ export function PostCard({
 				</View>
 			</View>
 
-			<Text style={styles.postTitle}>{title}</Text>
+			<Text style={styles.postTitle}>{currentTitle}</Text>
 			<Text style={styles.postDescription}>
-				{description}
+				{currentDescription}
 				{"\n"}
 				<Text style={styles.postTags}>
 					{tags?.map((tag) => `${tag.name} `)}
@@ -265,6 +283,58 @@ export function PostCard({
 						</TouchableOpacity>
 					</View>
 				</TouchableOpacity>
+			</Modal>
+
+			{/* Модальне вікно редагування */}
+			<Modal
+				visible={editModalVisible}
+				transparent
+				animationType="slide"
+				onRequestClose={() => setEditModalVisible(false)}
+			>
+				<View style={styles.editModalOverlay}>
+					<View style={styles.editModalContainer}>
+						<View style={styles.editModalHeader}>
+							<Text style={styles.editModalTitle}>Редагувати допис</Text>
+							<TouchableOpacity onPress={() => setEditModalVisible(false)}>
+								<Ionicons name="close" size={24} color={COLORS.black} />
+							</TouchableOpacity>
+						</View>
+						<View style={styles.editFormContainer}>
+							<View>
+								<Text style={styles.inputLabel}>Заголовок</Text>
+								<TextInput
+									style={styles.textInput}
+									value={editTitle}
+									onChangeText={setEditTitle}
+								/>
+							</View>
+							<View>
+								<Text style={styles.inputLabel}>Опис</Text>
+								<TextInput
+									style={[styles.textInput, styles.textArea]}
+									value={editDescription}
+									onChangeText={setEditDescription}
+									multiline
+								/>
+							</View>
+							<TouchableOpacity
+								style={{
+									backgroundColor: COLORS.darkPlum,
+									padding: 12,
+									borderRadius: 8,
+									alignItems: "center",
+									marginTop: 20,
+								}}
+								onPress={handleSaveEdit}
+							>
+								<Text style={{ color: COLORS.white, fontSize: 16, fontWeight: "600" }}>
+									Зберегти зміни
+								</Text>
+							</TouchableOpacity>
+						</View>
+					</View>
+				</View>
 			</Modal>
 		</View>
 	);
