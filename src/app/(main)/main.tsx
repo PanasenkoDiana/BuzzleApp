@@ -29,7 +29,7 @@ export default function MainPage() {
     if (searchParams.get("showRegisterModal") === "true") {
       setIsModalOpen(true);
     }
-  }, [searchParams]);
+  }, []);
 
   return (
     <>

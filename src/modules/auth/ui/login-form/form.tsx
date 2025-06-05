@@ -38,15 +38,15 @@ export function LoginForm() {
 			}
 			return;
 		}
+		
+		// const user = await getData(response.data);
 
-		const user = await authUser.getData(response.data);
-
-		if (user?.status === "success") {
-			setUser(user.data);
-			router.push("/main");
-		} else {
-			console.log(user?.message);
-		}
+		// if (user?.status === "success") {
+		// 	setUser(user.data);
+		// 	router.push("/main");
+		// } else {
+		// 	console.log(user?.message);
+		// }
 	}
 
 	return (

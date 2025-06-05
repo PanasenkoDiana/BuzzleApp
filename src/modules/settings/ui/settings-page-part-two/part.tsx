@@ -22,7 +22,7 @@ export function SettingsPagePartTwo() {
 
 	useEffect(() => {
 		const submitIfNeeded = async () => {
-			if (isRedact){
+			if (!isRedact){
 				handleSubmit(onSubmit)()
 			}
 		}
@@ -47,7 +47,7 @@ export function SettingsPagePartTwo() {
 							onChangeText={onChange}
 							disabled={isRedact ? false : true}
 							placeholder="Ім'я"
-							defaultValue={user?.username}
+							defaultValue={user?.name}
 							onBlur={onBlur}
 							error={error?.message}
 						/>
@@ -61,38 +61,48 @@ export function SettingsPagePartTwo() {
 						fieldState: { error },
 					}) => (
 						<Input.Password
-							label="Ім’я"
+							label="Прізвище"
 							value={value}
 							onChangeText={onChange}
 							disabled={isRedact ? false : true}
-							placeholder="Ім'я"
-							defaultValue={user?.username}
+							placeholder="Прізвище"
+							defaultValue={user?.surname}
 							onBlur={onBlur}
 							error={error?.message}
 						/>
 					)}
 				/>
 				<Input.Password
-					label="Ім’я"
+					label="Дата народження"
 					// value={value}
 					// onChangeText={onChange}
 					disabled={isRedact ? false : true}
-					placeholder="Ім'я"
+					placeholder="Дата народження"
+					defaultValue={`${Date.now()}`}
+					// onBlur={onBlur}
+					// error={error?.message}
+				/>
+				<Input.Password
+					label="Електронна адреса"
+					disabled={isRedact ? false : true}
+					// value={value}
+					// onChangeText={onChange}
+					placeholder="Електронна адреса"
 					defaultValue={user?.username}
 					// onBlur={onBlur}
 					// error={error?.message}
 				/>
 				<Input.Password
-					label="Ім’я"
+					label="Пароль"
 					disabled={isRedact ? false : true}
 					// value={value}
 					// onChangeText={onChange}
-					placeholder="Ім'я"
+					placeholder="Електронна адреса"
 					defaultValue={user?.username}
 					// onBlur={onBlur}
 					// error={error?.message}
 				/>
-				<Controller
+				{/* <Controller
 					control={control}
 					name="name"
 					render={({
@@ -110,7 +120,7 @@ export function SettingsPagePartTwo() {
 							error={error?.message}
 						/>
 					)}
-				/>
+				/> */}
 			</View>
 		</View>
 	)
