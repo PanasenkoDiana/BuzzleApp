@@ -6,7 +6,6 @@ import { Input } from "../../../../shared/ui/input"
 import { useUserContext } from "../../../auth/context/userContext"
 import { styles } from "./part.styles"
 import { useEffect, useState } from "react"
-import { COLORS } from "../../../../shared/ui/colors"
 import { IChangeUserPartTwo } from "../../../auth/types"
 
 export function SettingsPagePartTwo() {
@@ -55,7 +54,7 @@ export function SettingsPagePartTwo() {
 				/>
 				<Controller
 					control={control}
-					name="name"
+					name="surname"
 					render={({
 						field: { value, onChange, onBlur },
 						fieldState: { error },
@@ -88,7 +87,7 @@ export function SettingsPagePartTwo() {
 					// value={value}
 					// onChangeText={onChange}
 					placeholder="Електронна адреса"
-					defaultValue={user?.username}
+					defaultValue={user?.email}
 					// onBlur={onBlur}
 					// error={error?.message}
 				/>
