@@ -9,12 +9,13 @@ export function SettingsPagePartThree() {
 
     const [ nameChecked, setNameChecked ] = useState(true)
     const [ signature, setSignature ] = useState(true)
+    const [ isRedact, setIsRedact ] = useState(false)
 
 	return (
         
 		<View style={styles.container}>
 
-			<SettingsChangeHeader title={"Варіанти підпису"} />
+			<SettingsChangeHeader title={"Варіанти підпису"}  onRedact={()=>setIsRedact(!isRedact)}  />
             <View style={styles.checkBoxView}>
                 <CustomCheckBox checked={nameChecked} onToggle={()=>setNameChecked(!nameChecked)} label="Ім’я та прізвище" ></CustomCheckBox>
                 <Text style={styles.nameCheckBoxText} >Name Surname</Text>
