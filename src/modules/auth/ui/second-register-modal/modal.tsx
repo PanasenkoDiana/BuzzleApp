@@ -21,6 +21,7 @@ export function SecondRegisterModal(props: ISecondRegisterModalProps) {
 
 		if (!user) return
 		await addSecondUserInfo(data, user.id)
+		props.onClose()
 	}
 
 	return (

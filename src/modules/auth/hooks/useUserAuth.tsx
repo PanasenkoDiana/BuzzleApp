@@ -60,14 +60,13 @@ export function authUser(setUser: (user: IUser | null) => void) {
 
 	async function register(
 		email: string,
-		username: string,
 		password: string
 	): Promise<Result<string>> {
 		try {
 			const response = await fetch(`${SERVER_HOST}api/user/register`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ email, username, password }),
+				body: JSON.stringify({ email, password }),
 			});
 
 			const result: Result<string> = await response.json();

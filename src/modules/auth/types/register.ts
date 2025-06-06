@@ -1,5 +1,5 @@
 export interface IRegister{
-    username: string
+    // username: string
     email: string
     password: string
     repeatPassword: string

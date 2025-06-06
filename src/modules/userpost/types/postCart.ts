@@ -11,8 +11,10 @@ export interface IPostCart {
     images?: IImage[]
 }
 
-export interface IPostCartForm extends Omit<IPostCart, 'tags'> {
+export interface IPostCartForm extends Omit<IPostCart, 'tags' | 'images'> {
     tags?: string[]
+    images?: string[]
+    
 }
 
 export interface IPostWithUser extends IUser, IPostCart {

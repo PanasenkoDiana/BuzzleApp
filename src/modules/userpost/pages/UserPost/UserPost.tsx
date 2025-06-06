@@ -3,8 +3,9 @@ import { PostCard } from "../../entities/post/ui/PostCard";
 import { styles } from "./UserPost.styles";
 import { useEffect, useState } from "react";
 import { usePost } from "../../hooks";
+import { Main } from "../../../main/ui/main";
 
-export default function UserPost() {
+export default function UserPost(props: {haveHeader: boolean}) {
   const { posts, isLoading, getAllPosts } = usePost();
   const [refresh, setRefresh] = useState(false);
   const [key, setKey] = useState(0);
@@ -38,6 +39,7 @@ export default function UserPost() {
         data={posts}
         keyExtractor={(post) => post.id.toString()}
         extraData={refresh}
+        ListHeaderComponent={props.haveHeader ? <Main/> : null}
         renderItem={({ item }) => (
           <PostCard
             id={item.id}

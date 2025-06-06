@@ -90,7 +90,7 @@ export function SettingsPagePartOne() {
                     />
                 </TouchableOpacity>
                 <Text style={styles.profileAvatarName}>
-                    {user?.name}
+                    {user?.name} {user?.surname}
                 </Text>
                 <Text style={styles.profileAvatarIndex}>
                     @{user?.username}

@@ -16,7 +16,7 @@ export function RegisterForm() {
 
 	const { control, handleSubmit, setError } = useForm<IRegister>({
 		defaultValues: {
-			username: "",
+			// username: "",
 			email: "",
 			password: "",
 			repeatPassword: "",
@@ -48,7 +48,7 @@ export function RegisterForm() {
 
 		const response = await register(
 			data.email,
-			data.username,
+			// data.username,
 			data.password
 		);
 
