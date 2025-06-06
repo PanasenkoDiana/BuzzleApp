@@ -83,7 +83,6 @@ export function FriendsPage(props: IFriendsPage) {
 		if (page === "myRequests") getMyRequests();
 	}, [page]);
 
-
 	if (isLoading) {
 		return (
 			<View>
@@ -112,6 +111,7 @@ export function FriendsPage(props: IFriendsPage) {
 			</View>
 		);
 	}
+
 	if (props.page == "recommends") {
 		return (
 			<View style={styles.container}>
@@ -132,6 +132,7 @@ export function FriendsPage(props: IFriendsPage) {
 			</View>
 		);
 	}
+	
 	if (props.page == "requests") {
 		return (
 			<View style={styles.container}>

@@ -9,7 +9,7 @@ import { useUserContext } from "../../../../auth/context/userContext";
 import { useFriends } from "../../../hooks/useFriends";
 
 interface IFriendCard extends IUser {
-	variant: "friend" | "request"  | "myRequest" | "notFriend";
+	variant: "friend" | "request" | "myRequest" | "notFriend";
 }
 
 export function FriendCard(props: IFriendCard) {
@@ -18,7 +18,10 @@ export function FriendCard(props: IFriendCard) {
 	const [status, setStatus] = useState(0);
 	const { user } = useUserContext();
 	const {
-		deleteFriend,
+		getAllFriends,
+		getRequests,
+		getMyRequests,
+		getRecommends,
 		sendRequest,
 		cancelRequest,
 		acceptRequest,
@@ -37,7 +40,9 @@ export function FriendCard(props: IFriendCard) {
 				)}
 
 				<View style={styles.names}>
-					<Text style={styles.name}>{props.name} {props.surname}</Text>
+					<Text style={styles.name}>
+						{props.name} {props.surname}
+					</Text>
 					<Text style={styles.username}>@{props.username}</Text>
 				</View>
 			</TouchableOpacity>
@@ -51,13 +56,12 @@ export function FriendCard(props: IFriendCard) {
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
-						onPress={() => setModalVisible(true)}
+						onPress={() => {
+							setModalVisible(true);
+							getAllFriends();
+						}}
 					>
-						<Text
-							style={styles.rightButtonText}
-						>
-							Видалити
-						</Text>
+						<Text style={styles.rightButtonText}>Видалити</Text>
 					</TouchableOpacity>
 				</View>
 			)}
@@ -66,41 +70,21 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
-						onPress={() =>
-							acceptRequest(
-								props.username,
-								user?.username || ""
-							)
-						}
+						onPress={() => {
+							acceptRequest(props.username, user?.username || "");
+							getRequests();
+						}}
 					>
 						<Text style={styles.leftButtonText}>Підтвердити</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
-						onPress={() =>
-							cancelRequest(
-								props.username,
-								user?.username || ""
-							)
-						}
+						onPress={() => {
+							cancelRequest(props.username, user?.username || "");
+							getRequests();
+						}}
 					>
 						<Text style={styles.rightButtonText}>Відхилити</Text>
-					</TouchableOpacity>
-				</View>
-			)}
-
-			{props.variant == "notFriend" && (
-				<View style={styles.buttons}>
-					<TouchableOpacity
-						style={[styles.button, styles.leftButton]}
-						onPress={() =>
-							sendRequest(
-								props.username,
-								user?.username || ""
-							)
-						}
-					>
-						<Text style={styles.leftButtonText}>Додати</Text>
 					</TouchableOpacity>
 				</View>
 			)}
@@ -109,14 +93,26 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
-						onPress={() =>
-							cancelRequest(
-								user?.username || "",
-								props.username
-							)
-						}
+						onPress={() => {
+							cancelRequest(user?.username || "", props.username);
+							getMyRequests();
+						}}
 					>
 						<Text style={styles.rightButtonText}>Скасувати</Text>
+					</TouchableOpacity>
+				</View>
+			)}
+
+			{props.variant == "notFriend" && (
+				<View style={styles.buttons}>
+					<TouchableOpacity
+						style={[styles.button, styles.leftButton]}
+						onPress={() => {
+							sendRequest(props.username, user?.username || "");
+							getRecommends();
+						}}
+					>
+						<Text style={styles.leftButtonText}>Додати</Text>
 					</TouchableOpacity>
 				</View>
 			)}
