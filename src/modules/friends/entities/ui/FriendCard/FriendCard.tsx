@@ -1,6 +1,6 @@
 import { View, TouchableOpacity, Image, Text } from "react-native";
 import { styles } from "./FriendCard.styles";
-import { IFriend } from "../../../types/friend";
+import { IUser } from "../../../types/friend";
 import { DeleteFriendModal } from "../DeleteFriendModal/DeleteFriendModal";
 import { useState } from "react";
 import { PeopleIcon } from "../../../../../shared/ui/icons";
@@ -8,8 +8,8 @@ import { DeleteFriendModalResult } from "../DeleteFriendModalResult/DeleteFriend
 import { useUserContext } from "../../../../auth/context/userContext";
 import { useFriends } from "../../../hooks/useFriends";
 
-interface IFriendCard extends IFriend {
-	variant: "friend" | "request" | "notFriend" | "myRequest";
+interface IFriendCard extends IUser {
+	variant: "friend" | "request"  | "myRequest" | "notFriend";
 }
 
 export function FriendCard(props: IFriendCard) {
@@ -19,9 +19,9 @@ export function FriendCard(props: IFriendCard) {
 	const { user } = useUserContext();
 	const {
 		deleteFriend,
-		sendFriendRequest,
-		cancelFriendRequest,
-		acceptFriendRequest,
+		sendRequest,
+		cancelRequest,
+		acceptRequest,
 	} = useFriends();
 
 	return (
@@ -37,7 +37,7 @@ export function FriendCard(props: IFriendCard) {
 				)}
 
 				<View style={styles.names}>
-					<Text style={styles.name}>{props.name}</Text>
+					<Text style={styles.name}>{props.name} {props.surname}</Text>
 					<Text style={styles.username}>@{props.username}</Text>
 				</View>
 			</TouchableOpacity>
@@ -67,7 +67,7 @@ export function FriendCard(props: IFriendCard) {
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
 						onPress={() =>
-							acceptFriendRequest(
+							acceptRequest(
 								props.username,
 								user?.username || ""
 							)
@@ -78,7 +78,7 @@ export function FriendCard(props: IFriendCard) {
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
 						onPress={() =>
-							cancelFriendRequest(
+							cancelRequest(
 								props.username,
 								user?.username || ""
 							)
@@ -94,7 +94,7 @@ export function FriendCard(props: IFriendCard) {
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
 						onPress={() =>
-							sendFriendRequest(
+							sendRequest(
 								props.username,
 								user?.username || ""
 							)
@@ -110,9 +110,9 @@ export function FriendCard(props: IFriendCard) {
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
 						onPress={() =>
-							cancelFriendRequest(
-								props.username,
-								user?.username || ""
+							cancelRequest(
+								user?.username || "",
+								props.username
 							)
 						}
 					>
