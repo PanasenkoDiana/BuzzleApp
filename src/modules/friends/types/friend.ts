@@ -11,6 +11,8 @@ export interface IFriendRequest {
     status: FriendRequestStatus
 }
 
+export type ICanceledRequest = { status: "canceled" }
+
 enum FriendRequestStatus {
     "accepted",
     "pending"

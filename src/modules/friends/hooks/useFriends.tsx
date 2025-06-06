@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Result } from "../../../shared/types/result";
-import { IUser, IRequest, IMyRequest } from "../types/friend";
+import { IUser, IRequest, IMyRequest, IFriendRequest, ICanceledRequest } from "../types/friend";
 import { SERVER_HOST } from "../../../shared/constants";
 
 export function useFriends() {
@@ -17,40 +17,16 @@ export function useFriends() {
 			setIsLoading(true);
 			const response = await fetch(`${SERVER_HOST}api/friends`);
 			const result: Result<IUser[]> = await response.json();
-
 			if (result.status === "error") {
 				setError(result.message);
 				console.log("getAllFriends error:", result.message);
 				return;
 			}
 
+			setFriends(result.data)
 			console.log("getAllFriends success:", result.data);
 		} catch (err) {
 			console.log("getAllFriends exception:", err);
-			throw err;
-		} finally {
-			setIsLoading(false);
-		}
-	}
-
-	async function getRecommends() {
-		console.log("getRecommends called");
-		try {
-			setIsLoading(true);
-			const response = await fetch(
-				`${SERVER_HOST}api/friends/recommends`
-			);
-			
-			const result: Result<IUser[]> = await response.json();
-			if (result.status === "error") {
-				setError(result.message);
-				console.log(result.message);
-				return;
-			}
-
-			setRecommends(result.data);
-		} catch (err) {
-			console.log(err);
 			throw err;
 		} finally {
 			setIsLoading(false);
@@ -62,12 +38,12 @@ export function useFriends() {
 		try {
 			setIsLoading(true);
 			const response = await fetch(`${SERVER_HOST}api/friends/requests`);
-
 			const result: Result<IUser[]> = await response.json();
 			if (result.status === "error") {
 				setError(result.message);
 				return;
 			}
+
 			setRequests(result.data);
 			setIsLoading(false);
 		} catch (err) {
@@ -89,11 +65,35 @@ export function useFriends() {
 				setError(result.message);
 				return;
 			}
+
 			setMyRequests(result.data);
 			setIsLoading(false);
 		} catch (err) {
 			console.log(err);
 			throw err;
+		}
+	}
+
+	async function getRecommends() {
+		console.log("getRecommends called");
+		try {
+			setIsLoading(true);
+			const response = await fetch(
+				`${SERVER_HOST}api/friends/recommends`
+			);
+			const result: Result<IUser[]> = await response.json();
+			if (result.status === "error") {
+				setError(result.message);
+				console.log(result.message);
+				return;
+			}
+
+			setRecommends(result.data);
+		} catch (err) {
+			console.log(err);
+			throw err;
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
@@ -106,7 +106,7 @@ export function useFriends() {
 				body: JSON.stringify({ friendUsername, username }),
 			});
 
-			const result: Result<string> = await response.json();
+			const result: Result<IFriendRequest> = await response.json();
 			return result;
 		} catch (err) {
 			console.log(err);
@@ -114,26 +114,6 @@ export function useFriends() {
 		}
 	}
 	
-	async function deleteFriend(
-		friendUsername: string,
-		username: string
-	) {
-		console.log("deleteFriend called");
-		try {
-			const response = await fetch(`${SERVER_HOST}api/friends/delete`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ friendUsername, username }),
-			});
-
-			const result: Result<string> = await response.json();
-			return result;
-		} catch (err) {
-			console.log(err);
-			throw err;
-		}
-	}
-
 	async function acceptRequest(friendUsername: string, username: string) {
 		console.log("acceptRequest called");
 		try {
@@ -143,7 +123,7 @@ export function useFriends() {
 				body: JSON.stringify({ friendUsername, username }),
 			});
 
-			const result: Result<string> = await response.json();
+			const result: Result<IFriendRequest> = await response.json();
 			return result;
 		} catch (err) {
 			console.log(err);
@@ -160,7 +140,7 @@ export function useFriends() {
 				body: JSON.stringify({ friendUsername, username }),
 			});
 
-			const result: Result<string> = await response.json();
+			const result: Result<ICanceledRequest> = await response.json();
 			return result;
 		} catch (err) {
 			console.log(err);
@@ -168,13 +148,13 @@ export function useFriends() {
 		}
 	}
 
-	async function cancelMyRequest(username: string, friendUsername: string) {
+	async function cancelMyRequest(friendUsername: string, username: string) {
 		console.log("cancelMyRequest called");
 		try {
 			const response = await fetch(`${SERVER_HOST}api/friends/cancel`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ username, friendUsername }),
+				body: JSON.stringify({ friendUsername, username }),
 			});
 
 			const result: Result<string> = await response.json();
@@ -193,7 +173,6 @@ export function useFriends() {
 		isLoading,
 		error,
 		getAllFriends,
-		deleteFriend,
 		sendRequest,
 		cancelRequest,
 		cancelMyRequest,
