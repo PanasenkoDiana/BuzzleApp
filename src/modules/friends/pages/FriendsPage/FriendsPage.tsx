@@ -65,7 +65,6 @@ export function FriendsPage(props: IFriendsPage) {
 	const { page } = props;
 	const {
 		isLoading,
-		error,
 		friends,
 		recommends,
 		requests,
@@ -134,12 +133,15 @@ export function FriendsPage(props: IFriendsPage) {
 	}
 	
 	if (props.page == "requests") {
+		const users = requests.map((request) => {
+			return request.from
+		})
 		return (
 			<View style={styles.container}>
 				<FlatList
 					contentContainerStyle={styles.list}
 					refreshing={isLoading}
-					data={requests}
+					data={users}
 					renderItem={({ item }) => (
 						<FriendCard
 							variant="request"
@@ -153,13 +155,17 @@ export function FriendsPage(props: IFriendsPage) {
 			</View>
 		);
 	}
+	
 	if (props.page == "myRequests") {
+		const users = myRequests.map((request) => {
+			return request.to
+		})
 		return (
 			<View style={styles.container}>
 				<FlatList
 					contentContainerStyle={styles.list}
 					refreshing={isLoading}
-					data={myRequests}
+					data={users}
 					renderItem={({ item }) => (
 						<FriendCard
 							variant="myRequest"

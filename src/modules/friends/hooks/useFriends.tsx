@@ -1,29 +1,40 @@
 import { useState } from "react";
 import { Result } from "../../../shared/types/result";
-import { IUser, IRequest, IMyRequest, IFriendRequest, ICanceledRequest } from "../types/friend";
+import {
+	IUser,
+	IRequest,
+	IMyRequest,
+	IFriendRequest,
+	ICanceledRequest,
+} from "../types/friend";
 import { SERVER_HOST } from "../../../shared/constants";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function useFriends() {
 	const [friends, setFriends] = useState<IUser[]>([]);
-	const [requests, setRequests] = useState<IUser[]>([]);
-	const [myRequests, setMyRequests] = useState<IUser[]>([]);
+	const [requests, setRequests] = useState<IRequest[]>([]);
+	const [myRequests, setMyRequests] = useState<IMyRequest[]>([]);
 	const [recommends, setRecommends] = useState<IUser[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const [error, setError] = useState<string | null>(null);
 
 	async function getAllFriends() {
 		console.log("getAllFriends called");
 		try {
 			setIsLoading(true);
-			const response = await fetch(`${SERVER_HOST}api/friends`);
+			const token = await AsyncStorage.getItem("token");
+			const response = await fetch(`${SERVER_HOST}api/friends/`, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
 			const result: Result<IUser[]> = await response.json();
 			if (result.status === "error") {
-				setError(result.message);
 				console.log("getAllFriends error:", result.message);
 				return;
 			}
 
-			setFriends(result.data)
+			setFriends(result.data);
 			console.log("getAllFriends success:", result.data);
 		} catch (err) {
 			console.log("getAllFriends exception:", err);
@@ -37,18 +48,26 @@ export function useFriends() {
 		console.log("getRequests called");
 		try {
 			setIsLoading(true);
-			const response = await fetch(`${SERVER_HOST}api/friends/requests`);
-			const result: Result<IUser[]> = await response.json();
+			const token = await AsyncStorage.getItem("token");
+			const response = await fetch(`${SERVER_HOST}api/friends/requests`, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			const result: Result<IRequest[]> = await response.json();
 			if (result.status === "error") {
-				setError(result.message);
+				console.log("getRequests error:", result.message);
 				return;
 			}
 
+			console.log(result);
 			setRequests(result.data);
-			setIsLoading(false);
 		} catch (err) {
 			console.log(err);
 			throw err;
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
@@ -56,13 +75,20 @@ export function useFriends() {
 		console.log("getMyRequests called");
 		try {
 			setIsLoading(true);
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(
-				`${SERVER_HOST}api/friends/myRequests`
+				`${SERVER_HOST}api/friends/myRequests`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
 			);
 
-			const result: Result<IUser[]> = await response.json();
+			const result: Result<IMyRequest[]> = await response.json();
 			if (result.status === "error") {
-				setError(result.message);
+				console.log("getMyRequests error:", result.message);
 				return;
 			}
 
@@ -71,6 +97,8 @@ export function useFriends() {
 		} catch (err) {
 			console.log(err);
 			throw err;
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
@@ -78,13 +106,21 @@ export function useFriends() {
 		console.log("getRecommends called");
 		try {
 			setIsLoading(true);
+
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(
-				`${SERVER_HOST}api/friends/recommends`
+				`${SERVER_HOST}api/friends/recommends`,
+				{
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${token}`,
+					},
+				}
 			);
+
 			const result: Result<IUser[]> = await response.json();
 			if (result.status === "error") {
-				setError(result.message);
-				console.log(result.message);
+				console.log("getRecommends error:", result.message);
 				return;
 			}
 
@@ -97,33 +133,47 @@ export function useFriends() {
 		}
 	}
 
-	async function sendRequest(friendUsername: string, username: string) {
+	async function sendRequest(friendUsername: string) {
 		console.log("sendRequest called");
 		try {
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/friends/send`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ friendUsername, username }),
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ username: friendUsername }),
 			});
 
 			const result: Result<IFriendRequest> = await response.json();
+			if (result.status === "success") await getRecommends();
+
+			console.log(result);
 			return result;
 		} catch (err) {
 			console.log(err);
 			throw err;
 		}
 	}
-	
-	async function acceptRequest(friendUsername: string, username: string) {
+
+	async function acceptRequest(friendUsername: string) {
 		console.log("acceptRequest called");
 		try {
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/friends/accept`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ friendUsername, username }),
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ username: friendUsername }),
 			});
 
 			const result: Result<IFriendRequest> = await response.json();
+			if (result.status === "success") await getRequests();
+
+			console.log(result);
 			return result;
 		} catch (err) {
 			console.log(err);
@@ -131,33 +181,26 @@ export function useFriends() {
 		}
 	}
 
-	async function cancelRequest(friendUsername: string, username: string) {
+	async function cancelRequest(friendUsername: string, isIncoming: boolean) {
 		console.log("cancelRequest called");
 		try {
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/friends/cancel`, {
 				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ friendUsername, username }),
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ friendUsername, isIncoming }),
 			});
 
 			const result: Result<ICanceledRequest> = await response.json();
-			return result;
-		} catch (err) {
-			console.log(err);
-			throw err;
-		}
-	}
+			if (result.status === "success") {
+				await getRequests();
+				await getMyRequests();
+			}
 
-	async function cancelMyRequest(friendUsername: string, username: string) {
-		console.log("cancelMyRequest called");
-		try {
-			const response = await fetch(`${SERVER_HOST}api/friends/cancel`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({ friendUsername, username }),
-			});
-
-			const result: Result<string> = await response.json();
+			console.log(result);
 			return result;
 		} catch (err) {
 			console.log(err);
@@ -171,11 +214,9 @@ export function useFriends() {
 		myRequests,
 		recommends,
 		isLoading,
-		error,
 		getAllFriends,
 		sendRequest,
 		cancelRequest,
-		cancelMyRequest,
 		acceptRequest,
 		getRequests,
 		getMyRequests,

@@ -18,10 +18,12 @@ enum FriendRequestStatus {
     "pending"
 }
 
-export interface IMyRequest extends IFriendRequest {
-    to: IUser
+export interface IRequest {
+	status: "pending";
+	from: IUser;
 }
 
-export interface IRequest extends IFriendRequest {
-    from: IUser
+export interface IMyRequest {
+    status: "pending";
+	to: IUser;
 }

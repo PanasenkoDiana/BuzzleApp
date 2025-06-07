@@ -16,7 +16,6 @@ export function FriendCard(props: IFriendCard) {
 	const [modalVisible, setModalVisible] = useState<boolean>(false);
 	const [resultVisible, setResultVisible] = useState<boolean>(false);
 	const [status, setStatus] = useState(0);
-	const { user } = useUserContext();
 	const {
 		getAllFriends,
 		getRequests,
@@ -58,7 +57,6 @@ export function FriendCard(props: IFriendCard) {
 						style={[styles.button, styles.rightButton]}
 						onPress={() => {
 							setModalVisible(true);
-							getAllFriends();
 						}}
 					>
 						<Text style={styles.rightButtonText}>Видалити</Text>
@@ -70,18 +68,16 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
-						onPress={() => {
-							acceptRequest(props.username, user?.username || "");
-							getRequests();
+						onPress={async () => {
+							await acceptRequest(props.username);
 						}}
 					>
 						<Text style={styles.leftButtonText}>Підтвердити</Text>
 					</TouchableOpacity>
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
-						onPress={() => {
-							cancelRequest(props.username, user?.username || "");
-							getRequests();
+						onPress={async () => {
+							await cancelRequest(props.username, true);
 						}}
 					>
 						<Text style={styles.rightButtonText}>Відхилити</Text>
@@ -93,9 +89,8 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.rightButton]}
-						onPress={() => {
-							cancelRequest(user?.username || "", props.username);
-							getMyRequests();
+						onPress={async () => {
+							cancelRequest(props.username, false);
 						}}
 					>
 						<Text style={styles.rightButtonText}>Скасувати</Text>
@@ -107,9 +102,8 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
-						onPress={() => {
-							sendRequest(props.username, user?.username || "");
-							getRecommends();
+						onPress={async () => {
+							await sendRequest(props.username);
 						}}
 					>
 						<Text style={styles.leftButtonText}>Додати</Text>
