@@ -5,11 +5,16 @@ export const styles = StyleSheet.create({
     container: {
         marginLeft: 10,
         marginRight: 10,
-        flexDirection: "row",
-        gap: 10
+        gap: 5,
+        justifyContent: "center",
     },
     navButtom: {
         
+    },
+    navContainer: {
+        flexDirection: "row",
+        gap: 10,
+        justifyContent: "center"
     },
     selectedBlock: {
         borderBottomColor: COLORS.darkPlum,
@@ -17,7 +22,8 @@ export const styles = StyleSheet.create({
     },
     navText: {
         fontSize: 20,
-        fontWeight: "bold"
+        fontWeight: "bold",
+        textAlign: "center"
     }
 
 })

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { FriendsLayout } from "../../modules/friends/entities/ui/FriendsLayout/FriendsLayout";
 import { FriendsPage } from "../../modules/friends/pages/FriendsPage/FriendsPage";
 
@@ -8,6 +8,10 @@ export default function Friends() {
 	useEffect(()=>{
 		console.log(selectedPage)
 	},[selectedPage])
+
+	useEffect(()=>{
+		
+	},[])
 
 	return (
 		<FriendsLayout

@@ -18,7 +18,7 @@ export function DeleteFriendModal(props: IDeleteFriendModal) {
 	async function onSubmit(friendUsername: string, username: string) {
 		props.onClose();
 		try {
-			//   await deleteFriend(friendUsername, username);
+			await deleteFriend(friendUsername, username);
 			props.setStatus(1);
 		} catch (error) {
 			props.setStatus(2);

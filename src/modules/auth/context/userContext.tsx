@@ -106,7 +106,7 @@ export function UserContextProvider({ children }: IUserContextProviderProps) {
 	}
 
 	useEffect(()=>{
-		console.log('Eblan:', user)
+		console.log('My User:', user)
 	}, [user])
 
 	return (
