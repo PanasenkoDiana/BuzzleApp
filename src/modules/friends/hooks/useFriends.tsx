@@ -34,8 +34,8 @@ export function useFriends() {
 				return;
 			}
 
+			console.log(result.data);
 			setFriends(result.data);
-			console.log("getAllFriends success:", result.data);
 		} catch (err) {
 			console.log("getAllFriends exception:", err);
 			throw err;
@@ -92,6 +92,7 @@ export function useFriends() {
 				return;
 			}
 
+			console.log(result);
 			setMyRequests(result.data);
 			setIsLoading(false);
 		} catch (err) {
@@ -124,6 +125,7 @@ export function useFriends() {
 				return;
 			}
 
+			console.log(result);
 			setRecommends(result.data);
 		} catch (err) {
 			console.log(err);

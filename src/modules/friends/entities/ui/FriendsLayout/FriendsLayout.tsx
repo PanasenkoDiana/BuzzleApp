@@ -9,41 +9,27 @@ interface IFriendsLayout {
 }
 
 export function FriendsLayout(props: IFriendsLayout) {
+	const { selectedPage, setSelectedPage, children } = props;
 	return (
 		<View>
 			<View style={styles.container}>
 				<View style={styles.navContainer}>
-
 					<TouchableOpacity
-						onPress={() => props.setSelectedPage("all")}
+						onPress={() => setSelectedPage("main")}
 						style={[
 							styles.navButtom,
-							props.selectedPage === "all" &&
+							selectedPage === "main" &&
 								styles.selectedBlock,
 						]}
 					>
-						<Text style={styles.navText}>Всі друзі</Text>
+						<Text style={styles.navText}>Головна</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
-						onPress={() => props.setSelectedPage("recommends")}
+						onPress={() => setSelectedPage("requests")}
 						style={[
 							styles.navButtom,
-							props.selectedPage === "recommends" &&
-								styles.selectedBlock,
-						]}
-					>
-						<Text style={styles.navText}>Рекомендації</Text>
-					</TouchableOpacity>
-
-				</View>
-				<View style={styles.navContainer}>
-
-					<TouchableOpacity
-						onPress={() => props.setSelectedPage("requests")}
-						style={[
-							styles.navButtom,
-							props.selectedPage === "requests" &&
+							selectedPage === "requests" &&
 								styles.selectedBlock,
 						]}
 					>
@@ -51,19 +37,29 @@ export function FriendsLayout(props: IFriendsLayout) {
 					</TouchableOpacity>
 
 					<TouchableOpacity
-						onPress={() => props.setSelectedPage("myRequests")}
+						onPress={() => setSelectedPage("recommends")}
 						style={[
 							styles.navButtom,
-							props.selectedPage === "myRequests" &&
+							selectedPage === "recommends" &&
 								styles.selectedBlock,
 						]}
 					>
-						<Text style={styles.navText}>Мої запити</Text>
+						<Text style={styles.navText}>Рекомендації</Text>
 					</TouchableOpacity>
 
+					<TouchableOpacity
+						onPress={() => setSelectedPage("all")}
+						style={[
+							styles.navButtom,
+							selectedPage === "all" &&
+								styles.selectedBlock,
+						]}
+					>
+						<Text style={styles.navText}>Всі друзі</Text>
+					</TouchableOpacity>
 				</View>
 			</View>
-			{props.children}
+			{children}
 		</View>
 	);
 }

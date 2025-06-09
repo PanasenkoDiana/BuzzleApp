@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 2,
     },
     navText: {
-        fontSize: 20,
+        fontSize: 19,
         fontWeight: "bold",
         textAlign: "center"
     }
