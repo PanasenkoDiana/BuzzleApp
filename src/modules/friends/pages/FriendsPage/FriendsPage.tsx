@@ -4,9 +4,10 @@ import {
 	Text,
 	TouchableOpacity,
 	ScrollView,
+	RefreshControl,
 } from "react-native";
 import { useFriends } from "../../hooks/useFriends";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FriendCard } from "../../entities/ui/FriendCard/FriendCard";
 import { styles } from "./FriendsPage.styles";
 
@@ -185,6 +186,7 @@ interface IFriendsPage {
 // ];
 
 export function FriendsPage(props: IFriendsPage) {
+	const [refresh, setRefresh] = useState(false);
 	const { selectedPage, setSelectedPage } = props;
 	const {
 		isLoading,
@@ -195,6 +197,16 @@ export function FriendsPage(props: IFriendsPage) {
 		getRecommends,
 		getRequests,
 	} = useFriends();
+
+	function onRefresh() {
+		setRefresh(true);
+		getRequests();
+		getRecommends();
+		getAllFriends();
+		setTimeout(() => {
+			setRefresh(false);
+		}, 2000);
+	}
 
 	useEffect(() => {
 		if (selectedPage === "main") {
@@ -223,11 +235,18 @@ export function FriendsPage(props: IFriendsPage) {
 
 	if (props.selectedPage == "main") {
 		const usersRequests = requests.map((request) => {
-			return request.from
-		})
+			return request.from;
+		});
 		return (
 			<View style={styles.container}>
-				<ScrollView>
+				<ScrollView
+					refreshControl={
+						<RefreshControl
+							refreshing={refresh}
+							onRefresh={onRefresh}
+						/>
+					}
+				>
 					<View style={styles.main}>
 						{requests.length > 0 ? (
 							<View style={styles.mainContainer}>
@@ -357,24 +376,33 @@ export function FriendsPage(props: IFriendsPage) {
 
 	if (props.selectedPage == "requests") {
 		const usersRequests = requests.map((request) => {
-			return request.from
-		})
+			return request.from;
+		});
 		return (
 			<View style={styles.container}>
-				<FlatList
-					contentContainerStyle={styles.list}
-					refreshing={isLoading}
-					data={usersRequests}
-					renderItem={({ item }) => (
-						<FriendCard
-							variant="request"
-							username={item.username}
-							name={item.name}
-							surname={item.surname}
-							profileImage={item.profileImage}
+				<ScrollView
+					refreshControl={
+						<RefreshControl
+							refreshing={refresh}
+							onRefresh={onRefresh}
 						/>
-					)}
-				/>
+					}
+				>
+					<FlatList
+						contentContainerStyle={styles.list}
+						refreshing={isLoading}
+						data={usersRequests}
+						renderItem={({ item }) => (
+							<FriendCard
+								variant="request"
+								username={item.username}
+								name={item.name}
+								surname={item.surname}
+								profileImage={item.profileImage}
+							/>
+						)}
+					/>
+				</ScrollView>
 			</View>
 		);
 	}
@@ -382,20 +410,29 @@ export function FriendsPage(props: IFriendsPage) {
 	if (props.selectedPage == "recommends") {
 		return (
 			<View style={styles.container}>
-				<FlatList
-					contentContainerStyle={styles.list}
-					refreshing={isLoading}
-					data={recommends}
-					renderItem={({ item }) => (
-						<FriendCard
-							variant="notFriend"
-							username={item.username}
-							name={item.name}
-							surname={item.surname}
-							profileImage={item.profileImage}
+				<ScrollView
+					refreshControl={
+						<RefreshControl
+							refreshing={refresh}
+							onRefresh={onRefresh}
 						/>
-					)}
-				/>
+					}
+				>
+					<FlatList
+						contentContainerStyle={styles.list}
+						refreshing={isLoading}
+						data={recommends}
+						renderItem={({ item }) => (
+							<FriendCard
+								variant="notFriend"
+								username={item.username}
+								name={item.name}
+								surname={item.surname}
+								profileImage={item.profileImage}
+							/>
+						)}
+					/>
+				</ScrollView>
 			</View>
 		);
 	}
@@ -403,20 +440,29 @@ export function FriendsPage(props: IFriendsPage) {
 	if (props.selectedPage == "all") {
 		return (
 			<View style={styles.container}>
-				<FlatList
-					contentContainerStyle={styles.list}
-					refreshing={isLoading}
-					data={friends}
-					renderItem={({ item }) => (
-						<FriendCard
-							variant="friend"
-							username={item.username}
-							name={item.name}
-							surname={item.surname}
-							profileImage={item.profileImage}
+				<ScrollView
+					refreshControl={
+						<RefreshControl
+							refreshing={refresh}
+							onRefresh={onRefresh}
 						/>
-					)}
-				/>
+					}
+				>
+					<FlatList
+						contentContainerStyle={styles.list}
+						refreshing={isLoading}
+						data={friends}
+						renderItem={({ item }) => (
+							<FriendCard
+								variant="friend"
+								username={item.username}
+								name={item.name}
+								surname={item.surname}
+								profileImage={item.profileImage}
+							/>
+						)}
+					/>
+				</ScrollView>
 			</View>
 		);
 	}

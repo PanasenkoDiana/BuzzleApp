@@ -1,18 +1,19 @@
 import { StyleSheet } from "react-native";
-import { COLORS } from "../../../../shared/ui/colors";
+import { COLORS } from "../../../../../shared/ui/colors";
+
 
 export const styles = StyleSheet.create({
     myPhotoView: {
         width: 200,
         height: 200,
-        backgroundColor: '#000',
+        // backgroundColor: '#000',
         borderRadius: 10,
     },
 
     myPhotoImage: {
         width: 200,
         height: 200,
-        borderRadius: 30,
+        borderRadius: 20,
     },
 
     myPhotoButtonsView: {

@@ -13,6 +13,8 @@ export interface IFriendRequest {
 
 export type ICanceledRequest = { status: "canceled" }
 
+export type IDeletedRequest = { status: "deleted" }
+
 enum FriendRequestStatus {
     "accepted",
     "pending"

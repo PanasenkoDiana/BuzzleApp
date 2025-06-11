@@ -5,7 +5,7 @@ import { useFriends } from "../../../hooks/useFriends";
 import { useUserContext } from "../../../../auth/context/userContext";
 
 interface IDeleteFriendModal {
-	friendUsername: string;
+	username: string;
 	isVisible: boolean;
 	onClose: () => void;
 	setStatus: (status: number) => void;
@@ -13,12 +13,11 @@ interface IDeleteFriendModal {
 
 export function DeleteFriendModal(props: IDeleteFriendModal) {
 	const { deleteFriend } = useFriends();
-	const { user } = useUserContext();
 
-	async function onSubmit(friendUsername: string, username: string) {
+	async function onSubmit(username: string) {
 		props.onClose();
 		try {
-			await deleteFriend(friendUsername, username);
+			await deleteFriend(username);
 			props.setStatus(1);
 		} catch (error) {
 			props.setStatus(2);
@@ -54,7 +53,7 @@ export function DeleteFriendModal(props: IDeleteFriendModal) {
 			<View style={styles.container}>
 				<Text style={styles.text}>
 					Ви дійсно хочете видалити користувача @
-					{props.friendUsername}?
+					{props.username}?
 				</Text>
 				<View style={styles.buttons}>
 					<TouchableOpacity
@@ -71,7 +70,7 @@ export function DeleteFriendModal(props: IDeleteFriendModal) {
 						<Text
 							style={[styles.rightButtonText, styles.text]}
 							onPress={() =>
-								onSubmit(props.friendUsername, user?.username || "")
+								onSubmit(props.username)
 							}
 						>
 							Підтвердити

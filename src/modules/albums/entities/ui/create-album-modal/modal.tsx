@@ -1,9 +1,9 @@
 import { Controller, useForm } from 'react-hook-form';
-import { Modal } from '../../../../shared/ui/modal'
 import { ICreateAlbumModalForm, ICreateAlbumModalProps } from './modal.types'
-import { Input } from '../../../../shared/ui/input';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { styles } from './modal.styles';
+import { Modal } from '../../../../../shared/ui/modal';
+import { Input } from '../../../../../shared/ui/input';
 
 
 export function CreateAlbumModal(props: ICreateAlbumModalProps) {

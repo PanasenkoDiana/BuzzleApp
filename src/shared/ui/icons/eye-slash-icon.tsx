@@ -3,8 +3,8 @@ import Svg, { Path, SvgProps } from "react-native-svg";
 export function EyeSlashIcon(props: SvgProps) {
   return (
     <Svg
-      width={19}
-      height={20}
+      width={props.width || 19}
+      height={props.height || 20}
       viewBox="0 0 19 20"
       fill="none"
       {...props}

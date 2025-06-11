@@ -3,7 +3,7 @@ import { Modal } from "../../../../../shared/ui/modal";
 import { styles } from "./DeleteFriendModalResult.style";
 
 interface IDeleteFriendModalResult {
-	friendUsername: string;
+	username: string;
 	isVisible: boolean;
 	onClose: () => void;
 	status: number;
@@ -26,8 +26,8 @@ export function DeleteFriendModalResult(props: IDeleteFriendModalResult) {
 			<View style={styles.container}>
 				<Text style={styles.text}>
 					{isSuccess
-						? `Ви успішно видалили користувача @${props.friendUsername} з друзів`
-						: `Не вдалося видалити користувача @${props.friendUsername} з друзів`}
+						? `Ви успішно видалили користувача @${props.username} з друзів`
+						: `Не вдалося видалити користувача @${props.username} з друзів`}
 				</Text>
 				<TouchableOpacity style={styles.button} onPress={props.onClose}>
 					<Text style={[styles.text, styles.buttonText]}>Ок</Text>

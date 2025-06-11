@@ -6,6 +6,7 @@ import {
 	IMyRequest,
 	IFriendRequest,
 	ICanceledRequest,
+	IDeletedRequest
 } from "../types/friend";
 import { SERVER_HOST } from "../../../shared/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -183,7 +184,7 @@ export function useFriends() {
 		}
 	}
 
-	async function cancelRequest(friendUsername: string, isIncoming: boolean) {
+	async function cancelRequest(username: string, isIncoming: boolean) {
 		console.log("cancelRequest called");
 		try {
 			const token = await AsyncStorage.getItem("token");
@@ -193,13 +194,39 @@ export function useFriends() {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify({ friendUsername, isIncoming }),
+				body: JSON.stringify({ username, isIncoming }),
 			});
 
 			const result: Result<ICanceledRequest> = await response.json();
 			if (result.status === "success") {
 				await getRequests();
 				await getMyRequests();
+			}
+
+			console.log(result);
+			return result;
+		} catch (err) {
+			console.log(err);
+			throw err;
+		}
+	}
+
+	async function deleteFriend(username: string) {
+		console.log("deleteFriend called");
+		try {
+			const token = await AsyncStorage.getItem("token");
+			const response = await fetch(`${SERVER_HOST}api/friends/delete`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ username }),
+			});
+
+			const result: Result<IDeletedRequest> = await response.json();
+			if (result.status === "success") {
+				await getAllFriends();
 			}
 
 			console.log(result);
@@ -223,5 +250,6 @@ export function useFriends() {
 		getRequests,
 		getMyRequests,
 		getRecommends,
+		deleteFriend
 	};
 }

@@ -28,6 +28,8 @@ export function useAllTags(){
 
         } catch (error) {
 			return { status: "error", message: "An unexpected error occurred" };
+		} finally {
+			setIsLoading(false)
 		}
     }
 

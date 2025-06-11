@@ -1,4 +1,5 @@
-import { Albums } from "../../modules/settings/pages/albums-page";
+import { Albums } from "../../modules/albums/pages/albums-page";
+
 
 
 export default function AlbumsPage(){

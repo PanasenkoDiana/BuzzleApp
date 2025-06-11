@@ -11,11 +11,10 @@ export function Modalka(props: IModalProps) {
 		<Modal
             visible={visible}
             onRequestClose={onClose}
-            transparent
-            // style={{flex: 1, backgroundColor: '#FFFFFF'}}
+            transparent={true}
             {...otherProps}
         >
-            <View style={styles.modal}>
+            <View style={styles.container}>
                 <View style={styles.modalContent}>
                     <View style={styles.header}>
                         <Text style={styles.title}>{title}</Text>

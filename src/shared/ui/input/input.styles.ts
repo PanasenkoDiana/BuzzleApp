@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	codeCellFocused: {
-		borderColor: COLORS.plum, // например, фиолетовый
+		borderColor: COLORS.plum,
 	},
 	codeCellText: {
 		fontSize: 18,

@@ -1,10 +1,13 @@
 import { IAlbumImage } from './image.types'
 import { styles } from './image.styles'
 import { View, Image } from 'react-native';
-import { IconButton } from '../../../../shared/ui/icon-button';
-import { EyeIcon, EyeSlashIcon, PlusIcon, TrashIcon } from '../../../../shared/ui/icons';
-import { COLORS } from '../../../../shared/ui/colors';
+// import { IconButton } from '../../../../shared/ui/icon-button';
+// import { EyeIcon, EyeSlashIcon, PlusIcon, TrashIcon } from '../../../../shared/ui/icons';
+// import { COLORS } from '../../../../shared/ui/colors';
 import { useState } from 'react';
+import { IconButton } from '../../../../../shared/ui/icon-button';
+import { COLORS } from '../../../../../shared/ui/colors';
+import { EyeIcon, EyeSlashIcon, PlusIcon, TrashIcon } from '../../../../../shared/ui/icons';
 
 
 export function AlbumImage(props: IAlbumImage) {
