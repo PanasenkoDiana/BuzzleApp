@@ -21,6 +21,11 @@ export const styles = StyleSheet.create({
 		fontWeight: "600",
 		color: COLORS.black,
 	},
+	fullName: {
+		fontSize: 16,
+		fontWeight: "bold",
+		color: COLORS.black,
+	},
 	signature: {
 		fontSize: 16,
 		color: COLORS.black,

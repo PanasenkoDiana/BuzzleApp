@@ -5,6 +5,7 @@ import { SettingsChangeHeader } from "../../ui/settings-change-header"
 import { SettingsPagePartOne } from "../../ui/settings-page-part-one"
 import { SettingsPagePartTwo } from "../../ui/settings-page-part-two/part"
 import { SettingsPagePartThree } from "../../ui/settings-page-part-three"
+import { SettingsHeader } from "../../ui/settings-header/header"
 
 export function Settings() {
 	const { user } = useUserContext()
@@ -15,11 +16,8 @@ export function Settings() {
 			style={{ flex: 1 }}
 			contentContainerStyle={{ paddingVertical: 10 }}
 		>
+			<SettingsHeader selectedPage={'settings'} />
 			<View style={{ flex: 1, gap: 15 }}>
-				<View style={styles.settingsNav}>
-					<Text style={styles.settingsSelectedTextNav}>Особиста інформація</Text>
-					<Text style={styles.settingsTextNav}>Альбоми</Text>
-				</View>
 
 				<SettingsPagePartOne />
 

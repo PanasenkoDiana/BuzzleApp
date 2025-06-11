@@ -6,7 +6,7 @@ import { Footer } from "../../shared/ui/footer"
 export default function ModalsLayout() {
 	return (
 		<View style={{ flex: 1 }}>
-			<Header />
+			<Header whatCreate="album" />
 
 			<View style={{flex: 1}}>
 				<Stack

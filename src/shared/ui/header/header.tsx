@@ -11,9 +11,11 @@ import { useState } from 'react';
 import { Input } from "../input"
 import { useForm } from 'react-hook-form';
 import { CreatePostModal } from '../../../modules/userpost/ui/create-post-modal/modal';
+import { IHeader } from './header.types';
+import { CreateAlbumModal } from '../../../modules/settings/ui/create-album-modal';
 // import { useAllPosts } from '../../../modules/userpost/hooks/useAllPosts';
 
-export function Header(){
+export function Header(props: IHeader){
     const { user, setUser } = useUserContext(); 
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -39,7 +41,9 @@ export function Header(){
                     </View>
                 </View>
 
-                <CreatePostModal isVisible={modalVisible} onClose={()=> setModalVisible(false)} />
+                { props.whatCreate === "post" && <CreatePostModal isVisible={modalVisible} onClose={()=> setModalVisible(false)} /> }
+                { props.whatCreate === "album" && <CreateAlbumModal isVisible={modalVisible} onClose={()=> setModalVisible(false)} /> }
+
                 {/* <Modal
 					title="Створиння публікації"
 					visible={modalVisible}

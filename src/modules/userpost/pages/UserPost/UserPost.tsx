@@ -12,14 +12,13 @@ export default function UserPost(props: {haveHeader: boolean}) {
 
   function onRefresh() {
     setRefresh(true);
-    getAllPosts(); // вызываем обновление постов
+    getAllPosts();
     setTimeout(() => {
       setRefresh(false);
     }, 2000);
   }
 
   useEffect(() => {
-    // можно добавить логи или действия при изменении isLoading
   }, [isLoading]);
 
   if (isLoading && !refresh) {

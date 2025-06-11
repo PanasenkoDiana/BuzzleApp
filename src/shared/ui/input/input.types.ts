@@ -6,7 +6,7 @@ export interface IInputProps extends TextInputProps {
 	placeholder?: string;
 	rightIcon?: ReactNode;
 	error?: string;
-	value?: string;
+	value?: any;
 	disabled?: boolean;
 }
 

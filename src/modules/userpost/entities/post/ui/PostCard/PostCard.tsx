@@ -14,6 +14,7 @@ import { styles } from "./PostCard.styles";
 import { COLORS } from "../../../../../../shared/ui/colors";
 import { IImage, ITag } from "../../../../types";
 import { SERVER_HOST } from "../../../../../../shared/constants";
+import { useUserContext } from "../../../../../auth/context/userContext";
 
 interface PostCardProps {
 	id: number;
@@ -127,14 +128,24 @@ export function PostCard({
 			setModalVisible(true);
 		}
 	};
+	const { user } = useUserContext();
+
+	if (!user) return null;
 
 	return (
 		<View style={styles.cardContainer}>
 			<View style={styles.profileContainer}>
 				<View style={styles.userInfo}>
-					<Image source={{ uri: avatarUrl }} style={styles.avatar} />
+					<Image
+						source={{
+							uri: `${SERVER_HOST}media/${user.profileImage}`,
+						}}
+						style={styles.avatar}
+					/>
 					<View>
-						<Text style={styles.username}>{username}</Text>
+						<Text style={styles.fullName}>
+							{user.name} {user.surname}
+						</Text>
 						<Text style={styles.signature}>✎</Text>
 					</View>
 					<TouchableOpacity

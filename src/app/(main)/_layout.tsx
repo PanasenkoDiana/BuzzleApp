@@ -11,7 +11,7 @@ export default function MainLayout() {
 
     return (
         <View style={styles.container}>
-            <Header/>
+            <Header whatCreate="post"/>
 
             <View style={styles.content}>
                 <Stack 
