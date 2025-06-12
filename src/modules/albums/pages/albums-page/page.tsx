@@ -18,14 +18,15 @@ import { SettingsHeader } from "../../../settings/ui/settings-header";
 import { AlbumImage } from "../../entities/ui/album-image";
 import { AlbumCard } from "../../entities/ui/album-card";
 import { MyPhotosBlock } from "../../entities/ui/my-photos-block";
-import { useMyPhotos } from "../../hooks/useMyPhotos";
+// import { useMyPhotos } from "../../hooks/useMyPhotos";
 import { useAllAlbums } from "../../hooks/useAllAlbums";
 
 export function Albums() {
 	const { user } = useUserContext();
 	const userPhoto = user?.profileImage as string;
 
-	const { myPhotos } = useMyPhotos()
+	// const { myPhotos } = useMyPhotos()
+	// const { user }
 
 	const { albums } = useAllAlbums()
 	
@@ -45,7 +46,7 @@ export function Albums() {
 
 			<View style={{ flex: 1, gap: 15 }}>
 
-				<MyPhotosBlock images={myPhotos ? myPhotos.images : []} />
+				<MyPhotosBlock images={user?.images ? user.images : []} />
 				
 				{ albums ?
 				<FlatList

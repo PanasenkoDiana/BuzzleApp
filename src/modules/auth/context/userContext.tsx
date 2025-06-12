@@ -13,6 +13,7 @@ import { Result } from "../../../shared/types/result";
 
 interface IUserContext {
 	user: IUser | null;
+	// token: string | null
 	login: (email: string, password: string) => Promise<Result<string>>;
 	register: (
 		email: string,
@@ -21,6 +22,8 @@ interface IUserContext {
 	) => Promise<Result<string> | undefined>;
 	isAuthenticated: () => boolean;
 	setUser: (user: IUser | null) => void;
+	// setToken: (token: string | null) => void;
+	getToken: () => void
 	verify: (
 		email: string,
 		code: string
@@ -41,10 +44,13 @@ interface IUserContext {
 
 const initialValue: IUserContext = {
 	user: null,
+	// token: null,
 	login: async () => ({ status: "error", message: "Not implemented" }),
 	register: async () => ({ status: "error", message: "Not implemented" }),
 	isAuthenticated: () => false,
 	setUser: () => {},
+	// setToken: () => {},
+	getToken: async () => ({ status: "error", message: "Not implemented" }),
 	verify: async () => ({ status: "error", message: "Not implemented" }),
 	changeUserPartOne: async () => ({
 		status: "error",
@@ -72,6 +78,7 @@ interface IUserContextProviderProps {
 
 export function UserContextProvider({ children }: IUserContextProviderProps) {
 	const [user, setUser] = useState<IUser | null>(null);
+	// const [token, setToken] = useState<string | null>(null)
 	const {
 		getData,
 		login,
@@ -86,6 +93,9 @@ export function UserContextProvider({ children }: IUserContextProviderProps) {
 		const fetchUser = async () => {
 			const token = await AsyncStorage.getItem("token");
 			if (!token) return;
+
+
+			// setToken(token)
 
 			const response = await getData(token);
 			if (response?.status === "success") {
@@ -105,9 +115,23 @@ export function UserContextProvider({ children }: IUserContextProviderProps) {
 		return user !== null;
 	}
 
-	useEffect(()=>{
-		console.log('user:', user)
-	}, [user])
+	async function getToken() {
+		const token = await AsyncStorage.getItem("token")
+
+		if (!token) return
+
+		return token
+	}
+
+	// useEffect(()=>{
+	// 	const setNewToken = async () => {
+	// 		if (!token) return
+	// 		const newToken = await AsyncStorage.setItem("token", token);
+
+	// 	}
+
+	// 	setNewToken()
+	// },[token])
 
 	return (
 		<userContext.Provider
@@ -117,6 +141,7 @@ export function UserContextProvider({ children }: IUserContextProviderProps) {
 				register,
 				isAuthenticated,
 				setUser,
+				getToken,
 				verify: verifyUser,
 				changeUserPartOne,
 				changeUserPartTwo,

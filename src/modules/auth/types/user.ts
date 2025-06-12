@@ -1,3 +1,6 @@
+import { IAlbum } from "../../albums/types"
+import { IImage } from "../../userpost/types"
+
 export interface IUser{
     id: number
     email: string
@@ -5,4 +8,6 @@ export interface IUser{
     profileImage: string | null
     name: string
     surname: string
+    images: IImage[],
+    albums: IAlbum[]
 }

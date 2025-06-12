@@ -12,7 +12,8 @@ import { Input } from "../input"
 import { useForm } from 'react-hook-form';
 import { CreatePostModal } from '../../../modules/userpost/ui/create-post-modal/modal';
 import { IHeader } from './header.types';
-import { CreateAlbumModal } from '../../../modules/settings/ui/create-album-modal';
+import { CreateAlbumModal } from '../../../modules/albums/entities/ui/create-album-modal';
+// import { CreateAlbumModal } from '../../../modules/settings/ui/create-album-modal';
 // import { useAllPosts } from '../../../modules/userpost/hooks/useAllPosts';
 
 export function Header(props: IHeader){

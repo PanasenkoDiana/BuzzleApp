@@ -2,25 +2,26 @@ import { useState, useEffect } from "react"
 import { IMyPhotosList } from "../types"
 import { SERVER_HOST } from "../../../shared/constants"
 import { Result } from "../../../shared/types/result"
+import { useUserContext } from "../../auth/context/userContext"
 
-
-
-
-
-export function useAddAlbumPhoto(albumId: number, image: string){
+export function useAddMyPhotos(userId: number, image: string){
     const [ myPhotos, setMyPhotos ] = useState<IMyPhotosList | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
+    const { getToken } =  useUserContext()
 
 
-    async function AddAlbumPhoto(){
+    async function AddPhoto(){
         try {
 			setIsLoading(true);
-            const response = await fetch(`${SERVER_HOST}api/albums/create`, {
+            const token = await getToken()
+            const response = await fetch(`${SERVER_HOST}api/user/photo/create`, {
                 method: "POST",
-                headers: {'Content-Type':'applications/json'},
+                headers: {'Content-Type':'applications/json',
+                    Authorization: `Bearer ${token}`
+                },
                 body: JSON.stringify({
-                    id: albumId,
+                    id: userId,
                     image: image
                 })
             })
@@ -41,5 +42,5 @@ export function useAddAlbumPhoto(albumId: number, image: string){
     }
 
 
-    return { myPhotos, isLoading, error, refetch: AddAlbumPhoto }
+    return { myPhotos, isLoading, error, refetch: AddPhoto }
 }

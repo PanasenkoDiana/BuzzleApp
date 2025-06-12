@@ -50,6 +50,7 @@ export function authUser(setUser: (user: IUser | null) => void) {
 			}
 
 			await AsyncStorage.setItem("token", result.data);
+
 			await getData(result.data);
 
 			return result;

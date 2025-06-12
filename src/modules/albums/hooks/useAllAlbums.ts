@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { IAlbum } from "../types"
 import { SERVER_HOST } from "../../../shared/constants"
 import { Result } from "../../../shared/types/result"
+import { useUserContext } from "../../auth/context/userContext"
 
 
 
@@ -11,12 +12,16 @@ export function useAllAlbums(){
     const [ albums, setAlbums ] = useState<IAlbum[] | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
+	const { getToken } = useUserContext()
 
 
     async function getAlbums(){
         try {
 			setIsLoading(true);
-            const response = await fetch(`${SERVER_HOST}api/albums/all`)
+			const token = await getToken()
+            const response = await fetch(`${SERVER_HOST}api/albums/all`, {
+				headers: { Authorization: `Bearer ${token}` },
+			})
             const result: Result<IAlbum[]> = await response.json();
 			if (result.status === "error") {
 				console.log(result.message);
