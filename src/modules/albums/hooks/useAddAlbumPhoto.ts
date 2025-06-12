@@ -7,20 +7,20 @@ import { Result } from "../../../shared/types/result"
 
 
 
-export function useChangeAlbumPhoto(data: Pick<IAlbum, 'images' | 'id' >){
+export function useAddAlbumPhoto(){
     const [ myPhotos, setMyPhotos ] = useState<IMyPhotosList | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
 
 
-    async function ChangeAlbumPhoto(){
+    async function AddAlbumPhoto(data: {image: string, id: number}){
         try {
             setIsLoading(true);
             const response = await fetch(`${SERVER_HOST}api/albums/add/${data.id}`, {
                 method: "POST",
-                headers: {'Content-Type':'applications/json'},
+                headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
-                    image: data.images
+                    image: data.image
                 })
             })
             const result: Result<IMyPhotosList> = await response.json();
@@ -40,5 +40,5 @@ export function useChangeAlbumPhoto(data: Pick<IAlbum, 'images' | 'id' >){
     }
 
 
-    return { myPhotos, isLoading, error, refetch: ChangeAlbumPhoto }
+    return { myPhotos, isLoading, error, refetch: AddAlbumPhoto }
 }

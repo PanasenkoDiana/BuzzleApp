@@ -4,6 +4,7 @@ import { TouchableOpacity, View, Text } from 'react-native';
 import { styles } from './modal.styles';
 import { Modal } from '../../../../../shared/ui/modal';
 import { Input } from '../../../../../shared/ui/input';
+import { useCreateAlbum } from '../../../hooks/useCreateAlbum';
 
 
 export function CreateAlbumModal(props: ICreateAlbumModalProps) {
@@ -11,8 +12,12 @@ export function CreateAlbumModal(props: ICreateAlbumModalProps) {
 
     });
 
+    const { refetch } = useCreateAlbum()
+
     async function onSubmit(data: ICreateAlbumModalForm) {
         console.log(data)
+        await refetch(data)
+
     }
 
     return(

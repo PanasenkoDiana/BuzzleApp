@@ -4,24 +4,24 @@ import { SERVER_HOST } from "../../../shared/constants"
 import { Result } from "../../../shared/types/result"
 import { useUserContext } from "../../auth/context/userContext"
 
-export function useAddMyPhotos(userId: number, image: string){
+export function useCreateMyPhotos(){
     const [ myPhotos, setMyPhotos ] = useState<IMyPhotosList | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
     const { getToken } =  useUserContext()
 
 
-    async function AddPhoto(){
+    async function CreatePhoto(image: string){
         try {
 			setIsLoading(true);
             const token = await getToken()
             const response = await fetch(`${SERVER_HOST}api/user/photo/create`, {
                 method: "POST",
-                headers: {'Content-Type':'applications/json',
+                headers: {'Content-Type':'application/json',
                     Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    id: userId,
+                    // id: userId,
                     image: image
                 })
             })
@@ -42,5 +42,5 @@ export function useAddMyPhotos(userId: number, image: string){
     }
 
 
-    return { myPhotos, isLoading, error, refetch: AddPhoto }
+    return { myPhotos, isLoading, error, refetch: CreatePhoto }
 }

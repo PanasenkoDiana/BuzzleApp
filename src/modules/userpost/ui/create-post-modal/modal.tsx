@@ -14,7 +14,7 @@ import { Input } from "../../../../shared/ui/input";
 import { Modal } from "../../../../shared/ui/modal";
 import { styles } from "./modal.styles";
 import { GalleryIcon, SendIcon, TrashIcon } from "../../../../shared/ui/icons";
-import { IPostCartForm } from "../../types";
+import { IPostForm } from "../../types";
 import { usePost } from "../../hooks";
 import { TagsSelector } from "../tags-selector";
 import { useAllTags } from "../../hooks/useAllTags";
@@ -32,7 +32,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 		[]
 	);
 
-	const { control, handleSubmit, reset } = useForm<IPostCartForm>({
+	const { control, handleSubmit, reset } = useForm<IPostForm>({
 		defaultValues: {
 			name: "",
 			topic: "",
@@ -78,13 +78,13 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 		setSelectedBase64Images((prev) => prev.filter((_, i) => i !== index));
 	}
 
-	async function onSubmit(data: IPostCartForm) {
+	async function onSubmit(data: IPostForm) {
 		try {
 			const postData = {
 				...data,
 				images: selectedBase64Images,
 			};
-			console.log("Submitting post:", postData);
+			console.log("Submitting post:", data);
 
 			const result = await createPost(postData);
 

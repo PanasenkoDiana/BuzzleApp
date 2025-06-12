@@ -5,55 +5,99 @@ import { useEffect, useState } from "react";
 import { usePost } from "../../hooks";
 import { Main } from "../../../main/ui/main";
 
-export default function UserPost(props: {haveHeader: boolean}) {
-  const { posts, isLoading, getAllPosts } = usePost();
-  const [refresh, setRefresh] = useState(false);
-  const [key, setKey] = useState(0);
+export default function UserPost(props: {
+	haveHeader: boolean;
+	isMyPosts?: boolean;
+}) {
+	const { posts, myPosts, isLoading, getAllPosts, getMyPosts } = usePost();
+	const [refresh, setRefresh] = useState(false);
+	const [key, setKey] = useState(0);
 
-  function onRefresh() {
-    setRefresh(true);
-    getAllPosts();
-    setTimeout(() => {
-      setRefresh(false);
-    }, 2000);
-  }
+	function onRefresh() {
+		setRefresh(true);
+		getAllPosts();
+		getMyPosts();
+		setTimeout(() => {
+			setRefresh(false);
+		}, 2000);
+		console.log(posts);
+	}
 
-  useEffect(() => {
-  }, [isLoading]);
+	useEffect(() => {
+		getAllPosts();
+		getMyPosts();
+	}, []);
 
-  if (isLoading && !refresh) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
+	if (isLoading && !refresh) {
+		return (
+			<View style={styles.container}>
+				<Text>Loading...</Text>
+			</View>
+		);
+	}
 
-  return (
-    <View style={styles.container}>
-      <FlatList
-        refreshing={refresh}
-        refreshControl={<RefreshControl refreshing={refresh} onRefresh={onRefresh} />}
-        key={key}
-        data={posts}
-        keyExtractor={(post) => post.id.toString()}
-        extraData={refresh}
-        ListHeaderComponent={props.haveHeader ? <Main/> : null}
-        renderItem={({ item }) => (
-          <PostCard
-            id={item.id}
-            username={"1"}
-            avatarUrl={"1"}
-            title={item.name}
-            tags={item.tags}
-            description={item.text}
-            images={item.images}
-            likes={1}
-            views={2}
-          />
-        )}
-        showsVerticalScrollIndicator={false}
-      />
-    </View>
-  );
+	if (props.isMyPosts) {
+		return (
+			<View style={styles.container}>
+				<FlatList
+					refreshing={refresh}
+					refreshControl={
+						<RefreshControl
+							refreshing={refresh}
+							onRefresh={onRefresh}
+						/>
+					}
+					key={key}
+					data={myPosts}
+					keyExtractor={(post) => post.id.toString()}
+					extraData={refresh}
+					ListHeaderComponent={props.haveHeader ? <Main /> : null}
+					renderItem={({ item }) => (
+						<PostCard
+							id={item.id}
+							postUser={item.user}
+							title={item.name}
+							tags={item.tags}
+							description={item.text}
+							images={item.images}
+							likes={1}
+							views={2}
+						/>
+					)}
+					showsVerticalScrollIndicator={false}
+				/>
+			</View>
+		);
+	}
+	return (
+		<View style={styles.container}>
+			<FlatList
+				refreshing={refresh}
+				refreshControl={
+					<RefreshControl
+						refreshing={refresh}
+						onRefresh={onRefresh}
+					/>
+				}
+				key={key}
+				data={posts}
+				keyExtractor={(post) => post.id.toString()}
+				extraData={refresh}
+				ListHeaderComponent={props.haveHeader ? <Main /> : null}
+				renderItem={({ item }) => (
+					<PostCard
+						id={item.id}
+						postUser={item.user}
+						title={item.name}
+						tags={item.tags}
+						description={item.text}
+						images={item.images}
+						likes={1}
+						views={2}
+					/>
+				)}
+				showsVerticalScrollIndicator={false}
+			/>
+		</View>
+	);
 }

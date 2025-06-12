@@ -7,18 +7,18 @@ import { Result } from "../../../shared/types/result"
 
 
 
-export function useChangeAlbumPhoto(data: Omit<IAlbum, 'images'>){
+export function useChangeAlbum(){
     const [ myPhotos, setMyPhotos ] = useState<IMyPhotosList | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
 
 
-    async function ChangeAlbumPhoto(){
+    async function ChangeAlbumPhoto(data: Omit<IAlbum, 'images'>){
         try {
             setIsLoading(true);
             const response = await fetch(`${SERVER_HOST}api/albums/change/${data.id}`, {
                 method: "POST",
-                headers: {'Content-Type':'applications/json'},
+                headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
                     name: data.name,
                     theme: data.theme,

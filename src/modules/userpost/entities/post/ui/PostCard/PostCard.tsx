@@ -15,11 +15,11 @@ import { COLORS } from "../../../../../../shared/ui/colors";
 import { IImage, ITag } from "../../../../types";
 import { SERVER_HOST } from "../../../../../../shared/constants";
 import { useUserContext } from "../../../../../auth/context/userContext";
+import { IUser } from "../../../../../auth/types";
 
 interface PostCardProps {
 	id: number;
-	username?: string;
-	avatarUrl?: string;
+	postUser: IUser;
 	title: string;
 	tags?: ITag[];
 	description?: string;
@@ -30,8 +30,7 @@ interface PostCardProps {
 }
 
 export function PostCard({
-	username,
-	avatarUrl,
+	postUser,
 	title,
 	tags,
 	description,
@@ -138,13 +137,13 @@ export function PostCard({
 				<View style={styles.userInfo}>
 					<Image
 						source={{
-							uri: `${SERVER_HOST}media/${user.profileImage}`,
+							uri: `${SERVER_HOST}media/${postUser.profileImage}`,
 						}}
 						style={styles.avatar}
 					/>
 					<View>
 						<Text style={styles.fullName}>
-							{user.name} {user.surname}
+							{postUser.name} {postUser.surname}
 						</Text>
 						<Text style={styles.signature}>✎</Text>
 					</View>

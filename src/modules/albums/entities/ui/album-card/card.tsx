@@ -7,12 +7,37 @@ import { SERVER_HOST } from "../../../../../shared/constants";
 import { styles } from "./card.styles";
 import { Ionicons } from "@expo/vector-icons";
 import { IAlbum } from "../../../types";
+import { launchImageLibraryAsync, MediaTypeOptions, requestMediaLibraryPermissionsAsync } from "expo-image-picker";
+import { useAddAlbumPhoto } from "../../../hooks/useAddAlbumPhoto";
+
 
 
 
 
 
 export function AlbumCard(props: IAlbum){
+    // const [image,setImage]
+    const { refetch } = useAddAlbumPhoto()
+
+    async function onSearch() {
+        const result = await requestMediaLibraryPermissionsAsync()
+        if (result.status === "granted") {
+            const images = await launchImageLibraryAsync({
+                mediaTypes: MediaTypeOptions.Images,
+                allowsEditing: true,
+                allowsMultipleSelection: false,
+                selectionLimit: 1,
+                base64: true, // Важно: получить base64
+            })
+
+            if (!images.canceled && images.assets && images.assets.length > 0) {
+                // Формируем base64 с префиксом для сервера
+                const base64img = `data:image/jpeg;base64,${images.assets[0].base64}`
+                return base64img
+                // setImage(base64img)
+            }
+        }
+    }
 
 
     return(
@@ -61,7 +86,13 @@ export function AlbumCard(props: IAlbum){
                         <AlbumImage.Small image={item.name} />
                     )}
                     ListFooterComponent={() => (
-                        <AlbumImage.Add  />
+                        <AlbumImage.Add onPress={async ()=>{
+                            const base64 = await onSearch()
+                            if (!base64) return
+
+                            await refetch({image: base64, id: props.id})
+
+                        }}  />
                     ) }
                     ></FlatList>
                 </View>
