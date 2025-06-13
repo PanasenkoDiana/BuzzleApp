@@ -9,3 +9,7 @@ export interface ICreateAlbumModalForm{
     theme: string
     year: number
 }
+
+export interface IUpdateAlbumModalForm extends ICreateAlbumModalForm{
+    id: number
+}

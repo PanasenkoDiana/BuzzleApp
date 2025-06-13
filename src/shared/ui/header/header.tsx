@@ -28,7 +28,9 @@ export function Header(props: IHeader){
 
     return(
             <View style={styles.container}>
-                <LogoImage style={styles.logo}/>
+                <TouchableOpacity onPress={()=>router.replace("/main")}>
+                    <LogoImage style={styles.logo}/>
+                </TouchableOpacity>
 
                 <View style={styles.othersNav}>
                     <View style={styles.navDiv}>

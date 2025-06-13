@@ -17,7 +17,7 @@ export function useChangeAlbum(){
         try {
             setIsLoading(true);
             const response = await fetch(`${SERVER_HOST}api/albums/change/${data.id}`, {
-                method: "POST",
+                method: "PATCH",
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
                     name: data.name,

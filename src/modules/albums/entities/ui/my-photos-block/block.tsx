@@ -73,7 +73,7 @@ export function MyPhotosBlock(props: IMyPhotosList){
                 keyExtractor={(image) => image.id.toString()}
                 ListHeaderComponent={<AlbumImage image={`${SERVER_HOST}media/${user?.profileImage}`} />}
                 renderItem={({item})=> (
-                    <AlbumImage image={item.name} />
+                    <AlbumImage image={`${SERVER_HOST}media/${item.name}`} />
                 )}
                 style={{width: '100%'}}
                 contentContainerStyle= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row', justifyContent: 'flex-start'}}
