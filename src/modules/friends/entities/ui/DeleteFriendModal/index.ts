@@ -1,1 +1,1 @@
-import { DeleteFriendModal } from "./DeleteFriendModal"
+export { DeleteFriendModal } from "./DeleteFriendModal"

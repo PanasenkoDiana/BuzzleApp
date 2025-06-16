@@ -16,11 +16,9 @@ export function SettingsPagePartOne() {
     const [isRedact, setIsRedact] = useState(false)
     const [image, setImage] = useState<string | null>(null)
 
-    // При монтировании можно установить текущее изображение профиля
     useEffect(() => {
         if (!user) return
-        // Подставляем полный URL к текущему изображению профиля с сервера
-        setImage(`${SERVER_HOST}media/${user.profileImage}`)
+        setImage(null)
     }, [user])
 
     async function onSearch() {
@@ -31,12 +29,12 @@ export function SettingsPagePartOne() {
                 allowsEditing: true,
                 allowsMultipleSelection: false,
                 selectionLimit: 1,
-                base64: true, // Важно: получить base64
+                base64: true,
             })
 
             if (!images.canceled && images.assets && images.assets.length > 0) {
-                // Формируем base64 с префиксом для сервера
-                const base64img = `data:image/jpeg;base64,${images.assets[0].base64}`
+                // берем чистый base64 без префикса
+                const base64img = images.assets[0].base64 ?? null
                 setImage(base64img)
             }
         }
@@ -47,12 +45,13 @@ export function SettingsPagePartOne() {
         if (!user) return
 
         try {
-            const response = await changeUserPartOne(data, user.id)
+            const response = await changeUserPartOne(
+                { ...data, profileImage: image },
+                user.id
+            )
             if (response.status === "error") {
                 console.error("Ошибка при обновлении пользователя:", response.message)
-                // Можно показать alert или тост пользователю
             } else {
-                // Обновление прошло успешно, можно обновить локальный user или что-то еще
                 console.log("Профиль обновлен")
             }
         } catch (err) {
@@ -60,16 +59,19 @@ export function SettingsPagePartOne() {
         }
     }
 
-    // Отправляем данные при выходе из режима редактирования
     useEffect(() => {
         const submitIfNeeded = async () => {
             if (!isRedact && image) {
                 await onSubmit({ profileImage: image })
             }
         }
-
         submitIfNeeded()
     }, [isRedact])
+    const imageUri = image
+        ? `data:image/png;base64,${image}`
+        : user?.profileImage
+        ? `${SERVER_HOST}media/${user.profileImage}`
+        : undefined
 
     return (
         <View style={styles.changeSettingsBlock}>
@@ -85,7 +87,7 @@ export function SettingsPagePartOne() {
                     <Image
                         style={styles.profileAvatarImage}
                         source={{
-                            uri: image || `${SERVER_HOST}media/${user?.profileImage}`,
+                            uri: imageUri,
                         }}
                     />
                 </TouchableOpacity>

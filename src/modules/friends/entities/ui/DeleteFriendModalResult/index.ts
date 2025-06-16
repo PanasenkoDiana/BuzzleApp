@@ -1,1 +1,1 @@
-import { DeleteFriendModalResult } from "./DeleteFriendModalResult";
+export { DeleteFriendModalResult } from "./DeleteFriendModalResult";

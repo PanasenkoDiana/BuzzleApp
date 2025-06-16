@@ -2,27 +2,21 @@ import { IImage, ITag } from "."
 import { IUser } from "../../auth/types"
 
 export interface IPost {
-    id: number
-    name: string
-    topic?: string
-    text?: string
-    tags?: ITag[]
-    link?: string
-    images?: IImage[],
-    user: IUser
+	id: number;
+	title: string;
+	content: string;
+	authorId: number;
+	author: IUser;
+	tags: ITag[];
+	images: IImage[];
 }
-
 export interface ICreatePost {
-    name: string
-    topic?: string
-    text?: string
-    tags?: ITag[]
-    link?: string
-    images?: IImage[],
+	title: string;
+	content: string;
+	tags?: (string | ITag)[];
+	images: IImage[]; 
 }
 
-export interface IPostForm extends Omit<ICreatePost, 'tags' | 'images'> {
-    id: number
-    tags?: string[]
-    images?: string[]
+export interface IPostForm extends ICreatePost {
+	id?: number;
 }

@@ -1,1 +1,1 @@
-import { FriendsLayout } from "./FriendsLayout"
+export { FriendsLayout } from "./FriendsLayout"

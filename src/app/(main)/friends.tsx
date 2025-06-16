@@ -9,8 +9,6 @@ export default function Friends() {
 		console.log(selectedPage);
 	}, [selectedPage]);
 
-	useEffect(() => {}, []);
-
 	return (
 		<FriendsLayout
 			selectedPage={selectedPage}

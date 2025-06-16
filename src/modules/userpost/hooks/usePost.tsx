@@ -11,7 +11,6 @@ export function usePost() {
 	const [error, setError] = useState<string | null>(null);
 	const [refresh, setRefresh] = useState(false);
 
-	// Создание поста — images уже base64 строки
 	async function createPost(
 		data: IPostForm
 	): Promise<Result<IPost> | undefined> {
@@ -23,7 +22,7 @@ export function usePost() {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
-				body: JSON.stringify(data), // data.images — base64 строки
+				body: JSON.stringify(data),
 			});
 
 			const result: Result<IPost> = await response.json();
@@ -44,7 +43,6 @@ export function usePost() {
 		}
 	}
 
-	// Получить все посты
 	async function getAllPosts(): Promise<Result<IPost[]> | undefined> {
 		try {
 			setIsLoading(true);
@@ -59,8 +57,6 @@ export function usePost() {
 
 			setRefresh(false);
 			setPosts(result.data);
-			console.log("All Posts")
-			console.log(result.data)
 			return result;
 		} catch (error) {
 			console.error("Get All Posts Exception:", error);
@@ -90,8 +86,6 @@ export function usePost() {
 
 			setRefresh(false);
 			setMyPosts(result.data);
-			console.log("My Posts")
-			console.log(result.data)
 			return result;
 		} catch (error) {
 			console.error("Get My Posts Exception:", error);
@@ -101,10 +95,7 @@ export function usePost() {
 		}
 	}
 
-	// Получить пост по ID
-	async function getPost(
-		id: number
-	): Promise<Result<ICreatePost> | undefined> {
+	async function getPost(id: number): Promise<Result<IPost> | undefined> {
 		try {
 			const response = await fetch(`${SERVER_HOST}api/posts/${id}`);
 			const result: Result<IPost> = await response.json();
@@ -122,19 +113,30 @@ export function usePost() {
 		}
 	}
 
-	// Удалить пост по ID
 	async function deletePost(id: number): Promise<Result<string> | undefined> {
 		try {
-			console.log(`Удаление поста id: ${id}`);
 			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/posts/delete`, {
-				method: "POST",
+				method: "DELETE",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify({ id }),
 			});
+
+			if (!response.ok) {
+				// Если статус не 2xx — прочитаем текст ответа
+				const text = await response.text();
+				console.error(
+					`Delete Post failed with status ${response.status}:`,
+					text
+				);
+				return {
+					status: "error",
+					message: `Server error ${response.status}`,
+				};
+			}
 
 			const result: Result<string> = await response.json();
 
@@ -145,6 +147,7 @@ export function usePost() {
 			}
 
 			setPosts((prev) => prev.filter((post) => post.id !== id));
+			setMyPosts((prev) => prev.filter((post) => post.id !== id));
 			return result;
 		} catch (error) {
 			console.error("Delete Post Exception:", error);
@@ -152,7 +155,6 @@ export function usePost() {
 		}
 	}
 
-	// Изменить пост
 	async function changePost(
 		data: IPostForm
 	): Promise<Result<IPost> | undefined> {
@@ -180,6 +182,12 @@ export function usePost() {
 					post.id === result.data.id ? result.data : post
 				)
 			);
+			setMyPosts((prev) =>
+				prev.map((post) =>
+					post.id === result.data.id ? result.data : post
+				)
+			);
+
 			return result;
 		} catch (error) {
 			console.error("Change Post Exception:", error);
@@ -193,16 +201,16 @@ export function usePost() {
 
 	return {
 		posts,
+		myPosts,
 		error,
 		isLoading,
+		refresh,
+		setRefresh,
 		createPost,
 		getAllPosts,
+		getMyPosts,
 		getPost,
 		deletePost,
 		changePost,
-		refresh,
-		setRefresh,
-		myPosts,
-		getMyPosts
 	};
 }

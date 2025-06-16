@@ -17,3 +17,4 @@ export { SendIcon } from "./send-icon";
 export { TrashIcon } from "./trash-icon";
 export { PencilIcon } from "./pencil-icon";
 export { FloppyDiskIcon } from "./disk-icon";
+export { ContactsIcon } from "./contacts-icon"

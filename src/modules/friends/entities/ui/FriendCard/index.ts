@@ -1,1 +1,1 @@
-import { FriendCard } from "./FriendCard";
+export { FriendCard } from "./FriendCard";

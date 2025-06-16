@@ -1,10 +1,10 @@
 import { View, TouchableOpacity, Image, Text } from "react-native";
 import { styles } from "./FriendCard.styles";
-import { IUser } from "../../../types/friend";
-import { DeleteFriendModal } from "../DeleteFriendModal/DeleteFriendModal";
+import { IUser } from "../../../types/types";
+import { DeleteFriendModal } from "../DeleteFriendModal";
 import { useState } from "react";
 import { PeopleIcon } from "../../../../../shared/ui/icons";
-import { DeleteFriendModalResult } from "../DeleteFriendModalResult/DeleteFriendModalResult";
+import { DeleteFriendModalResult } from "../DeleteFriendModalResult";
 import { useUserContext } from "../../../../auth/context/userContext";
 import { useFriends } from "../../../hooks/useFriends";
 import { SERVER_HOST } from "../../../../../shared/constants";
@@ -44,9 +44,13 @@ export function FriendCard(props: IFriendCard) {
 				)}
 
 				<View style={styles.names}>
-					<Text style={styles.name}>
-						{props.name} {props.surname}
-					</Text>
+					{props.name && props.username ? (
+						<Text style={styles.name}>
+							{props.name} {props.surname}
+						</Text>
+					) : (
+						<></>
+					)}
 					<Text style={styles.username}>@{props.username}</Text>
 				</View>
 			</TouchableOpacity>
