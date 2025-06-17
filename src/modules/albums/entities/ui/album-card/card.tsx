@@ -12,9 +12,6 @@ import { useAddAlbumPhoto } from "../../../hooks/useAddAlbumPhoto";
 
 
 
-
-
-
 export function AlbumCard(props: IAlbum){
     // const [image,setImage]
     const { refetch } = useAddAlbumPhoto()
@@ -76,14 +73,14 @@ export function AlbumCard(props: IAlbum){
                 <View style={styles.albumPhotosList}>
                     <Text style={styles.albumPhotosTitle}>Фотографії</Text>
                     <FlatList 
-                    contentContainerStyle= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row'}}
+                    style= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row'}}
 
                     data={props.images}
                     
                     keyExtractor={(item) => item.id.toString()}
 
                     renderItem={({ item}) => (
-                        <AlbumImage.Small image={item.name} />
+                        <AlbumImage.Small image={`${SERVER_HOST}media/${item.filename}`} />
                     )}
                     ListFooterComponent={() => (
                         <AlbumImage.Add onPress={async ()=>{

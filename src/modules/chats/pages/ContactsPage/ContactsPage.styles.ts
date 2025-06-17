@@ -2,12 +2,14 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
 	container: {
-        gap: 10
-	},
-    list: {
         gap: 10,
-        margin: 10
-    },
+		flex: 1,
+	},
+	list: {
+		gap: 10,
+		margin: 10,
+		paddingBottom: 10,
+	},
 	contact: {
 		flexDirection: "row",
         width: "100%",
@@ -28,6 +30,6 @@ export const styles = StyleSheet.create({
 	},
 	contactUsername: {
 		fontSize: 16,
-		fontWeight: "bold",
+		fontWeight: 500,
 	},
 });

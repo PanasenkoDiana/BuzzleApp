@@ -3,13 +3,13 @@ import { COLORS } from "../../../../shared/ui/colors";
 
 export const styles = StyleSheet.create({
 	container: {
+        flex: 1,
 		flexDirection: "column",
 		borderWidth: 1,
 		borderRadius: 10,
         padding: 10,
 		borderColor: COLORS.lightGray,
 		backgroundColor: COLORS.white,
-        height: "100%",
 	},
     header: {
         flexDirection: "row",

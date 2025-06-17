@@ -49,6 +49,7 @@ export function SettingsPagePartOne() {
                 { ...data, profileImage: image },
                 user.id
             )
+
             if (response.status === "error") {
                 console.error("Ошибка при обновлении пользователя:", response.message)
             } else {

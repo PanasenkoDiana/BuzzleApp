@@ -18,10 +18,9 @@ export function FriendsLayout(props: IFriendsLayout) {
 						onPress={() => setSelectedPage("main")}
 						style={[
 							styles.navButtom,
-							selectedPage === "main" &&
-								styles.selectedBlock,
 						]}
 					>
+						{selectedPage === "main" && <View style={styles.selectedBlock} />}
 						<Text style={styles.navText}>Головна</Text>
 					</TouchableOpacity>
 
@@ -29,21 +28,19 @@ export function FriendsLayout(props: IFriendsLayout) {
 						onPress={() => setSelectedPage("requests")}
 						style={[
 							styles.navButtom,
-							selectedPage === "requests" &&
-								styles.selectedBlock,
 						]}
 					>
+						{selectedPage === "requests" && <View style={styles.selectedBlock} />}
 						<Text style={styles.navText}>Запити</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
 						onPress={() => setSelectedPage("recommends")}
 						style={[
-							styles.navButtom,
-							selectedPage === "recommends" &&
-								styles.selectedBlock,
+							styles.navButtom
 						]}
 					>
+						{selectedPage === "recommends" && <View style={styles.selectedBlock} />}
 						<Text style={styles.navText}>Рекомендації</Text>
 					</TouchableOpacity>
 
@@ -51,10 +48,9 @@ export function FriendsLayout(props: IFriendsLayout) {
 						onPress={() => setSelectedPage("all")}
 						style={[
 							styles.navButtom,
-							selectedPage === "all" &&
-								styles.selectedBlock,
 						]}
 					>
+						{selectedPage === "all" && <View style={styles.selectedBlock} />}
 						<Text style={styles.navText}>Всі друзі</Text>
 					</TouchableOpacity>
 				</View>

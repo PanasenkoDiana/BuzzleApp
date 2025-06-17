@@ -69,8 +69,6 @@ export function Albums() {
 					</View>
 				</View>
 				}
-
-
 				
 			</View>
 		</ScrollView>

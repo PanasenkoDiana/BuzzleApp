@@ -7,9 +7,6 @@ export const styles = StyleSheet.create({
         fontWeight: 500,
         textAlign: "center",
     },
-    container: {
-
-    },
     navContainer: {
         flexDirection: "row",
         justifyContent: "space-around",

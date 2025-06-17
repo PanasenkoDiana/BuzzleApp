@@ -12,7 +12,7 @@ interface IChatsLayout {
 export function ChatsLayout(props: IChatsLayout) {
 	const { selectedPage, setSelectedPage, children } = props;
 	return (
-		<View style={styles.container}>
+		<View style={{flex: 1}}>
 			<View style={styles.navContainer}>
 				<TouchableOpacity
 					onPress={() => setSelectedPage("contacts")}

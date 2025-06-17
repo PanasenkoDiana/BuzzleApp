@@ -14,9 +14,9 @@ export function Footer({ selectedPage }: IFooterProps) {
 				onPress={() => router.push("/main")}
 				style={[
 					styles.navBlock,
-					selectedPage === "main" && styles.selectedBlock,
 				]}
 			>
+				{selectedPage === "main" && <View style={styles.selectedBlock} />}
 				<HomeIcon style={styles.navIcon} />
 				<Text style={styles.navText}>Головна</Text>
 			</TouchableOpacity>
@@ -25,9 +25,9 @@ export function Footer({ selectedPage }: IFooterProps) {
 				onPress={() => router.push("/myPosts")}
 				style={[
 					styles.navBlock,
-					selectedPage === "myPosts" && styles.selectedBlock,
 				]}
 			>
+				{selectedPage === "myPosts" && <View style={styles.selectedBlock} />}
 				<GalleryIcon style={styles.navIcon} />
 				<Text style={styles.navText}>Мої публікації</Text>
 			</TouchableOpacity>
@@ -36,9 +36,9 @@ export function Footer({ selectedPage }: IFooterProps) {
 				onPress={() => router.push("/friends")}
 				style={[
 					styles.navBlock,
-					selectedPage === "friends" && styles.selectedBlock,
 				]}
 			>
+				{selectedPage === "friends" && <View style={styles.selectedBlock} />}
 				<PeopleIcon style={styles.navIcon} />
 				<Text style={styles.navText}>Друзі</Text>
 			</TouchableOpacity>
@@ -47,9 +47,9 @@ export function Footer({ selectedPage }: IFooterProps) {
 				onPress={() => router.push("/chats")}
 				style={[
 					styles.navBlock,
-					selectedPage === "chats" && styles.selectedBlock,
 				]}
 			>
+				{selectedPage === "chats" && <View style={styles.selectedBlock} />}
 				<ChatIcon style={styles.navIcon} />
 				<Text style={styles.navText}>Чати</Text>
 			</TouchableOpacity>

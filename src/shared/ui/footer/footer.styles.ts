@@ -11,20 +11,24 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-around',
         width: '100%',
         height: 70,
-        gap: 10,
         bottom: 0,
     },
     navBlock: {
+        width: '25%',
         flexDirection: 'column',
         gap: 5,
         justifyContent: 'center',
         alignItems: 'center',
         paddingTop: 5,
-
     },
     selectedBlock: {
-        borderTopColor: COLORS.darkPlum,
-        borderTopWidth: 2,
+        width: "75%",
+        height: 2,
+        backgroundColor: COLORS.black,
+        position: "absolute",
+        top: 0,
+        borderTopLeftRadius: 1,
+        borderTopRightRadius: 1,
     },
     navIcon: {
         width: 20,

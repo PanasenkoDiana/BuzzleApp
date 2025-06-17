@@ -11,7 +11,7 @@ export default function MainLayout() {
 
     return (
         <View style={styles.container}>
-            <Header whatCreate="post"/>
+            <Header selectedPage={selectedPage} whatCreate="post"/>
 
             <View style={styles.content}>
                 <Stack 
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         // justifyContent:'flex-start',
-        gap: 15,
+        gap: 10,
     },
     content: {
         flex: 1,

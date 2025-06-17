@@ -6,7 +6,7 @@ import {
 	Image,
 	ScrollView,
 } from "react-native";
-import { IContact } from "../../types/types";
+import { Contact } from "../../types/types";
 import { styles } from "./ContactsPage.styles";
 import { Input } from "../../../../shared/ui/input";
 import { SearchIcon } from "../../../../shared/ui/icons";
@@ -14,7 +14,7 @@ import { COLORS } from "../../../../shared/ui/colors";
 import { useState } from "react";
 
 interface ContactsPageProps {
-	contacts: IContact[];
+	contacts: Contact[];
 }
 
 export function ContactsPage(props: ContactsPageProps) {
@@ -30,11 +30,11 @@ export function ContactsPage(props: ContactsPageProps) {
 					: "";
 
 			if (lowerInput.includes("@")) {
-                let username = `@${contact.username}`;
-                let lower = lowerInput.replace("@", "")
-                if (username.toLowerCase().includes(lower)) {
-                    return contact;
-                } else {
+				let username = `@${contact.username}`;
+				let lower = lowerInput.replace("@", "");
+				if (username.toLowerCase().includes(lower)) {
+					return contact;
+				} else {
 					return null;
 				}
 			} else {
@@ -54,6 +54,33 @@ export function ContactsPage(props: ContactsPageProps) {
 		})
 		.filter((contact) => contact !== null);
 
+	const sortedContacts = filteredContacts.sort((a, b) => {
+		const nameA = a.name || '';
+		const nameB = b.name || '';
+		const surnameA = a.surname || '';
+		const surnameB = b.surname || '';
+		const usernameA = a.username || '';
+		const usernameB = b.username || '';
+	
+		const priorityA = nameA ? 0 : (surnameA ? 1 : 2);
+		const priorityB = nameB ? 0 : (surnameB ? 1 : 2);
+	
+		if (priorityA !== priorityB) {
+			return priorityA - priorityB;
+		}
+
+		if (nameA > nameB) return 1;
+		if (nameA < nameB) return -1;
+		
+		if (surnameA > surnameB) return 1;
+		if (surnameA < surnameB) return -1;
+
+		if (usernameA > usernameB) return 1;
+		if (usernameA < usernameB) return -1;
+	
+		return 0;
+	});
+
 	return (
 		<View style={styles.container}>
 			<Input
@@ -63,7 +90,7 @@ export function ContactsPage(props: ContactsPageProps) {
 				value={searchText}
 			/>
 			<FlatList
-				data={filteredContacts}
+				data={sortedContacts}
 				contentContainerStyle={styles.list}
 				renderItem={({ item }) => (
 					<TouchableOpacity style={styles.contact}>
