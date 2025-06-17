@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
 	View,
 	Text,
@@ -6,9 +6,9 @@ import {
 	Modal,
 	FlatList,
 	TextInput,
-} from 'react-native';
-import { styles } from './selector.styles';
-import { ITag } from '../../types';
+} from "react-native";
+import { styles } from "./selector.styles";
+import { ITag } from "../../types";
 
 type ITagSelectorProps = {
 	value?: string[];
@@ -16,9 +16,13 @@ type ITagSelectorProps = {
 	options: ITag[]; // из БД
 };
 
-export function TagsSelector({ value = [], onChange, options }: ITagSelectorProps) {
+export function TagsSelector({
+	value = [],
+	onChange,
+	options,
+}: ITagSelectorProps) {
 	const [visible, setVisible] = useState(false);
-	const [customTag, setCustomTag] = useState('');
+	const [customTag, setCustomTag] = useState("");
 
 	const exists = (name: string) => value.some((v) => v === name);
 
@@ -42,12 +46,12 @@ export function TagsSelector({ value = [], onChange, options }: ITagSelectorProp
 		if (!trimmed) return;
 
 		// Добавить #, если его нет
-		const formatted = trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
+		const formatted = trimmed.startsWith("#") ? trimmed : `#${trimmed}`;
 
 		if (exists(formatted)) return;
 
 		handleChange([...value, formatted]);
-		setCustomTag('');
+		setCustomTag("");
 		setVisible(false);
 	};
 
@@ -84,17 +88,21 @@ export function TagsSelector({ value = [], onChange, options }: ITagSelectorProp
 				<View style={{ flex: 1, padding: 16 }}>
 					<FlatList
 						data={options}
-						keyExtractor={(item) => item?.toString() ?? item}
+						keyExtractor={(item) => item.name}
 						renderItem={({ item }) => (
 							<TouchableOpacity
 								onPress={() => toggleTag(item.name)}
 								style={{ padding: 10 }}
 							>
-								<Text style={{ fontSize: 16 }}>{item.name}</Text>
+								<Text style={{ fontSize: 16 }}>
+									{item.name}
+								</Text>
 							</TouchableOpacity>
 						)}
 						ItemSeparatorComponent={() => (
-							<View style={{ height: 1, backgroundColor: '#ccc' }} />
+							<View
+								style={{ height: 1, backgroundColor: "#ccc" }}
+							/>
 						)}
 					/>
 
@@ -104,7 +112,7 @@ export function TagsSelector({ value = [], onChange, options }: ITagSelectorProp
 						placeholder="Новый тег"
 						style={{
 							borderWidth: 1,
-							borderColor: '#ccc',
+							borderColor: "#ccc",
 							padding: 10,
 							marginTop: 20,
 							borderRadius: 5,
@@ -114,21 +122,23 @@ export function TagsSelector({ value = [], onChange, options }: ITagSelectorProp
 					<TouchableOpacity
 						onPress={handleAdd}
 						style={{
-							backgroundColor: '#007bff',
+							backgroundColor: "#007bff",
 							padding: 10,
 							marginTop: 10,
-							alignItems: 'center',
+							alignItems: "center",
 							borderRadius: 5,
 						}}
 					>
-						<Text style={{ color: '#fff' }}>Добавить</Text>
+						<Text style={{ color: "#fff" }}>Добавить</Text>
 					</TouchableOpacity>
 
 					<TouchableOpacity
 						onPress={() => setVisible(false)}
-						style={{ marginTop: 20, alignSelf: 'center' }}
+						style={{ marginTop: 20, alignSelf: "center" }}
 					>
-						<Text style={{ color: 'red', fontSize: 18 }}>Закрыть</Text>
+						<Text style={{ color: "red", fontSize: 18 }}>
+							Закрыть
+						</Text>
 					</TouchableOpacity>
 				</View>
 			</Modal>

@@ -20,17 +20,17 @@ export function SecondRegisterModal(props: ISecondRegisterModalProps) {
 
 		if (!user) return
 		await addSecondUserInfo(data, user.id)
+		props.onClose()	
 	}
 
 	return (
 		<Modalka.InCenter
-			visible={props.isVisible}
+			visible={props.isVisible}	
 			onClose={props.onClose}
 			title="Додай деталі про себе"
 		>
 				<View
 					style={{
-						// flexGrow: 1,
                         flexDirection: 'column',
                         gap: '30',
 

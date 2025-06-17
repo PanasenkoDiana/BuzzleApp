@@ -2,11 +2,11 @@ import { StyleSheet } from "react-native";
 import { COLORS } from "../colors";
 
 export const styles = StyleSheet.create({
-	modal: {
+	container: {
 		flex: 1,
-		justifyContent: "flex-start",
+		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: "rgba(0, 0, 0, 0.5)",
+		backgroundColor: "rgba(0, 0, 0, 0.5)"
 	},
 	modalContent: {
 		backgroundColor: COLORS.white,

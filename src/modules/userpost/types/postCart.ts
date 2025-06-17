@@ -1,19 +1,22 @@
 import { IImage, ITag } from "."
 import { IUser } from "../../auth/types"
 
-export interface IPostCart {
-    id: number
-    name: string
-    topic?: string
-    text?: string
-    tags?: ITag[]
-    link?: string
-    images?: IImage[]
+export interface IPost {
+	id: number;
+	title: string;
+	content: string;
+	authorId: number;
+	author: IUser;
+	tags: ITag[];
+	images: IImage[];
+}
+export interface ICreatePost {
+	title: string;
+	content: string;
+	tags?: (string | ITag)[];
+	images: IImage[]; 
 }
 
-export interface IPostCartForm extends Omit<IPostCart, 'tags'> {
-    tags?: string[]
-}
-
-export interface IPostWithUser extends IUser, IPostCart {
+export interface IPostForm extends ICreatePost {
+	id?: number;
 }

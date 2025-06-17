@@ -18,16 +18,13 @@ export function useAllTags(){
 				console.log(result.message);
 				setError(result.message)
 			} else {
-				// let all_tags: ITag[] = []
-				// result.data.map((tag)=>{
-				// 	return all_tags.push(tag.name)
-				// })
-
 				setTags(result.data)
 			}
 
         } catch (error) {
 			return { status: "error", message: "An unexpected error occurred" };
+		} finally {
+			setIsLoading(false)
 		}
     }
 

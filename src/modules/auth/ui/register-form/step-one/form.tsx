@@ -2,12 +2,9 @@ import { IRegister } from "../../../types";
 import { Button } from "../../../../../shared/ui/button";
 import { Input } from "../../../../../shared/ui/input";
 import { Controller, useForm } from "react-hook-form";
-import { EmailIcon, UserIcon } from "../../../../../shared/ui/icons";
 import { TouchableOpacity, View, Text } from "react-native";
 import { styles } from "./form.style";
-import { authUser } from "../../../hooks";
 import { useRouter } from "expo-router";
-import { COLORS } from "../../../../../shared/ui/colors";
 import { useUserContext } from "../../../context/userContext";
 
 export function RegisterForm() {
@@ -15,8 +12,7 @@ export function RegisterForm() {
 	const { register } = useUserContext();
 
 	const { control, handleSubmit, setError } = useForm<IRegister>({
-		defaultValues: {
-			username: "",
+		defaultValues: {	
 			email: "",
 			password: "",
 			repeatPassword: "",
@@ -29,11 +25,11 @@ export function RegisterForm() {
 		if (data.password !== data.repeatPassword) {
 			setError("repeatPassword", {
 				type: "manual",
-				message: "Паролі на співпадають",
+				message: "Паролі не співпадають",
 			});
 			setError("password", {
 				type: "manual",
-				message: "Паролі на співпадають",
+				message: "Паролі не співпадають",
 			});
 			return;
 		}
@@ -46,14 +42,14 @@ export function RegisterForm() {
 			return;
 		}
 
-		const response = await register(
-			data.email,
-			data.username,
-			data.password
-		);
+		const response = await register(data.email, data.password);
 
-		if (response?.status === "error") {
-			console.log(`${response?.message}`);
+		if (!response || response.status === "error") {
+			setError("email", {
+				type: "manual",
+				message: response?.message || "Помилка при реєстрації",
+			});
+			return;
 		}
 		router.push({
 			pathname: "/verify",
@@ -61,14 +57,11 @@ export function RegisterForm() {
 				email: data.email,
 			},
 		});
-		
 	}
 
 	return (
 		<View style={styles.container}>
-			<View
-				style={styles.transitionContainer}
-			>
+			<View style={styles.transitionContainer}>
 				<TouchableOpacity style={styles.activeTransitionText}>
 					<Text style={styles.activeTransitionButton}>
 						Реєстрація
@@ -82,8 +75,8 @@ export function RegisterForm() {
 				</TouchableOpacity>
 			</View>
 			<Text style={styles.pageText}>Приєднуйся до World IT</Text>
-			<View style={{gap: 20}}>
-				<View style={{gap: 10}}>
+			<View style={{ gap: 20 }}>
+				<View style={{ gap: 10 }}>
 					<Controller
 						control={control}
 						name="email"

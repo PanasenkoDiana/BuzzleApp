@@ -1,4 +1,4 @@
 export interface ITag {
-    id: number; // null → новый тег
+    id: number;
     name: string;
 }

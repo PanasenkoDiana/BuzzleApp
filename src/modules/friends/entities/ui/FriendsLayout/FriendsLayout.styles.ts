@@ -17,13 +17,13 @@ export const styles = StyleSheet.create({
         justifyContent: "center"
     },
     selectedBlock: {
-        borderBottomColor: COLORS.darkPlum,
-        borderBottomWidth: 2,
+        borderTopWidth: 2,
+        borderTopColor: COLORS.black
     },
     navText: {
         fontSize: 19,
-        fontWeight: "bold",
-        textAlign: "center"
+        fontWeight: 500,
+        textAlign: "center",
     }
 
 })

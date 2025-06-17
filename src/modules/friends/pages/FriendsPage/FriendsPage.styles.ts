@@ -5,11 +5,12 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 export const styles = StyleSheet.create({
 	container: {
 		margin: 10,
-		gap: 5
+		gap: 5,
 	},
 	mainContainer: {
+		backgroundColor: COLORS.white,
 		borderWidth: 1,
-		borderColor: COLORS.black,
+		borderColor: COLORS.lightGray,
 		borderRadius: 12,
 		padding: 10,
 		gap: 10,

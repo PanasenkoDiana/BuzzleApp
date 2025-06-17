@@ -1,68 +1,57 @@
-import { useEffect, useState } from 'react';
-import { IPostCart, IPostCartForm } from '../types';
-import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
-import { SERVER_HOST } from '../../../shared/constants';
-import { Result } from '../../../shared/types/result';
+import { useEffect, useState } from "react";
+import { ICreatePost, IPost, IPostForm } from "../types";
+import { SERVER_HOST } from "../../../shared/constants";
+import { Result } from "../../../shared/types/result";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function usePost() {
-	const [posts, setPosts] = useState<IPostCart[]>([]);
+	const [posts, setPosts] = useState<IPost[]>([]);
+	const [myPosts, setMyPosts] = useState<IPost[]>([]);
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [refresh, setRefresh] = useState(false);
 
-	async function createPost(data: IPostCartForm): Promise<Result<IPostCart> | undefined> {
+	async function createPost(
+		data: IPostForm
+	): Promise<Result<IPost> | undefined> {
 		try {
-			const { images } = data;
-
-			const resizedImages = images
-				? await Promise.all(
-						images.map(async (image) =>
-							await manipulateAsync(
-								image.name,
-								[{ resize: { width: 1000, height: 1000 } }],
-								{ compress: 1, format: SaveFormat.PNG }
-							)
-						)
-				  )
-				: [];
-
-			const newData = {
-				...data,
-				images: resizedImages,
-			};
-
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/posts/create`, {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(newData),
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify(data),
 			});
 
-			const result: Result<IPostCart> = await response.json();
+			const result: Result<IPost> = await response.json();
 
-			if (result.status === 'error') {
-				console.log(result.message);
+			if (result.status === "error") {
+				setError(result.message);
+				console.log("Create Post Error:", result.message);
 				return result;
 			}
 
-			if (result.status === 'success') {
+			if (result.status === "success") {
 				await getAllPosts();
 				return result;
 			}
 		} catch (error) {
-			console.error('Create Post Error:', error);
-			return { status: 'error', message: 'An unexpected error occurred' };
+			console.error("Create Post Exception:", error);
+			return { status: "error", message: "An unexpected error occurred" };
 		}
 	}
 
-	async function getAllPosts(): Promise<Result<IPostCart[]> | undefined> {
+	async function getAllPosts(): Promise<Result<IPost[]> | undefined> {
 		try {
 			setIsLoading(true);
 			const response = await fetch(`${SERVER_HOST}api/posts/all`);
-			const result: Result<IPostCart[]> = await response.json();
+			const result: Result<IPost[]> = await response.json();
 
-			if (result.status === 'error') {
+			if (result.status === "error") {
 				setError(result.message);
-				console.log(result.message);
+				console.log("Get All Posts Error:", result.message);
 				return result;
 			}
 
@@ -70,75 +59,139 @@ export function usePost() {
 			setPosts(result.data);
 			return result;
 		} catch (error) {
-			console.error('Get All Posts Error:', error);
-			return { status: 'error', message: 'An unexpected error occurred' };
+			console.error("Get All Posts Exception:", error);
+			return { status: "error", message: "An unexpected error occurred" };
 		} finally {
 			setIsLoading(false);
 		}
 	}
 
-	async function getPost(id: number): Promise<Result<IPostCart> | undefined> {
+	async function getMyPosts(): Promise<Result<IPost[]> | undefined> {
 		try {
-			const response = await fetch(`${SERVER_HOST}api/posts/${id}`);
-			const result: Result<IPostCart> = await response.json();
+			setIsLoading(true);
+			const token = await AsyncStorage.getItem("token");
+			const response = await fetch(`${SERVER_HOST}api/posts/myPosts`, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			});
+			const result: Result<IPost[]> = await response.json();
 
-			if (result.status === 'error') {
+			if (result.status === "error") {
 				setError(result.message);
-				console.log(result.message);
-			} else {
+				console.log("Get My Posts Error:", result.message);
 				return result;
 			}
+
+			setRefresh(false);
+			setMyPosts(result.data);
+			return result;
 		} catch (error) {
-			console.error('Get Post Error:', error);
-			return { status: 'error', message: 'An unexpected error occurred' };
+			console.error("Get My Posts Exception:", error);
+			return { status: "error", message: "An unexpected error occurred" };
+		} finally {
+			setIsLoading(false);
+		}
+	}
+
+	async function getPost(id: number): Promise<Result<IPost> | undefined> {
+		try {
+			const response = await fetch(`${SERVER_HOST}api/posts/${id}`);
+			const result: Result<IPost> = await response.json();
+
+			if (result.status === "error") {
+				setError(result.message);
+				console.log("Get Post Error:", result.message);
+				return result;
+			}
+
+			return result;
+		} catch (error) {
+			console.error("Get Post Exception:", error);
+			return { status: "error", message: "An unexpected error occurred" };
 		}
 	}
 
 	async function deletePost(id: number): Promise<Result<string> | undefined> {
 		try {
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/posts/delete`, {
-				method: 'DELETE',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(id),
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
+				body: JSON.stringify({ id }),
 			});
+
+			if (!response.ok) {
+				// Если статус не 2xx — прочитаем текст ответа
+				const text = await response.text();
+				console.error(
+					`Delete Post failed with status ${response.status}:`,
+					text
+				);
+				return {
+					status: "error",
+					message: `Server error ${response.status}`,
+				};
+			}
 
 			const result: Result<string> = await response.json();
 
-			if (result.status === 'error') {
+			if (result.status === "error") {
 				setError(result.message);
-				console.log(result.message);
-			} else {
-				setPosts((prev) => prev.filter((post) => post.id !== id));
+				console.log("Delete Post Error:", result.message);
 				return result;
 			}
+
+			setPosts((prev) => prev.filter((post) => post.id !== id));
+			setMyPosts((prev) => prev.filter((post) => post.id !== id));
+			return result;
 		} catch (error) {
-			console.error('Delete Post Error:', error);
-			return { status: 'error', message: 'An unexpected error occurred' };
+			console.error("Delete Post Exception:", error);
+			return { status: "error", message: "An unexpected error occurred" };
 		}
 	}
 
-	async function changePost(data: IPostCart): Promise<Result<IPostCart> | undefined> {
+	async function changePost(
+		data: IPostForm
+	): Promise<Result<IPost> | undefined> {
 		try {
+			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/posts/change`, {
-				method: 'PUT',
-				headers: { 'Content-Type': 'application/json' },
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`,
+				},
 				body: JSON.stringify(data),
 			});
 
-			const result: Result<IPostCart> = await response.json();
+			const result: Result<IPost> = await response.json();
 
-			if (result.status === 'error') {
+			if (result.status === "error") {
 				setError(result.message);
-				console.log(result.message);
-			} else {
-				setPosts((prev) =>
-					prev.map((post) => (post.id === result.data.id ? result.data : post))
-				);
+				console.log("Change Post Error:", result.message);
 				return result;
 			}
+
+			setPosts((prev) =>
+				prev.map((post) =>
+					post.id === result.data.id ? result.data : post
+				)
+			);
+			setMyPosts((prev) =>
+				prev.map((post) =>
+					post.id === result.data.id ? result.data : post
+				)
+			);
+
+			return result;
 		} catch (error) {
-			console.error('Change Post Error:', error);
-			return { status: 'error', message: 'An unexpected error occurred' };
+			console.error("Change Post Exception:", error);
+			return { status: "error", message: "An unexpected error occurred" };
 		}
 	}
 
@@ -148,14 +201,16 @@ export function usePost() {
 
 	return {
 		posts,
+		myPosts,
 		error,
 		isLoading,
+		refresh,
+		setRefresh,
 		createPost,
 		getAllPosts,
+		getMyPosts,
 		getPost,
 		deletePost,
 		changePost,
-		refresh,
-		setRefresh,
 	};
 }

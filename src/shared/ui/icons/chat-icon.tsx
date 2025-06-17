@@ -3,8 +3,6 @@ import Svg, { SvgProps, Path } from "react-native-svg";
 export function ChatIcon(props: SvgProps) {
   return (
     <Svg
-      width="18"
-      height="18"
       viewBox="0 0 18 18"
       fill="none"
       {...props}

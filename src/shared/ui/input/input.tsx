@@ -16,7 +16,16 @@ export function Input(props: IInputProps) {
 
 	return (
 		<View>
-			{label && <Text style={[styles.label, disabled ? {color: COLORS.lightGray } : null ]}>{label}</Text>}
+			{label && (
+				<Text
+					style={[
+						styles.label,
+						disabled ? { color: COLORS.lightGray } : null,
+					]}
+				>
+					{label}
+				</Text>
+			)}
 
 			<View style={{ gap: 5 }}>
 				<View style={styles.inputWrapper}>
@@ -54,31 +63,45 @@ function Password(props: IInputPasswordProps) {
 
 	return (
 		<View>
-			{label && <Text style={[styles.label, disabled ? {color: COLORS.lightGray } : null ]}>{label}</Text>}
+			{label && (
+				<Text
+					style={[
+						styles.label,
+						disabled ? { color: COLORS.lightGray } : null,
+					]}
+				>
+					{label}
+				</Text>
+			)}
 
 			<View style={{ gap: 5 }}>
 				<View style={styles.inputWrapper}>
 					<TextInput
-						placeholderTextColor={disabled ? COLORS.lightGray : COLORS.black}
-						style={[styles.input, style,
-							disabled ? { borderColor: COLORS.lightGray, color: COLORS.lightGray } : null,
+						placeholderTextColor={
+							disabled ? COLORS.lightGray : COLORS.black
+						}
+						style={[
+							styles.input,
+							style,
+							disabled
+								? {
+										borderColor: COLORS.lightGray,
+										color: COLORS.lightGray,
+								  }
+								: null,
 						]}
 						{...otherProps}
 						secureTextEntry={hidden}
 					/>
 					<TouchableOpacity
 						style={styles.rightIcon}
-						onPress={() => {
-							setHidden(!hidden);
-						}}
+						onPress={() => setHidden(!hidden)}
 					>
-						<View>
-							{hidden ? (
-								<EyeSlashIcon width={30} height={30} />
-							) : (
-								<EyeIcon width={30} height={30} />
-							)}
-						</View>
+						{hidden ? (
+							<EyeSlashIcon width={30} height={30} />
+						) : (
+							<EyeIcon width={30} height={30} stroke="#81818D" />
+						)}
 					</TouchableOpacity>
 				</View>
 				<View style={{ height: 20 }}>

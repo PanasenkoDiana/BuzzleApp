@@ -16,31 +16,52 @@ export function VerifyForm() {
 
 	async function onSubmit(code: ICode) {
 		const response = await verify(params.email, code.code);
-		if (!response) {
+
+		if (!response || response.status === "error") {
 			setError("code", {
 				type: "manual",
-				message: "Неправильний код",
+				message: response?.message || "Неправильний код",
 			});
 			return;
 		}
+
 		router.push({
-			pathname: '/main',
+			pathname: "/main",
 			params: {
-				showRegisterModal: 'true'
-			}
+				showRegisterModal: "true",
+			},
 		});
 	}
 
 	return (
 		<View style={styles.container}>
-			<View style={{width: '100%', alignItems:'center'}}>
-				<Text style={{fontFamily: 'GTWalsheimPro-Regular', fontSize: 24, fontWeight: '700', color: COLORS.darkPlum,}}>Підтвердження пошти</Text>
+			<View style={{ width: "100%", alignItems: "center" }}>
+				<Text
+					style={{
+						fontFamily: "GTWalsheimPro-Regular",
+						fontSize: 24,
+						fontWeight: "700",
+						color: COLORS.darkPlum,
+					}}
+				>
+					Підтвердження пошти
+				</Text>
 			</View>
 
-			<View style={{alignItems: 'center', width: '100%'}}>
-				<Text style={{fontSize: 16, fontWeight: '600', fontFamily: 'GTWalsheimPro-Regular', color: COLORS.darkPlum, textAlign: 'center'}}>Ми надіслали 6-значний код на вашу пошту (you@example.com). Введіть його нижче, щоб підтвердити акаунт</Text>
+			<View style={{ alignItems: "center", width: "100%" }}>
+				<Text
+					style={{
+						fontSize: 16,
+						fontWeight: "600",
+						fontFamily: "GTWalsheimPro-Regular",
+						color: COLORS.darkPlum,
+						textAlign: "center",
+					}}
+				>
+					Ми надіслали 6-значний код на вашу пошту (you@example.com).
+					Введіть його нижче, щоб підтвердити акаунт
+				</Text>
 			</View>
-
 
 			<View>
 				<Controller
@@ -56,7 +77,10 @@ export function VerifyForm() {
 							message: "Має бути 6 цифр",
 						},
 					}}
-					render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+					render={({
+						field: { value, onChange, onBlur },
+						fieldState: { error },
+					}) => (
 						<Input.Code
 							label="Код підтвердження"
 							value={value}
@@ -70,7 +94,12 @@ export function VerifyForm() {
 
 			<View>
 				<Button onPress={handleSubmit(onSubmit)} label="Підтвердити" />
-                <TouchableOpacity style={styles.backButtonContainer} onPress={()=>router.back()}><Text style={styles.backButton} >Назад</Text></TouchableOpacity>
+				<TouchableOpacity
+					style={styles.backButtonContainer}
+					onPress={() => router.back()}
+				>
+					<Text style={styles.backButton}>Назад</Text>
+				</TouchableOpacity>
 			</View>
 		</View>
 	);

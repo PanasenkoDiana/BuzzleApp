@@ -1,12 +1,13 @@
 import { View, TouchableOpacity, Image, Text } from "react-native";
 import { styles } from "./FriendCard.styles";
-import { IUser } from "../../../types/friend";
-import { DeleteFriendModal } from "../DeleteFriendModal/DeleteFriendModal";
+import { IUser } from "../../../types/types";
+import { DeleteFriendModal } from "../DeleteFriendModal";
 import { useState } from "react";
 import { PeopleIcon } from "../../../../../shared/ui/icons";
-import { DeleteFriendModalResult } from "../DeleteFriendModalResult/DeleteFriendModalResult";
+import { DeleteFriendModalResult } from "../DeleteFriendModalResult";
 import { useUserContext } from "../../../../auth/context/userContext";
 import { useFriends } from "../../../hooks/useFriends";
+import { SERVER_HOST } from "../../../../../shared/constants";
 
 interface IFriendCard extends IUser {
 	variant: "friend" | "request" | "myRequest" | "notFriend";
@@ -31,7 +32,11 @@ export function FriendCard(props: IFriendCard) {
 			<TouchableOpacity style={styles.friendInfo}>
 				{props.profileImage ? (
 					<Image
-						source={{ uri: props.profileImage || "" }}
+						source={{
+							uri:
+								`${SERVER_HOST}media/${props.profileImage}` ||
+								"",
+						}}
 						style={styles.profileImage}
 					/>
 				) : (
@@ -39,9 +44,13 @@ export function FriendCard(props: IFriendCard) {
 				)}
 
 				<View style={styles.names}>
-					<Text style={styles.name}>
-						{props.name} {props.surname}
-					</Text>
+					{props.name && props.username ? (
+						<Text style={styles.name}>
+							{props.name} {props.surname}
+						</Text>
+					) : (
+						<></>
+					)}
 					<Text style={styles.username}>@{props.username}</Text>
 				</View>
 			</TouchableOpacity>
@@ -112,13 +121,13 @@ export function FriendCard(props: IFriendCard) {
 			)}
 
 			<DeleteFriendModal
+				username={props.username}
 				isVisible={modalVisible}
 				onClose={() => setModalVisible(false)}
-				friendUsername={props.username}
 				setStatus={setStatus}
 			/>
 			<DeleteFriendModalResult
-				friendUsername={props.username}
+				username={props.username}
 				onClose={() => {
 					setResultVisible(false);
 					setStatus(0);
