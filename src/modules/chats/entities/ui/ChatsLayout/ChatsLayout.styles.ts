@@ -3,7 +3,7 @@ import { COLORS } from "../../../../../shared/ui/colors";
 
 export const styles = StyleSheet.create({
     text: {
-        fontSize: 17,
+        fontSize: 15,
         fontWeight: 500,
         textAlign: "center",
     },
@@ -19,9 +19,16 @@ export const styles = StyleSheet.create({
     navButtom: {
         justifyContent: "center",
         alignItems: "center",
+        padding: 5,
+        width: "33%",
     },
     selectedBlock: {
-        borderTopWidth: 2,
-        borderTopColor: COLORS.black
+        width: "100%",
+        height: 2,
+        backgroundColor: COLORS.black,
+        position: "absolute",
+        top: 0,
+        borderTopLeftRadius: 1,
+        borderTopRightRadius: 1,
     }
 })

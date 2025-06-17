@@ -18,30 +18,31 @@ export function ChatsLayout(props: IChatsLayout) {
 					onPress={() => setSelectedPage("contacts")}
 					style={[
 						styles.navButtom,
-						selectedPage === "contacts" && styles.selectedBlock,
 					]}
 				>
+					{selectedPage === "contacts" && <View style={styles.selectedBlock} />}
 					<ContactsIcon style={{ width: 25, height: 25 }} />
 					<Text style={styles.text}>Контакти</Text>
 				</TouchableOpacity>
+
 				<TouchableOpacity
 					onPress={() => setSelectedPage("notifications")}
 					style={[
 						styles.navButtom,
-						selectedPage === "notifications" &&
-							styles.selectedBlock,
 					]}
 				>
+					{selectedPage === "notifications" && <View style={styles.selectedBlock} />}
 					<ChatIcon style={{ width: 20, height: 20 }} />
 					<Text style={styles.text}>Повідомлення</Text>
 				</TouchableOpacity>
+
 				<TouchableOpacity
 					onPress={() => setSelectedPage("chats")}
 					style={[
 						styles.navButtom,
-						selectedPage === "chats" && styles.selectedBlock,
 					]}
 				>
+					{selectedPage === "chats" && <View style={styles.selectedBlock} />}
 					<ChatIcon style={{ width: 20, height: 20 }} />
 					<Text style={styles.text}>Групові чати</Text>
 				</TouchableOpacity>

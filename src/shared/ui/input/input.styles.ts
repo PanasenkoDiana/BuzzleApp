@@ -28,6 +28,7 @@ export const styles = StyleSheet.create({
 	},
 	input: {
 		width: "95%",
+		paddingLeft: 10,
 		minHeight: 42,
 		borderWidth: 1,
 		borderColor: COLORS.lightGray,

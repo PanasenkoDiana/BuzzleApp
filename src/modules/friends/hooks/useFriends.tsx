@@ -7,7 +7,7 @@ import {
 	IFriendRequest,
 	ICanceledRequest,
 	IDeletedRequest
-} from "../types/friend";
+} from "../types/types";
 import { SERVER_HOST } from "../../../shared/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

@@ -1,5 +1,6 @@
 export interface IContact {
+	username: string;
 	name: string | null;
 	surname: string | null;
-	username: string | null;
+	profileImage: string | null;
 }
