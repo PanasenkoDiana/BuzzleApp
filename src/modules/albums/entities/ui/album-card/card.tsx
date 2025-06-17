@@ -103,7 +103,7 @@ export function AlbumCard(props: IAlbum){
             </View>
             <View style={{width: '100%', gap: 10}}>
                 <View style={styles.albumTextInfo}>
-                    <Text style={styles.albumTextInfoTheme}>{props.theme}</Text>
+                    <Text style={styles.albumTextInfoTheme}>{props.topic}</Text>
                     <Text style={styles.albumTextInfoYear}>{props.year}</Text>
                 </View>
                 <View style={styles.albumPhotosList}>
@@ -116,7 +116,7 @@ export function AlbumCard(props: IAlbum){
                     keyExtractor={(item) => item.id.toString()}
 
                     renderItem={({ item}) => (
-                        <AlbumImage.Small image={`${SERVER_HOST}media/${item.name}`} />
+                        <AlbumImage.Small image={`${SERVER_HOST}media/${item.file}`} />
                     )}
                     ListFooterComponent={() => (
                         <AlbumImage.Add onPress={async ()=>{
@@ -207,7 +207,7 @@ export function AlbumCard(props: IAlbum){
                 </TouchableOpacity>
             </Modal>
 
-            { updateModalVisible && <UpdateAlbumModal id={props.id} isVisible={updateModalVisible} onClose={()=>setUpdateModalVisible(false)} name={props.name} theme={props.theme} year={props.year} ></UpdateAlbumModal> }
+            { updateModalVisible && <UpdateAlbumModal id={props.id} isVisible={updateModalVisible} onClose={()=>setUpdateModalVisible(false)} name={props.name} topic={props.topic} year={props.year} ></UpdateAlbumModal> }
         </View>
     )
 }

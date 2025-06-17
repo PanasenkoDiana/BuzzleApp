@@ -21,7 +21,7 @@ export function useChangeAlbum(){
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify({
                     name: data.name,
-                    theme: data.theme,
+                    topic: data.topic,
                     year: data.year,
                 })
             })

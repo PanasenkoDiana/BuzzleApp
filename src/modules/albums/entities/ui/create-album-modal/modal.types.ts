@@ -6,7 +6,7 @@ export interface ICreateAlbumModalProps {
 
 export interface ICreateAlbumModalForm{
     name: string
-    theme: string
+    topic: string
     year: number
 }
 

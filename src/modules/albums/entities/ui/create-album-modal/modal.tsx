@@ -44,7 +44,7 @@ export function CreateAlbumModal(props: ICreateAlbumModalProps) {
 
                     <Controller
                         control={control}
-                        name="theme"
+                        name="topic"
                         render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                             <Input
                                 label="Оберіть тему"
@@ -88,7 +88,7 @@ export function UpdateAlbumModal(props: ICreateAlbumModalProps & IUpdateAlbumMod
 	const { control, handleSubmit } = useForm<IUpdateAlbumModalForm>({
 		defaultValues: {
 			name: props.name,
-			theme: props.theme,
+			topic: props.topic,
 			year: props.year,
 		},
 	});
@@ -132,7 +132,7 @@ export function UpdateAlbumModal(props: ICreateAlbumModalProps & IUpdateAlbumMod
 
 					<Controller
 						control={control}
-						name="theme"
+						name="topic"
 						render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
 							<Input
 								label="Оберіть тему"

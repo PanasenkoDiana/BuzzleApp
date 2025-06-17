@@ -53,7 +53,7 @@ export function Albums() {
 				data={albums}
 				keyExtractor={(item) => item.id.toString()}
 				renderItem={({ item }) => (
-					<AlbumCard id={item.id} name={item.name} theme={item.theme} year={item.year} images={item.images} />
+					<AlbumCard id={item.id} name={item.name} topic={item.topic} year={item.year} images={item.images} />
 
 				)}
 				/> : 
