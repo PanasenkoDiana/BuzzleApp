@@ -13,4 +13,30 @@ export const styles = StyleSheet.create({
 		borderRadius: 10,
         padding: 10,
 	},
+
+
+
+	PasswordChangeBlock: {
+		width: "100%",
+		flexDirection: "row",
+		justifyContent: "space-between",
+		alignItems: "center",
+		padding: 10,
+	},
+
+	PasswordChangeTitle: {
+		fontFamily: "GTWalsheimPro-Regular",
+		fontSize: 18,
+		fontWeight: "500",
+	},
+
+	PasswordChangeInputView: {
+		width: "100%",
+		flexDirection: "column",
+		justifyContent: "flex-start",
+		alignItems: "flex-start",
+		gap: 10,
+	}
+
+
 })

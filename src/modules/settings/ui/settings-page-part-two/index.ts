@@ -1,0 +1,1 @@
+export { SettingsPagePartTwo } from "./part"

@@ -168,12 +168,14 @@ export function authUser(setUser: (user: IUser | null) => void) {
 		id: number
 	): Promise<Result<IUser>> {
 		try {
+			const { repeatPassword, ...newData } = data
+
 			const response = await fetch(
 				`${SERVER_HOST}api/user/change/part-two/${id}`,
 				{
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(data),
+					body: JSON.stringify(newData),
 				}
 			);
 

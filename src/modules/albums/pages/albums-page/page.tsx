@@ -54,6 +54,7 @@ export function Albums() {
 				<FlatList
 				data={albums}
 				keyExtractor={(item) => item.id.toString()}
+				contentContainerStyle={{gap: 15}}
 				renderItem={({ item }) => (
 					<AlbumCard id={item.id} name={item.name} topic={item.topic} createdAt={item.createdAt} images={item.images} />
 

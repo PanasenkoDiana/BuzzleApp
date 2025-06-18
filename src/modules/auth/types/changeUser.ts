@@ -8,6 +8,7 @@ export interface IChangeUserPartTwo {
     dateOfBirth: DataView
     email: string
     password: string
+    repeatPassword: string
 }
 
 

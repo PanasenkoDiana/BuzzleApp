@@ -11,6 +11,7 @@ import { launchImageLibraryAsync, MediaTypeOptions, requestMediaLibraryPermissio
 import { useAddAlbumPhoto } from "../../../hooks/useAddAlbumPhoto";
 import { useEffect, useRef, useState } from "react";
 import { CreateAlbumModal, UpdateAlbumModal } from "../create-album-modal";
+import { useDeleteAlbumPhoto } from "../../../hooks/useDeleteAlbumPhoto";
 
 
 
@@ -24,6 +25,7 @@ export function AlbumCard(props: IAlbum){
     const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
     const threeDotsRef = useRef(null);
     const [updateModalVisible, setUpdateModalVisible] = useState(false)
+    const { deleteFunction } = useDeleteAlbumPhoto()
 
     useEffect(() => {
         console.log(props.topic?.name)
@@ -120,7 +122,7 @@ export function AlbumCard(props: IAlbum){
                     keyExtractor={(item) => item.id.toString()}
 
                     renderItem={({ item}) => (
-                        <AlbumImage.Small image={`${SERVER_HOST}media/${item.file}`} />
+                        <AlbumImage.Small image={`${SERVER_HOST}media/${item.file}`} deleteFunction={deleteFunction} id={item.id} />
                     )}
                     ListFooterComponent={() => (
                         <AlbumImage.Add onPress={async ()=>{

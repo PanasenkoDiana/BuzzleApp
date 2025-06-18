@@ -1,37 +1,35 @@
 import { useState, useEffect } from "react"
-import { IAlbum, IMyPhotosList } from "../types"
+import { IMyPhotosList } from "../types"
 import { SERVER_HOST } from "../../../shared/constants"
 import { Result } from "../../../shared/types/result"
+import { useUserContext } from "../../auth/context/userContext"
 
-
-
-
-
-export function useChangeAlbum(){
-    const [ myPhotos, setMyPhotos ] = useState<IMyPhotosList | null>(null)
+export function useDeleteMyPhoto(){
+    // const [ myPhotos, setMyPhotos ] = useState<string | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
+    const { getToken } =  useUserContext()
 
 
-    async function ChangeAlbumPhoto(data: Omit<IAlbum, 'images'>){
+    async function DeletePhoto(id: number){
         try {
             setIsLoading(true);
-            const response = await fetch(`${SERVER_HOST}api/albums/change/${data.id}`, {
-                method: "PATCH",
-                headers: {'Content-Type':'application/json'},
+            const token = await getToken()
+            const response = await fetch(`${SERVER_HOST}api/user/photo/delete`, {
+                method: "DELETE",
+                headers: {'Content-Type':'application/json',
+                    Authorization: `Bearer ${token}`
+                },
                 body: JSON.stringify({
-                    name: data.name,
-                    topic: data.topic,
-                    createdAt: data.createdAt,
+                    id
                 })
             })
-            const result: Result<IMyPhotosList> = await response.json();
+            const result: Result<string> = await response.json();
             if (result.status === "error") {
                 console.log(result.message);
                 setError(result.message)
             } else {
                 return result.data
-                // setMyPhotos(result.data)
             }
 
         } catch (error) {
@@ -42,5 +40,5 @@ export function useChangeAlbum(){
     }
 
 
-    return { myPhotos, isLoading, error, refetch: ChangeAlbumPhoto }
+    return { isLoading, error, deleteFunction: DeletePhoto }
 }
