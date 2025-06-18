@@ -23,6 +23,8 @@ import { useAllAlbums } from "../../hooks/useAllAlbums";
 
 export function Albums() {
 	const { user } = useUserContext();
+
+	const avatars = user?.Profile.avatars
 	const userPhoto = user?.profileImage as string;
 
 	// const { myPhotos } = useMyPhotos()
@@ -46,14 +48,14 @@ export function Albums() {
 
 			<View style={{ flex: 1, gap: 15 }}>
 
-				<MyPhotosBlock images={user?.images ? user.images : []} />
+				<MyPhotosBlock images={avatars ? avatars : []} />
 				
 				{ albums ?
 				<FlatList
 				data={albums}
 				keyExtractor={(item) => item.id.toString()}
 				renderItem={({ item }) => (
-					<AlbumCard id={item.id} name={item.name} topic={item.topic} year={item.year} images={item.images} />
+					<AlbumCard id={item.id} name={item.name} topic={item.topic} createdAt={item.createdAt} images={item.images} />
 
 				)}
 				/> : 

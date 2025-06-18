@@ -59,7 +59,7 @@ export function CreateAlbumModal(props: ICreateAlbumModalProps) {
 
                     <Controller
                         control={control}
-                        name="year"
+                        name="createdAt"
                         render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                             <Input
                                 label="Рік альбому"
@@ -89,7 +89,7 @@ export function UpdateAlbumModal(props: ICreateAlbumModalProps & IUpdateAlbumMod
 		defaultValues: {
 			name: props.name,
 			topic: props.topic,
-			year: props.year,
+			createdAt: props.createdAt,
 		},
 	});
 
@@ -147,7 +147,7 @@ export function UpdateAlbumModal(props: ICreateAlbumModalProps & IUpdateAlbumMod
 
 					<Controller
 						control={control}
-						name="year"
+						name="createdAt"
 						render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
 							<Input
 								label="Рік альбому"

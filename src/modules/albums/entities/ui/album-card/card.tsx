@@ -9,7 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { IAlbum } from "../../../types";
 import { launchImageLibraryAsync, MediaTypeOptions, requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useAddAlbumPhoto } from "../../../hooks/useAddAlbumPhoto";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CreateAlbumModal, UpdateAlbumModal } from "../create-album-modal";
 
 
@@ -24,6 +24,10 @@ export function AlbumCard(props: IAlbum){
     const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
     const threeDotsRef = useRef(null);
     const [updateModalVisible, setUpdateModalVisible] = useState(false)
+
+    useEffect(() => {
+        console.log(props.topic?.name)
+    }, [props.topic])
 
     const openMenu = () => {
 		if (threeDotsRef.current) {
@@ -103,8 +107,8 @@ export function AlbumCard(props: IAlbum){
             </View>
             <View style={{width: '100%', gap: 10}}>
                 <View style={styles.albumTextInfo}>
-                    <Text style={styles.albumTextInfoTheme}>{props.topic}</Text>
-                    <Text style={styles.albumTextInfoYear}>{props.year}</Text>
+                    <Text style={styles.albumTextInfoTheme}>{props.topic?.name}</Text>
+                    <Text style={styles.albumTextInfoYear}>{props.createdAt}</Text>
                 </View>
                 <View style={styles.albumPhotosList}>
                     <Text style={styles.albumPhotosTitle}>Фотографії</Text>
@@ -207,7 +211,7 @@ export function AlbumCard(props: IAlbum){
                 </TouchableOpacity>
             </Modal>
 
-            { updateModalVisible && <UpdateAlbumModal id={props.id} isVisible={updateModalVisible} onClose={()=>setUpdateModalVisible(false)} name={props.name} topic={props.topic} year={props.year} ></UpdateAlbumModal> }
+            { updateModalVisible && <UpdateAlbumModal id={props.id} isVisible={updateModalVisible} onClose={()=>setUpdateModalVisible(false)} name={props.name} topic={props.topic} createdAt={props.createdAt} ></UpdateAlbumModal> }
         </View>
     )
 }

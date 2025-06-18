@@ -1,75 +1,83 @@
-import { View, Text, Image, TouchableOpacity } from "react-native"
-import { styles } from "./part.styles"
-import { SettingsChangeHeader } from "../settings-change-header"
-import { useUserContext } from "../../../auth/context/userContext"
-import { SERVER_HOST } from "../../../../shared/constants"
-import { useEffect, useState } from "react"
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { styles } from "./part.styles";
+import { SettingsChangeHeader } from "../settings-change-header";
+import { useUserContext } from "../../../auth/context/userContext";
+import { SERVER_HOST } from "../../../../shared/constants";
+import { useEffect, useState } from "react";
 import {
     launchImageLibraryAsync,
     MediaTypeOptions,
     requestMediaLibraryPermissionsAsync,
-} from "expo-image-picker"
-import { IChangeUserPartOne } from "../../../auth/types"
+} from "expo-image-picker";
+import { IChangeUserPartOne } from "../../../auth/types";
 
 export function SettingsPagePartOne() {
-    const { user, changeUserPartOne } = useUserContext()
-    const [isRedact, setIsRedact] = useState(false)
-    const [image, setImage] = useState<string | null>(null)
+    const { user, changeUserPartOne } = useUserContext();
+    const [isRedact, setIsRedact] = useState(false);
+    const [image, setImage] = useState<string | null>(null);
 
-    // При монтировании можно установить текущее изображение профиля
+    // Загружаем аватар при появлении user
     useEffect(() => {
-        if (!user) return
-        // Подставляем полный URL к текущему изображению профиля с сервера
-        setImage(`${SERVER_HOST}media/${user.profileImage}`)
-    }, [user])
+        if (!user) return;
+
+        const avatars = user?.Profile?.avatars;
+        const lastAvatar = avatars && avatars.length > 0 ? avatars[avatars.length - 1] : null;
+        const avatarFilename = lastAvatar?.image?.filename;
+        const profileImage = user?.profileImage;
+
+        if (avatarFilename) {
+            setImage(`${SERVER_HOST}media/${avatarFilename}`);
+        } else if (profileImage) {
+            setImage(`${SERVER_HOST}media/${profileImage}`);
+        } else {
+            setImage(`${SERVER_HOST}media/default-avatar.jpg`);
+        }
+    }, [user]);
+
 
     async function onSearch() {
-        const result = await requestMediaLibraryPermissionsAsync()
+        const result = await requestMediaLibraryPermissionsAsync();
         if (result.status === "granted") {
             const images = await launchImageLibraryAsync({
                 mediaTypes: MediaTypeOptions.Images,
                 allowsEditing: true,
                 allowsMultipleSelection: false,
                 selectionLimit: 1,
-                base64: true, // Важно: получить base64
-            })
+                base64: true,
+            });
 
             if (!images.canceled && images.assets && images.assets.length > 0) {
-                // Формируем base64 с префиксом для сервера
-                const base64img = `data:image/jpeg;base64,${images.assets[0].base64}`
-                setImage(base64img)
+                const base64img = `data:image/jpeg;base64,${images.assets[0].base64}`;
+                setImage(base64img);
             }
         }
     }
 
     async function onSubmit(data: IChangeUserPartOne) {
-        if (!image) return
-        if (!user) return
+        if (!image || !user) return;
 
         try {
-            const response = await changeUserPartOne(data, user.id)
+            const response = await changeUserPartOne(data, user.id);
             if (response.status === "error") {
-                console.error("Ошибка при обновлении пользователя:", response.message)
-                // Можно показать alert или тост пользователю
+                console.error("Ошибка при обновлении пользователя:", response.message);
             } else {
-                // Обновление прошло успешно, можно обновить локальный user или что-то еще
-                console.log("Профиль обновлен")
+                console.log("Профиль обновлен");
             }
         } catch (err) {
-            console.error("Ошибка при отправке данных:", err)
+            console.error("Ошибка при отправке данных:", err);
         }
     }
 
-    // Отправляем данные при выходе из режима редактирования
+    // Сохраняем изменения при выходе из режима редактирования
     useEffect(() => {
         const submitIfNeeded = async () => {
             if (!isRedact && image) {
-                await onSubmit({ profileImage: image })
+                await onSubmit({ profileImage: image });
             }
-        }
+        };
 
-        submitIfNeeded()
-    }, [isRedact])
+        submitIfNeeded();
+    }, [isRedact]);
 
     return (
         <View style={styles.changeSettingsBlock}>
@@ -78,14 +86,11 @@ export function SettingsPagePartOne() {
                 onRedact={() => setIsRedact(!isRedact)}
             />
             <View style={styles.profileAvatar}>
-                <TouchableOpacity
-                    disabled={!isRedact}
-                    onPress={onSearch}
-                >
+                <TouchableOpacity disabled={!isRedact} onPress={onSearch}>
                     <Image
                         style={styles.profileAvatarImage}
                         source={{
-                            uri: image || `${SERVER_HOST}media/${user?.profileImage}`,
+                            uri: image ?? `${SERVER_HOST}media/default-avatar.jpg`,
                         }}
                     />
                 </TouchableOpacity>
@@ -97,5 +102,5 @@ export function SettingsPagePartOne() {
                 </Text>
             </View>
         </View>
-    )
+    );
 }

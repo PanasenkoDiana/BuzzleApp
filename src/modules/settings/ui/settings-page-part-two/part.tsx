@@ -16,13 +16,13 @@ export function SettingsPagePartTwo() {
 	async function onSubmit(data: IChangeUserPartTwo) {
 		if (!user) return
 		const response = changeUserPartTwo(data, user.id)
-		console.log(response)
+		console.log("Response:" + response)
 	}
 
 	useEffect(() => {
 		const submitIfNeeded = async () => {
 			if (!isRedact){
-				handleSubmit(onSubmit)()
+				handleSubmit(onSubmit)
 			}
 		}
 

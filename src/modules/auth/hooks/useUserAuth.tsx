@@ -24,6 +24,7 @@ export function authUser(setUser: (user: IUser | null) => void) {
 
 			setUser(result.data);
 			console.log(5)
+			console.log(result.data)
 
 			return result;
 		} catch (error) {

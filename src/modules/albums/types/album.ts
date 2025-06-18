@@ -1,9 +1,9 @@
-import { IImage } from "../../userpost/types";
+import { IImage, ITag } from "../../userpost/types";
 
 export interface IAlbum{
     id: number
     name: string
-    topic: string
-    year: number
+    topic?: ITag
+    createdAt: number
     images: IImage[]
 }
