@@ -9,7 +9,7 @@ export interface IPost {
     tags?: ITag[]
     link?: string
     images?: IImage[],
-    user: IUser
+    author: IUser
 }
 
 export interface ICreatePost {

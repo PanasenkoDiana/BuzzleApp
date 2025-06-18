@@ -8,7 +8,7 @@ import {
 	Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { styles } from "./PostCard.styles";
 import { COLORS } from "../../../../../../shared/ui/colors";
@@ -43,6 +43,19 @@ export function PostCard({
 	const [modalVisible, setModalVisible] = useState(false);
 	const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
 	const threeDotsRef = useRef(null);
+
+
+	useEffect(()=>{
+		console.log("post user:",postUser,
+	title,
+	tags,
+	description,
+	images,
+	likes,
+	views,
+	id,
+	onDeleted,)
+	},[])
 
 	const handleEdit = async () => {
 		setModalVisible(false);
@@ -137,13 +150,17 @@ export function PostCard({
 				<View style={styles.userInfo}>
 					<Image
 						source={{
-							uri: `${SERVER_HOST}media/${postUser.profileImage}`,
+							// uri: postUser.Profile
+							// 	? `${SERVER_HOST}media/${postUser.Profile.avatars[0].image.filename}`
+							// 	: `${SERVER_HOST}media/default-avatar.png`,
 						}}
 						style={styles.avatar}
 					/>
+
 					<View>
 						<Text style={styles.fullName}>
-							{postUser.name} {postUser.surname}
+							{'123123'} 
+							{/* {postUser.surname} */}
 						</Text>
 						<Text style={styles.signature}>✎</Text>
 					</View>
@@ -174,7 +191,9 @@ export function PostCard({
 				{images?.map((imageUrl) => (
 					<Image
 						key={imageUrl.id}
-						source={{ uri: `${SERVER_HOST}media/${imageUrl.name}` }}
+						source={{
+							uri: `${SERVER_HOST}media/${imageUrl.filename}`,
+						}}
 						style={[styles.gridImage, styles.largeImage]}
 					/>
 				))}

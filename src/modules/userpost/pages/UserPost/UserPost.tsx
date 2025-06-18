@@ -55,7 +55,7 @@ export default function UserPost(props: {
 					renderItem={({ item }) => (
 						<PostCard
 							id={item.id}
-							postUser={item.user}
+							postUser={item.author}
 							title={item.name}
 							tags={item.tags}
 							description={item.text}
@@ -87,7 +87,7 @@ export default function UserPost(props: {
 				renderItem={({ item }) => (
 					<PostCard
 						id={item.id}
-						postUser={item.user}
+						postUser={item.author}
 						title={item.name}
 						tags={item.tags}
 						description={item.text}
