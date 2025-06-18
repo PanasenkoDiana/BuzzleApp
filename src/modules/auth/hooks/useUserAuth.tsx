@@ -17,13 +17,16 @@ export function authUser(setUser: (user: IUser | null) => void) {
         return result;
       }
 
-      setUser(result.data);
-      return result;
-    } catch (error) {
-      console.error("Ошибка в getData:", error);
-      return { status: "error", message: "An unexpected error occurred" };
-    }
-  }
+			setUser(result.data);
+			console.log(5)
+			console.log(result.data)
+
+			return result;
+		} catch (error) {
+			console.error("Ошибка в getData:", error);
+			return { status: "error", message: "An unexpected error occurred" };
+		}
+	}
 
   async function login(
     email: string,
@@ -153,16 +156,21 @@ export function authUser(setUser: (user: IUser | null) => void) {
     }
   }
 
-  async function changeUserPartTwo(
-    data: IChangeUserPartTwo,
-    id: number
-  ): Promise<Result<IUser>> {
-    try {
-      const response = await fetch(`${SERVER_HOST}api/user/change/part-two/${id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+	async function changeUserPartTwo(
+		data: IChangeUserPartTwo,
+		id: number
+	): Promise<Result<IUser>> {
+		try {
+			const { repeatPassword, ...newData } = data
+
+			const response = await fetch(
+				`${SERVER_HOST}api/user/change/part-two/${id}`,
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(newData),
+				}
+			);
 
       const result: Result<IUser> = await response.json();
 

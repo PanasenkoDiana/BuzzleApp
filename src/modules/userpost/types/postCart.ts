@@ -2,14 +2,16 @@ import { IImage, ITag } from "."
 import { IUser } from "../../auth/types"
 
 export interface IPost {
-	id: number;
-	title: string;
-	content: string;
-	authorId: number;
-	author: IUser;
-	tags: ITag[];
-	images: IImage[];
+    id: number
+    name: string
+    topic?: string
+    text?: string
+    tags?: ITag[]
+    link?: string
+    images?: IImage[],
+    author: IUser
 }
+
 export interface ICreatePost {
 	title: string;
 	content: string;

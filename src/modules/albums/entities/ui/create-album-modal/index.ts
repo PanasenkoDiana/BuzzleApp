@@ -1,1 +1,1 @@
-export { CreateAlbumModal } from './modal'
+export { CreateAlbumModal, UpdateAlbumModal } from './modal'

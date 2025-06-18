@@ -41,6 +41,39 @@ export default function UserPost(props: {
 		);
 	}
 
+	if (props.isMyPosts) {
+		return (
+			<View style={styles.container}>
+				<FlatList
+					refreshing={refresh}
+					refreshControl={
+						<RefreshControl
+							refreshing={refresh}
+							onRefresh={onRefresh}
+						/>
+					}
+					key={key}
+					data={myPosts}
+					keyExtractor={(post) => post.id.toString()}
+					extraData={refresh}
+					ListHeaderComponent={props.haveHeader ? <Main /> : null}
+					renderItem={({ item }) => (
+						<PostCard
+							id={item.id}
+							postUser={item.author}
+							title={item.name}
+							tags={item.tags}
+							description={item.text}
+							images={item.images}
+							likes={1}
+							views={2}
+						/>
+					)}
+					showsVerticalScrollIndicator={false}
+				/>
+			</View>
+		);
+	}
 	return (
 		<View style={styles.container}>
 			<FlatList
@@ -55,7 +88,7 @@ export default function UserPost(props: {
 					<PostCard
 						id={item.id}
 						postUser={item.author}
-						title={item.title}
+						title={item.name}
 						tags={item.tags}
 						description={item.content}
 						images={item.images}

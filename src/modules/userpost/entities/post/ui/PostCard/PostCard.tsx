@@ -7,7 +7,7 @@ import {
   Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import { styles } from "./PostCard.styles";
 import { COLORS } from "../../../../../../shared/ui/colors";
@@ -45,12 +45,43 @@ export function PostCard({
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
   const threeDotsRef = useRef(null);
 
-  const { user } = useUserContext();
-  const { deletePost } = usePost(); // Подключаем deletePost из хука
 
-  if (!user) return null;
+	useEffect(()=>{
+		console.log("post user:",postUser,
+	title,
+	tags,
+	description,
+	images,
+	likes,
+	views,
+	id,
+	onDeleted,)
+	},[])
 
-  const imagesCount = images.length;
+	const handleEdit = async () => {
+		setModalVisible(false);
+		try {
+			const response = await fetch(`${SERVER_HOST}api/posts/change`, {
+				method: "PUT",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({
+					id,
+					name: title,
+					text: description,
+					tags: tags?.map((tag) => tag.name),
+				}),
+			});
+
+			if (!response.ok) {
+				throw new Error("Failed to update post");
+			}
+
+			Alert.alert("Успіх", "Пост успішно оновлено");
+		} catch (error) {
+			Alert.alert("Помилка", "Не вдалося оновити пост");
+			console.error("Error updating post:", error);
+		}
+	};
 
   const handleDelete = () => {
     setModalVisible(false);
@@ -101,31 +132,39 @@ export function PostCard({
     }
   };
 
-  return (
-    <View style={styles.cardContainer}>
-      <View style={styles.profileContainer}>
-        <View style={styles.userInfo}>
-          <Image
-            source={{
-              uri: `${SERVER_HOST}media/${postUser.profileImage}`,
-            }}
-            style={styles.avatar}
-          />
-          <View>
-            <Text style={styles.fullName}>
-              {postUser.name} {postUser.surname}
-            </Text>
-            <Text style={styles.signature}>✎</Text>
-          </View>
-          <TouchableOpacity
-            ref={threeDotsRef}
-            style={{ marginLeft: "auto", padding: 8 }}
-            onPress={openMenu}
-          >
-            <Ionicons name="ellipsis-vertical" size={22} color={COLORS.black} />
-          </TouchableOpacity>
-        </View>
-      </View>
+	return (
+		<View style={styles.cardContainer}>
+			<View style={styles.profileContainer}>
+				<View style={styles.userInfo}>
+					<Image
+						source={{
+							// uri: postUser.Profile
+							// 	? `${SERVER_HOST}media/${postUser.Profile.avatars[0].image.filename}`
+							// 	: `${SERVER_HOST}media/default-avatar.png`,
+						}}
+						style={styles.avatar}
+					/>
+
+					<View>
+						<Text style={styles.fullName}>
+							{'123123'} 
+							{/* {postUser.surname} */}
+						</Text>
+						<Text style={styles.signature}>✎</Text>
+					</View>
+					<TouchableOpacity
+						ref={threeDotsRef}
+						style={{ marginLeft: "auto", padding: 8 }}
+						onPress={openMenu}
+					>
+						<Ionicons
+							name="ellipsis-vertical"
+							size={22}
+							color={COLORS.black}
+						/>
+					</TouchableOpacity>
+				</View>
+			</View>
 
       <Text style={styles.postTitle}>{title}</Text>
       <Text style={styles.postDescription}>
@@ -134,24 +173,17 @@ export function PostCard({
         <Text style={styles.postTags}>{tags?.map((tag) => `${tag.name} `)}</Text>
       </Text>
 
-      <View style={styles.imageGrid}>
-        {images.map((imageUri, index) => {
-          let imageStyle = styles.gridImage;
-          if (imagesCount === 1) imageStyle = styles.fullWidthImage;
-          else if (imagesCount === 2) imageStyle = styles.halfWidthImage;
-
-          return (
-            <Image
-              key={imageUri.id || index}
-              source={{
-                uri: `${SERVER_HOST}media/${imageUri.filename}`,
-              }}
-              style={imageStyle}
-              resizeMode="cover"
-            />
-          );
-        })}
-      </View>
+			<View style={styles.imageGrid}>
+				{images?.map((imageUrl) => (
+					<Image
+						key={imageUrl.id}
+						source={{
+							uri: `${SERVER_HOST}media/${imageUrl.filename}`,
+						}}
+						style={[styles.gridImage, styles.largeImage]}
+					/>
+				))}
+			</View>
 
       <View style={styles.statsContainer}>
         <View style={styles.statItem}>

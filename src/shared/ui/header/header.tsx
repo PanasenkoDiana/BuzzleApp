@@ -26,9 +26,11 @@ export function Header(props: IHeader) {
 		router.push("/login");
 	};
 
-	return (
-		<View style={styles.container}>
-			<LogoImage style={styles.logo} />
+    return(
+            <View style={styles.container}>
+                <TouchableOpacity onPress={()=>router.replace("/main")}>
+                    <LogoImage style={styles.logo}/>
+                </TouchableOpacity>
 
 			<View style={styles.othersNav}>
 				{props.selectedPage !== "friends" && (

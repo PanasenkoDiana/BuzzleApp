@@ -1,3 +1,4 @@
+import { ITag } from "../../../../userpost/types";
 
 export interface ICreateAlbumModalProps {
     isVisible: boolean;
@@ -6,6 +7,10 @@ export interface ICreateAlbumModalProps {
 
 export interface ICreateAlbumModalForm{
     name: string
-    theme: string
-    year: number
+    topic?: ITag
+    createdAt: number
+}
+
+export interface IUpdateAlbumModalForm extends ICreateAlbumModalForm{
+    id: number
 }

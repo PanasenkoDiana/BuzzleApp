@@ -1,22 +1,32 @@
 import { Controller, useForm } from "react-hook-form"
 import { ITextDataForm } from "./part.types"
-import { View } from "react-native"
+import { View, Text } from "react-native"
 import { SettingsChangeHeader } from "../settings-change-header"
 import { Input } from "../../../../shared/ui/input"
 import { useUserContext } from "../../../auth/context/userContext"
 import { styles } from "./part.styles"
 import { useEffect, useState } from "react"
 import { IChangeUserPartTwo } from "../../../auth/types"
+import { IconButton } from "../../../../shared/ui/icon-button"
+import { PencilIcon } from "../../../../shared/ui/icons"
+import { COLORS } from "../../../../shared/ui/colors"
 
 export function SettingsPagePartTwo() {
 	const { user, changeUserPartTwo } = useUserContext()
 	const { handleSubmit, control } = useForm<IChangeUserPartTwo>()
 	const [ isRedact, setIsRedact ] = useState(false)
+	const [ isPasswordChange, setIsPasswordChange ] = useState(false)
 
 	async function onSubmit(data: IChangeUserPartTwo) {
+		if (data.password !== data.repeatPassword) {
+			console.error("Passwords do not match")
+			return
+		}
+		console.log("data: " + data)
+
 		if (!user) return
 		const response = changeUserPartTwo(data, user.id)
-		console.log(response)
+		console.log("Response:" + response)
 	}
 
 	useEffect(() => {
@@ -81,45 +91,56 @@ export function SettingsPagePartTwo() {
 					// onBlur={onBlur}
 					// error={error?.message}
 				/>
-				<Input.Password
-					label="Електронна адреса"
-					disabled={isRedact ? false : true}
-					// value={value}
-					// onChangeText={onChange}
-					placeholder="Електронна адреса"
-					defaultValue={user?.email}
-					// onBlur={onBlur}
-					// error={error?.message}
-				/>
-				<Input.Password
-					label="Пароль"
-					disabled={isRedact ? false : true}
-					// value={value}
-					// onChangeText={onChange}
-					placeholder="Електронна адреса"
-					defaultValue={user?.username}
-					// onBlur={onBlur}
-					// error={error?.message}
-				/>
-				{/* <Controller
-					control={control}
-					name="name"
-					render={({
-						field: { value, onChange, onBlur },
-						fieldState: { error },
-					}) => (
-						<Input.Password
-							label="Ім’я"
-							value={value}
-							disabled={isRedact ? false : true}
-							onChangeText={onChange}
-							placeholder="Ім'я"
-							defaultValue={user?.username}
-							onBlur={onBlur}
-							error={error?.message}
+
+
+				<View style={styles.PasswordChangeBlock}>
+					<Text style={styles.PasswordChangeTitle}>Пароль</Text>
+
+					<IconButton icon={<PencilIcon width={20} height={20} fill={COLORS.darkPlum} />} onPress={()=> setIsPasswordChange(!isPasswordChange)}/>
+				</View>
+							
+
+				{  isPasswordChange && 
+					<View style={styles.PasswordChangeInputView}>
+						<Controller
+							control={control}
+							name="password"
+							render={({
+								field: { value, onChange, onBlur },
+								fieldState: { error },
+							}) => (
+								<Input.Password
+									label="Пароль"
+									value={value}
+									onChangeText={onChange}
+									disabled={isRedact ? false : true}
+									placeholder="Пароль"
+									onBlur={onBlur}
+									error={error?.message}
+								/>
+							)}
 						/>
-					)}
-				/> */}
+						<Controller
+							control={control}
+							name="repeatPassword"
+							render={({
+								field: { value, onChange, onBlur },
+								fieldState: { error },
+							}) => (
+								<Input.Password
+									label="Підтвердження паролю"
+									value={value}
+									onChangeText={onChange}
+									disabled={isRedact ? false : true}
+									placeholder="Підтвердження паролю"
+									onBlur={onBlur}
+									error={error?.message}
+								/>
+							)}
+						/>
+					</View>
+				}
+				
 			</View>
 		</View>
 	)
