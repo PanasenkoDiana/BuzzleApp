@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { IAlbum, IMyPhotosList } from "../types"
 import { SERVER_HOST } from "../../../shared/constants"
 import { Result } from "../../../shared/types/result"
+import { IUpdateAlbumModalForm } from "../entities/ui/create-album-modal/modal.types"
 
 
 
@@ -13,7 +14,7 @@ export function useChangeAlbum(){
     const [ error, setError ] = useState<string | null>(null)
 
 
-    async function ChangeAlbumPhoto(data: Omit<IAlbum, 'images'>){
+    async function ChangeAlbumPhoto(data: IUpdateAlbumModalForm){
         try {
             setIsLoading(true);
             const response = await fetch(`${SERVER_HOST}api/albums/change/${data.id}`, {

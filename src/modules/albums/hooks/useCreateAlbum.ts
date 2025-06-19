@@ -23,8 +23,8 @@ export function useCreateAlbum(){
                 },
                 body: JSON.stringify({
                     name: data.name,
-                    theme: data.theme,
-                    year: data.year,
+                    topic: data.topic,
+                    createdAt: data.createdAt,
                 })
             })
             const result: Result<IMyPhotosList> = await response.json();

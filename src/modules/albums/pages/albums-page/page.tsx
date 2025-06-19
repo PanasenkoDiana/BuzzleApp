@@ -1,11 +1,19 @@
-import { ScrollView, View, Text, TouchableOpacity, Image, FlatList } from "react-native";
+import {
+  ScrollView,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  FlatList,
+  RefreshControl,
+} from "react-native";
 import { useUserContext } from "../../../auth/context/userContext";
 import {
-	EyeIcon,
-	EyeSlashIcon,
-	GalleryIcon,
-	PlusIcon,
-	TrashIcon,
+  EyeIcon,
+  EyeSlashIcon,
+  GalleryIcon,
+  PlusIcon,
+  TrashIcon,
 } from "../../../../shared/ui/icons";
 import { COLORS } from "../../../../shared/ui/colors";
 import { IconButton } from "../../../../shared/ui/icon-button";
@@ -22,58 +30,71 @@ import { MyPhotosBlock } from "../../entities/ui/my-photos-block";
 import { useAllAlbums } from "../../hooks/useAllAlbums";
 
 export function Albums() {
-	const { user } = useUserContext();
+  const { user } = useUserContext();
+  const [refresh, setRefresh] = useState(false);
+  const avatars = user?.Profile.avatars;
+  const userPhoto = user?.profileImage as string;
 
-	const avatars = user?.Profile.avatars
-	const userPhoto = user?.profileImage as string;
+  const { albums, refetch } = useAllAlbums();
+  const [modalVisible, setModalVisible] = useState(false);
 
-	// const { myPhotos } = useMyPhotos()
-	// const { user }
+  const onRefresh = async () => {
+    setRefresh(true);
+    try {
+      await refetch();
+    } catch (e) {
+      console.error("Ошибка при рефреше альбомов", e);
+    } finally {
+      setRefresh(false);
+    }
+  };
 
-	const { albums } = useAllAlbums()
-	
-	const [modalVisible, setModalVisible] = useState(false);
-	// const [albums, setAlbums] = useState<Album[]>([]);
-	// const addAlbum = () => {
-	// 	setAlbums([...albums, { id: Date.now(), photos: [] }]);
-	// 	setModalVisible(false);
-	// };
+  const renderHeader = () => (
+    <>
+      <SettingsHeader selectedPage={"albums"} />
+      <View style={{ gap: 15 }}>
+        <MyPhotosBlock images={avatars ?? []} />
+      </View>
+    </>
+  );
 
-	return (
-		<ScrollView
-			style={{ flex: 1 }}
-			// contentContainerStyle{{}}
-		>
-			<SettingsHeader selectedPage={"albums"} />
+  if (!albums || albums.length === 0) {
+    return (
+      <ScrollView style={{ flex: 1 }}>
+        <SettingsHeader selectedPage={"albums"} />
+        <View style={styles.partView}>
+          <View style={styles.partHeader}>
+            <Text style={styles.myPhotosTitle}>Немає ще жодного альбому</Text>
+            <IconButton
+              onPress={() => console.log()}
+              icon={
+                <PlusIcon width={20} height={20} stroke={COLORS.darkPlum} />
+              }
+            />
+          </View>
+        </View>
+      </ScrollView>
+    );
+  }
 
-			<View style={{ flex: 1, gap: 15 }}>
-
-				<MyPhotosBlock images={avatars ? avatars : []} />
-				
-				{ albums ?
-				<FlatList
-				data={albums}
-				keyExtractor={(item) => item.id.toString()}
-				contentContainerStyle={{gap: 15}}
-				renderItem={({ item }) => (
-					<AlbumCard id={item.id} name={item.name} topic={item.topic} createdAt={item.createdAt} images={item.images} />
-
-				)}
-				/> : 
-				<View style={styles.partView}>
-					<View style={styles.partHeader}>
-						<Text style={styles.myPhotosTitle}>Немає ще жодного альбому</Text>
-
-						<IconButton onPress={()=> console.log()} icon={
-							<PlusIcon  
-								width={20}
-								height={20}
-								stroke={COLORS.darkPlum}/>}/>
-					</View>
-				</View>
-				}
-				
-			</View>
-		</ScrollView>
-	);
+  return (
+    <FlatList
+      refreshControl={
+        <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+      }
+      data={albums}
+      keyExtractor={(item) => item.id.toString()}
+      ListHeaderComponent={renderHeader}
+      contentContainerStyle={{ paddingBottom: 20, gap: 15 }}
+      renderItem={({ item }) => (
+        <AlbumCard
+          id={item.id}
+          name={item.name}
+          topic={item.topic}
+          createdAt={item.createdAt}
+          images={item.images}
+        />
+      )}
+    />
+  );
 }

@@ -60,5 +60,28 @@ function InCenter(props: IModalProps) {
 	);
 }
 
+function InCenterWithoutHeader(props: IModalProps) {
+    const {title, children, visible, onClose, ...otherProps} = props
+
+	return (
+		<Modal
+            visible={visible}
+            onRequestClose={onClose}
+            transparent
+            // style={{flex: 1, backgroundColor: '#FFFFFF'}}
+            {...otherProps}
+        >
+            <View style={styles.centerModal}>
+                <View style={styles.centerModalContent}>
+                    <View  style={{justifyContent:'flex-start', alignItems:'center'}}>
+                        {children}
+                    </View>
+                </View>
+            </View>
+        </Modal>
+	);
+}
+
 
 Modalka.InCenter = InCenter
+Modalka.InCenterWithoutHeader = InCenterWithoutHeader

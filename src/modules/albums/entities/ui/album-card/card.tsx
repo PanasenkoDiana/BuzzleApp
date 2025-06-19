@@ -10,8 +10,9 @@ import { IAlbum } from "../../../types";
 import { launchImageLibraryAsync, MediaTypeOptions, requestMediaLibraryPermissionsAsync } from "expo-image-picker";
 import { useAddAlbumPhoto } from "../../../hooks/useAddAlbumPhoto";
 import { useEffect, useRef, useState } from "react";
-import { CreateAlbumModal, UpdateAlbumModal } from "../create-album-modal";
+import { UpdateAlbumModal } from "../create-album-modal";
 import { useDeleteAlbumPhoto } from "../../../hooks/useDeleteAlbumPhoto";
+import { useDeleteAlbum } from "../../../hooks/useDeleteAlbum";
 
 
 
@@ -26,6 +27,7 @@ export function AlbumCard(props: IAlbum){
     const threeDotsRef = useRef(null);
     const [updateModalVisible, setUpdateModalVisible] = useState(false)
     const { deleteFunction } = useDeleteAlbumPhoto()
+    const { deleteFunction: deleteAlbumFunction } = useDeleteAlbum()
 
     useEffect(() => {
         console.log(props.topic?.name)
@@ -197,7 +199,7 @@ export function AlbumCard(props: IAlbum){
                                 alignItems: "center",
                                 paddingVertical: 8,
                             }}
-                            // onPress={handleDelete}
+                            onPress={()=>deleteAlbumFunction(props.id)}
                         >
                             <Ionicons
                                 name="trash-outline"
@@ -217,3 +219,7 @@ export function AlbumCard(props: IAlbum){
         </View>
     )
 }
+
+// function useDeleteAlbum(): { deleteFunction: any; } {
+//     throw new Error("Function not implemented.");
+// }

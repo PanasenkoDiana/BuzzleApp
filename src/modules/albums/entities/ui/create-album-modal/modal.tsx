@@ -1,5 +1,5 @@
 import { Controller, useForm } from 'react-hook-form';
-import { ICreateAlbumModalForm, ICreateAlbumModalProps, IUpdateAlbumModalForm } from './modal.types'
+import { ICreateAlbumModalForm, ICreateAlbumModalProps, IUpdateAlbumModalForm, IUpdateAlbumModalFormCredentials } from './modal.types'
 import { TouchableOpacity, View, Text } from 'react-native';
 import { styles } from './modal.styles';
 import { Modal } from '../../../../../shared/ui/modal';
@@ -9,7 +9,7 @@ import { useChangeAlbum } from '../../../hooks/useChangeAlbum';
 
 
 export function CreateAlbumModal(props: ICreateAlbumModalProps) {
-    const { control, handleSubmit, reset } = useForm<ICreateAlbumModalForm>({
+    const { control, handleSubmit } = useForm<ICreateAlbumModalForm>({
 
     });
 
@@ -84,11 +84,11 @@ export function CreateAlbumModal(props: ICreateAlbumModalProps) {
 }
 
 
-export function UpdateAlbumModal(props: ICreateAlbumModalProps & IUpdateAlbumModalForm) {
+export function UpdateAlbumModal(props: IUpdateAlbumModalFormCredentials & ICreateAlbumModalProps) {
 	const { control, handleSubmit } = useForm<IUpdateAlbumModalForm>({
 		defaultValues: {
 			name: props.name,
-			topic: props.topic,
+			topic: props.topic?.name,
 			createdAt: props.createdAt,
 		},
 	});

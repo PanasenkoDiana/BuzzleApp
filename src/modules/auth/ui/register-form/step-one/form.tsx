@@ -42,7 +42,11 @@ export function RegisterForm() {
 			return;
 		}
 
-		const response = await register(data.email, data.password);
+		const response = await register(
+			data.email,
+			// data.,
+			data.password
+		);
 
 		if (!response || response.status === "error") {
 			setError("email", {
