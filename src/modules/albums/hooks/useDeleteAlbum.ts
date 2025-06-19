@@ -6,17 +6,17 @@ import { useUserContext } from "../../auth/context/userContext";
 
 
 
-export function useDeleteAlbumPhoto() {
+export function useDeleteAlbum() {
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
     const { getToken } = useUserContext()
 
 
-    async function DeleteAlbumPhoto(id: number){
+    async function DeleteAlbum(id: number){
         try {
             const token = await getToken()
             setIsLoading(true);
-            const response = await fetch(`${SERVER_HOST}api/albums/delete/image`, {
+            const response = await fetch(`${SERVER_HOST}api/albums/delete`, {
                 method: "DELETE",
                 headers: {
                     'Content-Type':'application/json',
@@ -41,5 +41,5 @@ export function useDeleteAlbumPhoto() {
         }
     }
 
-    return { isLoading, error, deleteFunction: DeleteAlbumPhoto }
+    return { isLoading, error, deleteFunction: DeleteAlbum }
 }

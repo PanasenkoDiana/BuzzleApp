@@ -48,7 +48,7 @@ export function RegisterForm() {
 
 		const response = await register(
 			data.email,
-			// data.username,
+			// data.,
 			data.password
 		);
 

@@ -7,10 +7,18 @@ export interface ICreateAlbumModalProps {
 
 export interface ICreateAlbumModalForm{
     name: string
-    topic?: ITag
+    topic?: string
     createdAt: number
 }
 
 export interface IUpdateAlbumModalForm extends ICreateAlbumModalForm{
     id: number
+}
+
+
+export interface IUpdateAlbumModalFormCredentials {
+    id: number;
+    name: string;
+    topic?: ITag;
+    createdAt: number;
 }

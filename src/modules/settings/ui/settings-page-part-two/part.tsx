@@ -10,12 +10,13 @@ import { IChangeUserPartTwo } from "../../../auth/types"
 import { IconButton } from "../../../../shared/ui/icon-button"
 import { PencilIcon } from "../../../../shared/ui/icons"
 import { COLORS } from "../../../../shared/ui/colors"
-
+import { ChangePasswordModal } from '../change-password-modal'
+ 
 export function SettingsPagePartTwo() {
 	const { user, changeUserPartTwo } = useUserContext()
 	const { handleSubmit, control } = useForm<IChangeUserPartTwo>()
 	const [ isRedact, setIsRedact ] = useState(false)
-	const [ isPasswordChange, setIsPasswordChange ] = useState(false)
+	const [ isPasswordChangeModal, setIsPasswordChangeModal ] = useState(false)
 
 	async function onSubmit(data: IChangeUserPartTwo) {
 		if (data.password !== data.repeatPassword) {
@@ -96,51 +97,13 @@ export function SettingsPagePartTwo() {
 				<View style={styles.PasswordChangeBlock}>
 					<Text style={styles.PasswordChangeTitle}>Пароль</Text>
 
-					<IconButton icon={<PencilIcon width={20} height={20} fill={COLORS.darkPlum} />} onPress={()=> setIsPasswordChange(!isPasswordChange)}/>
+					<IconButton icon={<PencilIcon width={20} height={20} fill={COLORS.darkPlum} />} onPress={()=> setIsPasswordChangeModal(!isPasswordChangeModal)}/>
 				</View>
-							
-
-				{  isPasswordChange && 
-					<View style={styles.PasswordChangeInputView}>
-						<Controller
-							control={control}
-							name="password"
-							render={({
-								field: { value, onChange, onBlur },
-								fieldState: { error },
-							}) => (
-								<Input.Password
-									label="Пароль"
-									value={value}
-									onChangeText={onChange}
-									disabled={isRedact ? false : true}
-									placeholder="Пароль"
-									onBlur={onBlur}
-									error={error?.message}
-								/>
-							)}
-						/>
-						<Controller
-							control={control}
-							name="repeatPassword"
-							render={({
-								field: { value, onChange, onBlur },
-								fieldState: { error },
-							}) => (
-								<Input.Password
-									label="Підтвердження паролю"
-									value={value}
-									onChangeText={onChange}
-									disabled={isRedact ? false : true}
-									placeholder="Підтвердження паролю"
-									onBlur={onBlur}
-									error={error?.message}
-								/>
-							)}
-						/>
-					</View>
-				}
 				
+				{ isPasswordChangeModal && 
+					<ChangePasswordModal visible={isPasswordChangeModal} onClose={()=>setIsPasswordChangeModal(false)} />
+				}
+
 			</View>
 		</View>
 	)
