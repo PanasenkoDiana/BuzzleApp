@@ -62,11 +62,13 @@ export function ChangePasswordModal(props: IChangePasswordModalProps) {
             { modalVariant === 'partOne' && <Modal.InCenterWithoutHeader title='Пароль' visible={props.visible} onClose={props.onClose}> 
             <View style={styles.navPassword}>
                 <Text style={styles.navPasswordTitle}>Пароль</Text>
-                <TouchableOpacity style={styles.navPasswordButton} onPress={() => {
+                <TouchableOpacity onPress={
                     handleSubmit(onSubmit)
-                }}>
-                    <PencilIcon width={20} height={20} stroke={COLORS.darkPlum} />
-                    <Text style={styles.navPasswordButtonText}>Змінити пароль</Text>
+                }>
+                    <View style={styles.navPasswordButton}>
+                        <PencilIcon width={20} height={20} stroke={COLORS.darkPlum} strokeWidth={0.1}/>
+                        <Text style={styles.navPasswordButtonText}>Змінити пароль</Text>
+                    </View>
                 </TouchableOpacity>
             </View>
             <View style={styles.InputPasswordView}>
@@ -87,13 +89,13 @@ export function ChangePasswordModal(props: IChangePasswordModalProps) {
 
                 <Controller
                     control={control}
-                    name="password"
+                    name="confirmPassword"
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
                         <Input.Password
                             label="Підтвердіть новий пароль"
                             value={value}
                             onChangeText={onChange}
-                            placeholder="Напишіть підтвердження нового паролю"
+                            placeholder="Підтвердіть пароль"
                             onBlur={onBlur}
                             error={error?.message}
                         />

@@ -14,7 +14,7 @@ export function useChangePasswordPartOne() {
 
     async function changePasswordPartOne() {
         try {
-            const token = getToken()
+            const token = await getToken()
 
             const response = await fetch(`${SERVER_HOST}api/user/change-password/one`, {
                 method: "POST",
@@ -50,7 +50,7 @@ export function useChangePasswordPartTwo() {
 
     async function changePasswordPartTwo(code: string, password: string) {
         try {
-            const token = getToken()
+            const token = await getToken()
             const response = await fetch(`${SERVER_HOST}api/user/change-password/two`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },

@@ -77,10 +77,9 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
                 keyExtractor={(image) => image.id.toString()}
                 // ListHeaderComponent={<AlbumImage image={`${SERVER_HOST}media/${props.images}`} />}
                 renderItem={({item})=> (
-                    <AlbumImage image={`${SERVER_HOST}media/${item.image.filename}`} id={item.id} deleteFunction={()=>{deleteFunction}} />
+                    <AlbumImage.Small image={`${SERVER_HOST}media/${item.image.filename}`} id={item.id} deleteFunction={()=>{deleteFunction}} />
                 )}
-                style={{width: '100%'}}
-                contentContainerStyle= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row', justifyContent: 'flex-start'}}
+                style= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row', justifyContent: 'flex-start'}}
             />
             {/* <View style={styles.myPhotosList}>
 

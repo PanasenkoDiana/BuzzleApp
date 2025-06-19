@@ -17,9 +17,12 @@ export const styles = StyleSheet.create({
     },
     navPasswordButton: {
         borderColor: COLORS.darkPlum,
+        flexDirection: 'row',
         borderWidth: 1,
         borderRadius: 50,
+        alignItems: 'center',
         backgroundColor: COLORS.plum,
+        padding: 10,
         gap: 15,
     },
     navPasswordButtonText: {

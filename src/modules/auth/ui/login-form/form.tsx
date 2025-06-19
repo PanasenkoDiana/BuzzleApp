@@ -20,7 +20,6 @@ export function LoginForm() {
 	const router = useRouter();
 	
 	async function onSubmit(data: ILogin) {
-		router.push("/main");
 		const response = await login(data.email, data.password);
 
 		if (response.status === "error") {
@@ -38,6 +37,8 @@ export function LoginForm() {
 			}
 			return;
 		}
+
+		router.push('main')
 		
 		// const user = await getData(response.data);
 
