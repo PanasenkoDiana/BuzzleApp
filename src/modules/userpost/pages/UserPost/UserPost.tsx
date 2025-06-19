@@ -52,7 +52,6 @@ export default function UserPost(props: {
 							onRefresh={onRefresh}
 						/>
 					}
-					key={key}
 					data={myPosts}
 					keyExtractor={(post) => post.id.toString()}
 					extraData={refresh}
@@ -90,7 +89,7 @@ export default function UserPost(props: {
 						postUser={item.author}
 						title={item.name}
 						tags={item.tags}
-						description={item.content}
+						description={item.text}
 						images={item.images}
 						likes={1} 
 						views={2}

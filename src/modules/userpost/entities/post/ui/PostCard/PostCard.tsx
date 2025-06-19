@@ -138,17 +138,13 @@ export function PostCard({
 				<View style={styles.userInfo}>
 					<Image
 						source={{
-							// uri: postUser.Profile
-							// 	? `${SERVER_HOST}media/${postUser.Profile.avatars[0].image.filename}`
-							// 	: `${SERVER_HOST}media/default-avatar.png`,
+							uri: `${SERVER_HOST}media/${postUser.Profile.avatars[postUser.Profile.avatars.length - 1].image.filename}`,
 						}}
 						style={styles.avatar}
 					/>
-
 					<View>
 						<Text style={styles.fullName}>
-							{'123123'} 
-							{/* {postUser.surname} */}
+							{postUser.name} {postUser.surname}
 						</Text>
 						<Text style={styles.signature}>✎</Text>
 					</View>
@@ -177,9 +173,7 @@ export function PostCard({
 				{images?.map((imageUrl) => (
 					<Image
 						key={imageUrl.id}
-						source={{
-							uri: `${SERVER_HOST}media/${imageUrl.filename}`,
-						}}
+						source={{ uri: `${SERVER_HOST}media/${imageUrl.filename}` }}
 						style={[styles.gridImage, styles.largeImage]}
 					/>
 				))}

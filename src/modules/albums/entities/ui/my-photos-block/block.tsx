@@ -10,13 +10,9 @@ import { launchImageLibraryAsync, MediaTypeOptions, requestMediaLibraryPermissio
 import { useCreateMyPhotos } from "../../../hooks/useCreateMyPhotos";
 import { Avatar } from "../../../../auth/types";
 import { useDeleteMyPhoto } from "../../../hooks/useDeleteMyPhoto";
-
-
-
+import { useDeleteAlbumPhoto } from "../../../hooks/useDeleteAlbumPhoto";
 
 export function MyPhotosBlock(props: { images: Avatar[] }){
-
-
     const { user } = useUserContext()
 
     const { deleteFunction } = useDeleteMyPhoto()
@@ -52,7 +48,7 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
 
     }
 
-    return(
+    return (
         <View style={styles.partView}>
             <View style={styles.partHeader}>
                 <Text style={styles.myPhotosTitle}>Мої фото</Text>
@@ -71,13 +67,12 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
                 </TouchableOpacity>
             </View>
 
-
             <FlatList
                 data={props.images}
                 keyExtractor={(image) => image.id.toString()}
                 // ListHeaderComponent={<AlbumImage image={`${SERVER_HOST}media/${props.images}`} />}
                 renderItem={({item})=> (
-                    <AlbumImage image={`${SERVER_HOST}media/${item.image.filename}`} id={item.id} deleteFunction={()=>{deleteFunction}} />
+                    <AlbumImage image={`${SERVER_HOST}media/${item.image.filename}`} id={item.id} deleteFunction={deleteFunction} />
                 )}
                 style={{width: '100%'}}
                 contentContainerStyle= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row', justifyContent: 'flex-start'}}

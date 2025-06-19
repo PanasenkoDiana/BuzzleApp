@@ -13,7 +13,6 @@ import {
 	PlusIcon,
 	TrashIcon,
 } from "../../../../../shared/ui/icons";
-import { useDeleteMyPhoto } from "../../../hooks/useDeleteMyPhoto";
 
 export function AlbumImage(props: IAlbumImage) {
 	const [showMyPhoto, setShowMyPhoto] = useState(true);
@@ -52,7 +51,8 @@ export function AlbumImage(props: IAlbumImage) {
 				<IconButton
 					style={{ backgroundColor: COLORS.white }}
 					onPress={async () => {
-						await props.deleteFunction(props.id)
+						props.deleteFunction(props.id)
+						console.log(props.id)
 					}}
 					icon={
 						<TrashIcon

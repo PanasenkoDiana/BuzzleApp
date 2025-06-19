@@ -8,17 +8,17 @@ export function useDeleteMyPhoto(){
     // const [ myPhotos, setMyPhotos ] = useState<string | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
-    const { getToken } =  useUserContext()
+    // const { getToken } =  useUserContext()
 
 
     async function DeletePhoto(id: number){
         try {
             setIsLoading(true);
-            const token = await getToken()
+            // const token = await getToken()
             const response = await fetch(`${SERVER_HOST}api/user/photo/delete`, {
                 method: "DELETE",
                 headers: {'Content-Type':'application/json',
-                    Authorization: `Bearer ${token}`
+                    // Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     id

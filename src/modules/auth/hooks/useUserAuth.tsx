@@ -149,7 +149,7 @@ export function authUser(setUser: (user: IUser | null) => void) {
         return result;
       }
 
-      setUser(result.data);
+      // setUser(result.data);
       return result;
     } catch (error) {
       return { status: "error", message: "An unexpected error occurred" };
@@ -178,7 +178,7 @@ export function authUser(setUser: (user: IUser | null) => void) {
         return result;
       }
 
-      setUser(result.data);
+      // setUser(result.data);
       return result;
     } catch (error) {
       return { status: "error", message: "An unexpected error occurred" };

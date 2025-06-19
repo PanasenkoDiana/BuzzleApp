@@ -14,7 +14,7 @@ export function Main() {
 		<View style={styles.container}>
 			<View style={styles.profileSection}>
 				<Image
-					source={{ uri: `${SERVER_HOST}media/${user.profileImage}` }}
+					source={{ uri: `${SERVER_HOST}media/${user.Profile.avatars[user.Profile.avatars.length - 1].image.filename}` }}
 					style={styles.avatar}
 				/>
 				<Text style={styles.fullName}>
