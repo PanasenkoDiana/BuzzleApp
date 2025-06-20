@@ -20,6 +20,7 @@ export default function UserPost(props: {
 	} = usePost();
 
 	const data = props.isMyPosts ? myPosts : posts;
+	console.log(data)
 
 	const onRefresh = () => {
 		setRefresh(true);
@@ -79,6 +80,7 @@ export default function UserPost(props: {
 				data={data}
 				keyExtractor={(post) => post.id.toString()}
 				refreshing={refresh}
+				contentContainerStyle={{gap: 5}}
 				refreshControl={
 					<RefreshControl refreshing={refresh} onRefresh={onRefresh} />
 				}
@@ -86,13 +88,16 @@ export default function UserPost(props: {
 				renderItem={({ item }) => (
 					<PostCard
 						id={item.id}
-						postUser={item.author}
-						title={item.name}
-						tags={item.tags}
-						description={item.text}
+						title={item.title}
+						content={item.content}
+						author={item.author}
+
 						images={item.images}
-						likes={1} 
-						views={2}
+						tags={item.tags}
+						links={item.links}
+						
+						likes={item.likes} 
+						views={item.views}
 					/>
 				)}
 				showsVerticalScrollIndicator={false}

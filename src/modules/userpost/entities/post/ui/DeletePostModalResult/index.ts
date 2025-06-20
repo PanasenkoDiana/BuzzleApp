@@ -1,0 +1,1 @@
+export { DeletePostModalResult } from "./DeletePostModalResult";

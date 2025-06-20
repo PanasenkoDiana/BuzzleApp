@@ -2,28 +2,17 @@ import { StyleSheet } from "react-native";
 import { COLORS } from "../../../../../../shared/ui/colors";
 
 export const styles = StyleSheet.create({
-	profileContainer: {
-		marginTop: 20,
-		marginBottom: 16,
-	},
-
 	userInfo: {
 		flexDirection: "row",
 		alignItems: "center",
-		gap: 12,
+		gap: 10,
+		marginBottom: 5
 	},
 
 	avatar: {
 		width: 48,
 		height: 48,
 		borderRadius: 24,
-		marginRight: 12, // добавил, чтобы аватар не сливался с текстом
-	},
-
-	username: {
-		fontSize: 18,
-		fontWeight: "600",
-		color: COLORS.black,
 	},
 
 	fullName: {
@@ -38,32 +27,35 @@ export const styles = StyleSheet.create({
 	},
 
 	cardContainer: {
-		backgroundColor: "#fff",
-		padding: 16,
-		borderRadius: 12,
-		marginVertical: 10,
-		elevation: 3,
+		flexDirection: "column",
+		backgroundColor: COLORS.white,
+		borderWidth: 1,
+		borderColor: COLORS.lightGray,
+		padding: 10,
+		borderRadius: 15
 	},
 
 	postTitle: {
 		fontSize: 20,
-		fontWeight: "600",
-		marginBottom: 8,
+		fontWeight: "500",
 		color: COLORS.black,
 	},
 
 	postDescription: {
 		fontSize: 16,
-		lineHeight: 24,
-		marginBottom: 16,
+		color: COLORS.black,
+		marginBottom: 10,
+	},
+
+	link: {
+		fontSize: 16,
 		color: COLORS.black,
 	},
 
 	postTags: {
 		fontSize: 16,
-		color: COLORS.darkPlum || "#6c63ff", // fallback
-		fontWeight: "600",
-		marginBottom: 16,
+		color: COLORS.darkPlum,
+		fontWeight: "500",
 	},
 
 	imageGrid: {
@@ -81,12 +73,6 @@ export const styles = StyleSheet.create({
 
 	largeImage: {
 		flex: 1,
-	},
-
-	row: {
-		flexDirection: "row",
-		justifyContent: "space-between",
-		marginBottom: 8,
 	},
 
 	fullWidthImage: {
@@ -110,27 +96,24 @@ export const styles = StyleSheet.create({
 	},
 
 	statsContainer: {
-		flexDirection: "row",
 		marginTop: 10,
+		flexDirection: "row",
 		justifyContent: "space-around",
 	},
 
 	statItem: {
 		flexDirection: "row",
 		alignItems: "center",
-		gap: 4,
+		gap: 1
 	},
-
-	statNumber: {
+	
+	statLabel: {
+		flexDirection: "row",
+		alignItems: "center",
 		fontSize: 14,
 		fontWeight: "600",
 		color: COLORS.black,
 		marginHorizontal: 6,
-	},
-
-	statLabel: {
-		fontSize: 12,
-		color: "#555",
 	},
 
 	menuModalOverlay: {
