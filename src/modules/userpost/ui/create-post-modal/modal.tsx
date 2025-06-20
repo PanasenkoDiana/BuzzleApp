@@ -34,9 +34,9 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 
 	const { control, handleSubmit, reset } = useForm<IPostForm>({
 		defaultValues: {
-			name: "",
+			title: "",
 			topic: "",
-			text: "",
+			content: "",
 			tags: [],
 			link: "",
 			images: [],
@@ -118,7 +118,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 				<View style={{ paddingHorizontal: 16 }}>
 					<Controller
 						control={control}
-						name="name"
+						name="title"
 						rules={{ required: "Напишіть назву публікації" }}
 						render={({
 							field: { value, onChange, onBlur },
@@ -155,7 +155,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 
 					<Controller
 						control={control}
-						name="text"
+						name="content"
 						render={({
 							field: { value, onChange, onBlur },
 							fieldState: { error },
