@@ -1,39 +1,36 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
 import { styles } from "./part.styles";
 import { SettingsChangeHeader } from "../settings-change-header";
 import { useUserContext } from "../../../auth/context/userContext";
 import { SERVER_HOST } from "../../../../shared/constants";
 import { useEffect, useState } from "react";
+import defaultAvatar from "../../../../../assets/default_avatar.png";
 import {
     launchImageLibraryAsync,
     MediaTypeOptions,
     requestMediaLibraryPermissionsAsync,
 } from "expo-image-picker";
 import { IChangeUserPartOne } from "../../../auth/types";
+import { Controller, useForm } from "react-hook-form";
 
 export function SettingsPagePartOne() {
     const { user, changeUserPartOne } = useUserContext();
     const [isRedact, setIsRedact] = useState(false);
     const [image, setImage] = useState<string | null>(null);
 
-    // Загружаем аватар при появлении user
+    const { control, handleSubmit, setValue } = useForm<IChangeUserPartOne>({
+        defaultValues: {
+            username: user?.username ?? "",
+        },
+    });
+
     useEffect(() => {
         if (!user) return;
+        setImage(null);
 
-        const avatars = user?.Profile?.avatars;
-        const lastAvatar = avatars && avatars.length > 0 ? avatars[avatars.length - 1] : null;
-        const avatarFilename = lastAvatar?.image?.filename;
-        const profileImage = user?.profileImage;
-
-        if (avatarFilename) {
-            setImage(`${SERVER_HOST}media/${avatarFilename}`);
-        } else if (profileImage) {
-            setImage(`${SERVER_HOST}media/${profileImage}`);
-        } else {
-            setImage(`${SERVER_HOST}media/default-avatar.jpg`);
-        }
-    }, [user]);
-
+        // Обновляем значение username при загрузке user
+        setValue("username", user?.username ?? "");
+    }, [user, setValue]);
 
     async function onSearch() {
         const result = await requestMediaLibraryPermissionsAsync();
@@ -47,17 +44,27 @@ export function SettingsPagePartOne() {
             });
 
             if (!images.canceled && images.assets && images.assets.length > 0) {
-                const base64img = `data:image/jpeg;base64,${images.assets[0].base64}`;
+                const base64img = images.assets[0].base64 ?? null;
                 setImage(base64img);
             }
         }
     }
 
     async function onSubmit(data: IChangeUserPartOne) {
-        if (!image || !user) return;
+        if (!user) return;
 
         try {
-            const response = await changeUserPartOne(data, user.id);
+            // Если есть новая картинка, добавляем префикс, иначе отправляем null/undefined
+            const base64ToSend = image
+                ? image.startsWith("data:image")
+                    ? image
+                    : `data:image/png;base64,${image}`
+                : undefined;
+
+            const response = await changeUserPartOne(
+                { ...data, profileImage: base64ToSend },
+            );
+
             if (response.status === "error") {
                 console.error("Ошибка при обновлении пользователя:", response.message);
             } else {
@@ -68,16 +75,14 @@ export function SettingsPagePartOne() {
         }
     }
 
-    // Сохраняем изменения при выходе из режима редактирования
     useEffect(() => {
         const submitIfNeeded = async () => {
-            if (!isRedact && image) {
-                await onSubmit({ profileImage: image });
+            if (!isRedact) {
+                await handleSubmit(onSubmit)();
             }
         };
-
         submitIfNeeded();
-    }, [isRedact]);
+    }, [isRedact, handleSubmit]);
 
     return (
         <View style={styles.changeSettingsBlock}>
@@ -89,17 +94,32 @@ export function SettingsPagePartOne() {
                 <TouchableOpacity disabled={!isRedact} onPress={onSearch}>
                     <Image
                         style={styles.profileAvatarImage}
-                        source={{
-                            uri: image ?? `${SERVER_HOST}media/default-avatar.jpg`,
-                        }}
+                        source={
+                            image
+                                ? { uri: `data:image/png;base64,${image}` }
+                                : user?.Profile.avatars?.[user.Profile.avatars.length - 1]
+                                ? { uri: `${SERVER_HOST}media/${user.Profile.avatars[user.Profile.avatars.length - 1].image.filename}` }
+                                : defaultAvatar
+                        }
                     />
                 </TouchableOpacity>
+
                 <Text style={styles.profileAvatarName}>
                     {user?.name} {user?.surname}
                 </Text>
-                <Text style={styles.profileAvatarIndex}>
-                    @{user?.username}
-                </Text>
+                
+                <Controller
+                    control={control}
+                    name="username"
+                    render={({ field: { value, onChange } }) => (
+                        <TextInput
+                            style={styles.profileAvatarIndex}
+                            value={value}
+                            onChangeText={onChange}
+                        />
+                    )}
+                />
+
             </View>
         </View>
     );

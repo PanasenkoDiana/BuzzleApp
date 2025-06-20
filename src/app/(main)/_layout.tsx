@@ -4,40 +4,47 @@ import { Header } from "../../shared/ui/header";
 import { Footer } from "../../shared/ui/footer";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { COLORS } from "../../shared/ui/colors";
+import { useEffect } from "react";
+import { useUserContext } from "../../modules/auth/context/userContext";
 
 export default function MainLayout() {
-    const pathname = usePathname(); // например: "/main/userPost"
-    const selectedPage = pathname?.split("/").filter(Boolean).pop() || "unknown";
+	const pathname = usePathname(); // например: "/main/userPost"
+	const selectedPage = pathname?.split("/").filter(Boolean).pop() || "unknown";
+	const { fetchUser } = useUserContext();
 
-    return (
-        <View style={styles.container}>
-            <Header selectedPage={selectedPage} whatCreate="post"/>
+	useEffect(() => {
+		fetchUser();
+	}, [pathname]);
 
-            <View style={styles.content}>
-                <Stack 
-                    screenOptions={{
-                        headerShown: false,
-                    }}
-                />
-            </View>
-            
-            <Footer selectedPage={selectedPage} />
-        </View>
-    );
+	return (
+		<View style={styles.container}>
+			<Header selectedPage={selectedPage} whatCreate="post" />
+
+			<View style={styles.content}>
+				<Stack
+					screenOptions={{
+						headerShown: false,
+					}}
+				/>
+			</View>
+
+			<Footer selectedPage={selectedPage} />
+		</View>
+	);
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        // justifyContent:'flex-start',
-        gap: 10,
-    },
-    content: {
-        flex: 1,
-        // borderWidth: 2,
-        // borderColor: COLORS.lightGray,
+	container: {
+		flex: 1,
+		// justifyContent:'flex-start',
+		gap: 10,
+	},
+	content: {
+		flex: 1,
+		// borderWidth: 2,
+		// borderColor: COLORS.lightGray,
 		// borderRadius: 15,
-        // padding: 3,
-        // justifyContent:'flex-start',
-    },
+		// padding: 3,
+		// justifyContent:'flex-start',
+	},
 });

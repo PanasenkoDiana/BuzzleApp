@@ -17,6 +17,7 @@ export function SettingsPagePartTwo() {
 	const { handleSubmit, control } = useForm<IChangeUserPartTwo>()
 	const [ isRedact, setIsRedact ] = useState(false)
 	const [ isPasswordChangeModal, setIsPasswordChangeModal ] = useState(false)
+	const { fetchUser } = useUserContext();
 
 	async function onSubmit(data: IChangeUserPartTwo) {
 		if (data.password !== data.repeatPassword) {
@@ -26,7 +27,8 @@ export function SettingsPagePartTwo() {
 		console.log("data: " + data)
 
 		if (!user) return
-		const response = changeUserPartTwo(data, user.id)
+		const response = changeUserPartTwo(data)
+		fetchUser();
 		console.log("Response:" + response)
 	}
 

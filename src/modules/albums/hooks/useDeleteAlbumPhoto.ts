@@ -10,8 +10,7 @@ export function useDeleteAlbumPhoto() {
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
     const { getToken } = useUserContext()
-
-
+    
     async function DeleteAlbumPhoto(id: number){
         try {
             const token = await getToken()

@@ -41,10 +41,15 @@ export const styles = StyleSheet.create({
 		color: COLORS.black,
 	},
 
+	textInfo: {
+		flexDirection: "column",
+		marginBottom: 10,
+	},
+
+
 	postDescription: {
 		fontSize: 16,
 		color: COLORS.black,
-		marginBottom: 10,
 	},
 
 	link: {
@@ -56,6 +61,10 @@ export const styles = StyleSheet.create({
 		fontSize: 16,
 		color: COLORS.darkPlum,
 		fontWeight: "500",
+	},
+
+	images: {
+		flexDirection: "column"
 	},
 
 	imageGrid: {

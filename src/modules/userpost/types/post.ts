@@ -1,18 +1,34 @@
 import { IImage, ITag } from ".";
+import { IAlbum } from "../../albums/types";
 import { IUser } from "../../auth/types";
 
 export interface IPost {
 	id: number;
 	title: string;
-	content: string;
+	content?: string;
 
-	author?: IUser;
+	author: IUser;
 
+	tags?: ITag[];
 	images?: IImage[];
+	links?: ILink[];
+
 	views?: IProfile[];
 	likes?: IProfile[];
+}
+
+export interface ICreatePost {
+	title: string;
+	content?: string;
 	tags?: ITag[];
-	links?: ILink[];
+	links?: string;
+	images?: string[];
+}
+
+export interface IPostForm extends Omit<ICreatePost, "tags" | "images"> {
+	id: number;
+	tags?: string[];
+	images?: string[];
 }
 
 export interface ILink {

@@ -9,6 +9,7 @@ export function useDeleteMyPhoto(){
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
     // const { getToken } =  useUserContext()
+    const { fetchUser } = useUserContext();
 
 
     async function DeletePhoto(id: number){
@@ -29,6 +30,7 @@ export function useDeleteMyPhoto(){
                 console.log(result.message);
                 setError(result.message)
             } else {
+                fetchUser()
                 return result.data
             }
 

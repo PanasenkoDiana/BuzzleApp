@@ -1,22 +1,36 @@
-import { ScrollView, View, Image, Text, TouchableOpacity } from "react-native"
-import { Ionicons } from "@expo/vector-icons"
-import { styles } from "./main.styles"
-import { COLORS } from "../../../shared/ui/colors"
-import { useUserContext } from "../../auth/context/userContext"
-import { SERVER_HOST } from "../../../shared/constants"
+import { useEffect } from "react";
+import { ScrollView, View, Image, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { styles } from "./main.styles";
+import { COLORS } from "../../../shared/ui/colors";
+import { useUserContext } from "../../auth/context/userContext";
+import { SERVER_HOST } from "../../../shared/constants";
+import { DefaultAvatar } from "../../../shared/ui/images";
 
 export function Main() {
-	const { user } = useUserContext()
+	const { user } = useUserContext();
 
-	if (!user) return null
+	if (!user) return null;
 
 	return (
 		<View style={styles.container}>
 			<View style={styles.profileSection}>
-				<Image
-					source={{ uri: `${SERVER_HOST}media/${user.Profile.avatars[user.Profile.avatars.length - 1].image.filename}` }}
-					style={styles.avatar}
-				/>
+				{user?.Profile?.avatars?.length > 0 &&
+				user.Profile.avatars[user.Profile.avatars.length - 1]?.image ? (
+					<Image
+						source={{
+							uri: `${SERVER_HOST}media/${
+								user.Profile.avatars[
+									user.Profile.avatars.length - 1
+								].image.filename
+							}`,
+						}}
+						style={styles.avatar}
+					/>
+				) : (
+					<DefaultAvatar style={styles.avatar} />
+				)}
+
 				<Text style={styles.fullName}>
 					{user.name} {user.surname}
 				</Text>
@@ -66,5 +80,5 @@ export function Main() {
 				</TouchableOpacity>
 			</View>
 		</View>
-	)
+	);
 }

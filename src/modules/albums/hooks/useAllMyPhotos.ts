@@ -1,23 +1,24 @@
-import { useState, useEffect } from "react"
-import { IAlbum } from "../types"
-import { SERVER_HOST } from "../../../shared/constants"
-import { Result } from "../../../shared/types/result"
-import { useUserContext } from "../../auth/context/userContext"
+import { useEffect, useState } from "react";
+import { IAvatar } from "../../userpost/types/post";
+import { Result } from "../../../shared/types/result";
+import { SERVER_HOST } from "../../../shared/constants";
+import { useUserContext } from "../../auth/context/userContext";
 
-export function useAllAlbums(){
-    const [ albums, setAlbums ] = useState<IAlbum[] | null>(null)
+export function useAllMyPhotos(){
+    const [ myPhotos, setMyPhotos ] = useState<IAvatar[] | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
 	const { getToken } = useUserContext()
 
-    async function getAlbums(){
+
+    async function getMyPhotos(){
         try {
 			setIsLoading(true);
 			const token = await getToken()
-            const response = await fetch(`${SERVER_HOST}api/albums/all`, {
+            const response = await fetch(`${SERVER_HOST}api/user/photo/all`, {
 				headers: { Authorization: `Bearer ${token}` },
 			})
-            const result: Result<IAlbum[]> = await response.json();
+            const result: Result<IAvatar[]> = await response.json();
 			if (result.status === "error") {
 				console.log(result.message);
 				setError(result.message)
@@ -27,7 +28,7 @@ export function useAllAlbums(){
 				// 	return all_tags.push(tag.name)
 				// })
 
-				setAlbums(result.data)
+				setMyPhotos(result.data)
 			}
 
         } catch (error) {
@@ -38,9 +39,9 @@ export function useAllAlbums(){
     }
 
     useEffect(()=>{
-        getAlbums()
+        getMyPhotos()
     }, [])
 
 
-    return { albums, isLoading, error, refetch: getAlbums }
+    return { myPhotos, isLoading, error, refetch: getMyPhotos }
 }

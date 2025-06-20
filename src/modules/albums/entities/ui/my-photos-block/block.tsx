@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, FlatList, RefreshControl } from "react-native";
 import { GalleryIcon } from "../../../../../shared/ui/icons";
 import { AlbumImage } from "../album-image";
 import { SERVER_HOST } from "../../../../../shared/constants";
@@ -10,19 +10,27 @@ import { launchImageLibraryAsync, MediaTypeOptions, requestMediaLibraryPermissio
 import { useCreateMyPhotos } from "../../../hooks/useCreateMyPhotos";
 import { Avatar } from "../../../../auth/types";
 import { useDeleteMyPhoto } from "../../../hooks/useDeleteMyPhoto";
+import { useState } from "react";
+import { useAllMyPhotos } from "../../../hooks/useAllMyPhotos";
 
 
 
 
-export function MyPhotosBlock(props: { images: Avatar[] }){
+export function MyPhotosBlock(){
 
 
-    const { user } = useUserContext()
+    // const { user } = useUserContext()
 
+    const { myPhotos, refetch: getMyPhotos } = useAllMyPhotos()
+
+    const [refresh, setRefresh] = useState(false);
+
+    
+    
     const { deleteFunction } = useDeleteMyPhoto()
-
+    
     const { refetch } = useCreateMyPhotos()
-
+    
     async function onSearch() {
         const result = await requestMediaLibraryPermissionsAsync()
         if (result.status === "granted") {
@@ -33,7 +41,7 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
                 selectionLimit: 1,
                 base64: true, // Важно: получить base64
             })
-
+            
             if (!images.canceled && images.assets && images.assets.length > 0) {
                 // Формируем base64 с префиксом для сервера
                 const base64img = `data:image/jpeg;base64,${images.assets[0].base64}`
@@ -42,6 +50,21 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
             }
         }
     }
+    
+
+
+    const onRefresh = async () => {
+        setRefresh(true);
+        try {
+            await getMyPhotos();
+        } catch (e) {
+            console.error("Ошибка при рефреше альбомов", e);
+        } finally {
+            setRefresh(false);
+        }
+    };
+
+
 
     async function uploadMyPhoto(){
         const photo = await onSearch()
@@ -73,11 +96,16 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
 
 
             <FlatList
-                data={props.images}
+                data={myPhotos}
                 keyExtractor={(image) => image.id.toString()}
+
+                refreshControl={
+                    <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+                }
+
                 // ListHeaderComponent={<AlbumImage image={`${SERVER_HOST}media/${props.images}`} />}
                 renderItem={({item})=> (
-                    <AlbumImage.Small image={`${SERVER_HOST}media/${item.image.filename}`} id={item.id} deleteFunction={()=>{deleteFunction}} />
+                    <AlbumImage.Small image={`${SERVER_HOST}media/${item.image?.filename}`} id={item.id} deleteFunction={deleteFunction} />
                 )}
                 style= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row', justifyContent: 'flex-start'}}
             />

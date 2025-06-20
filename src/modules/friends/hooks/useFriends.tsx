@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { Result } from "../../../shared/types/result";
 import {
-	IUser,
 	IRequest,
 	IMyRequest,
 	IFriendRequest,
 	ICanceledRequest,
 	IDeletedRequest
 } from "../types/types";
+import { IUser } from "../../auth/types";
 import { SERVER_HOST } from "../../../shared/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 

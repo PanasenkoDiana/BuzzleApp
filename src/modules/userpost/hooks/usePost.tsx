@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { ICreatePost, IPost, IPostForm } from "../types";
+import { ICreatePost, IPostForm } from "../types";
+import { IPost } from '../types/post'
 import { SERVER_HOST } from "../../../shared/constants";
 import { Result } from "../../../shared/types/result";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -117,26 +118,13 @@ export function usePost() {
 		try {
 			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/posts/delete`, {
-				method: "DELETE",
+				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 					Authorization: `Bearer ${token}`,
 				},
 				body: JSON.stringify({ id }),
 			});
-
-			if (!response.ok) {
-				// Если статус не 2xx — прочитаем текст ответа
-				const text = await response.text();
-				console.error(
-					`Delete Post failed with status ${response.status}:`,
-					text
-				);
-				return {
-					status: "error",
-					message: `Server error ${response.status}`,
-				};
-			}
 
 			const result: Result<string> = await response.json();
 

@@ -4,6 +4,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export const styles = StyleSheet.create({
 	container: {
+		flex: 1,
 		margin: 10,
 		gap: 5,
 	},

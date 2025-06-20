@@ -1,6 +1,5 @@
 import { View, TouchableOpacity, Image, Text } from "react-native";
 import { styles } from "./FriendCard.styles";
-import { IUser } from "../../../types/types";
 import { DeleteFriendModal } from "../DeleteFriendModal";
 import { useState } from "react";
 import { PeopleIcon } from "../../../../../shared/ui/icons";
@@ -8,9 +7,12 @@ import { DeleteFriendModalResult } from "../DeleteFriendModalResult";
 import { useUserContext } from "../../../../auth/context/userContext";
 import { useFriends } from "../../../hooks/useFriends";
 import { SERVER_HOST } from "../../../../../shared/constants";
+import defaultAvatar from "../../../../../../assets/default_avatar.png";
+import { IUser } from "../../../../auth/types";
+import { DefaultAvatar } from "../../../../../shared/ui/images";
 
 interface IFriendCard extends IUser {
-	variant: "friend" | "request" | "myRequest" | "notFriend";
+	variant: "friend" | "request" | "myRequest" | "notFriend" | string;
 }
 
 export function FriendCard(props: IFriendCard) {
@@ -30,28 +32,43 @@ export function FriendCard(props: IFriendCard) {
 	return (
 		<View style={styles.container}>
 			<TouchableOpacity style={styles.friendInfo}>
-				{props.profileImage ? (
+				{props?.Profile?.avatars?.length > 0 &&
+				props.Profile.avatars[props.Profile.avatars.length - 1]
+					?.image ? (
 					<Image
 						source={{
-							uri:
-								`${SERVER_HOST}media/${props.profileImage}` ||
-								"",
+							uri: `${SERVER_HOST}media/${
+								props.Profile.avatars[
+									props.Profile.avatars.length - 1
+								].image.filename
+							}`,
 						}}
 						style={styles.profileImage}
 					/>
 				) : (
-					<PeopleIcon style={styles.profileImage} />
+					<DefaultAvatar style={styles.profileImage} />
 				)}
 
 				<View style={styles.names}>
-					{props.name && props.username ? (
-						<Text style={styles.name}>
-							{props.name} {props.surname}
-						</Text>
+					{props.name ? (
+						<>
+							<Text style={styles.name}>
+								{props.name} {props.surname}
+							</Text>
+							<Text style={styles.username}>
+								@{props.username}
+							</Text>
+						</>
+					) : props.surname ? (
+						<>
+							<Text style={styles.name}>{props.surname}</Text>
+							<Text style={styles.username}>
+								@{props.username}
+							</Text>
+						</>
 					) : (
-						<></>
+						<Text style={styles.name}>@{props.username}</Text>
 					)}
-					<Text style={styles.username}>@{props.username}</Text>
 				</View>
 			</TouchableOpacity>
 

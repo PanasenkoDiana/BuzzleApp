@@ -8,7 +8,7 @@ import {
 	Linking,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { styles } from "./PostCard.styles";
 import { COLORS } from "../../../../../../shared/ui/colors";
 import { IImage, ITag } from "../../../../types";
@@ -20,6 +20,7 @@ import { IPost } from "../../../../types/post";
 import { DeletePostModal } from "../DeletePostModal";
 import { DeletePostModalResult } from "../DeletePostModalResult";
 import { Link } from "expo-router";
+import { DefaultAvatar } from "../../../../../../shared/ui/images";
 
 interface IPostCardProps extends IPost {
 	onDeleted?: (id: number) => void;
@@ -95,99 +96,171 @@ export function PostCard(props: IPostCardProps) {
 	};
 
 	return (
-		<View>
-			<View style={styles.cardContainer}>
-				<View style={styles.userInfo}>
+		<View style={styles.cardContainer}>
+			<View style={styles.userInfo}>
+				{props.author.Profile.avatars ? (
 					<Image
 						source={{
-							uri: `https://th.bing.com/th/id/OIP.Ur8PE60ZqDa7ExvuFqIwJAHaFj?o=7rm=3&rs=1&pid=ImgDetMain`,
+							uri: `${SERVER_HOST}media/${
+								props.author.Profile.avatars[
+									props.author.Profile.avatars.length - 1
+								].image.filename
+							}`,
 						}}
 						style={styles.avatar}
 					/>
-					<View>
-						{props.author?.name || props.author?.surname ? (
-							props.author?.name ? (
-								<>
-									<Text style={styles.fullName}>
-										{props.author?.name}{" "}
-										{props.author?.surname || ""}
-									</Text>
-								</>
-							) : (
-								<>
-									<Text style={styles.fullName}>
-										{props.author?.surname}
-									</Text>
-								</>
-							)
-						) : (
-							<Text style={styles.fullName}>
-								@{props.author?.username}
-							</Text>
-						)}
-					</View>
+				) : (
+					<DefaultAvatar style={styles.avatar} />
+				)}
 
-					<TouchableOpacity
-						ref={threeDotsRef}
-						style={{ marginLeft: "auto", padding: 8 }}
-						onPress={openMenu}
-					>
-						<Ionicons
-							name="ellipsis-vertical"
-							size={22}
-							color={COLORS.black}
-						/>
-					</TouchableOpacity>
+				<View>
+					{props.author?.name || props.author?.surname ? (
+						props.author?.name ? (
+							<>
+								<Text style={styles.fullName}>
+									{props.author?.name}{" "}
+									{props.author?.surname || ""}
+								</Text>
+							</>
+						) : (
+							<>
+								<Text style={styles.fullName}>
+									{props.author?.surname}
+								</Text>
+							</>
+						)
+					) : (
+						<Text style={styles.fullName}>
+							@{props.author?.username}
+						</Text>
+					)}
+				</View>
+
+				<TouchableOpacity
+					ref={threeDotsRef}
+					style={{ marginLeft: "auto", padding: 8 }}
+					onPress={openMenu}
+				>
+					<Ionicons
+						name="ellipsis-vertical"
+						size={22}
+						color={COLORS.black}
+					/>
+				</TouchableOpacity>
+			</View>
+			<View>
+				<Text style={styles.postTitle}>{props.title}</Text>
+				<View style={styles.textInfo}>
+					<Text style={styles.postDescription}>{props.content}</Text>
+					{props.links && props.links.length > 0 && (
+						<Text style={styles.link}>
+							Посилання:{" "}
+							{props.links?.map((link) => (
+								<Link href={link.url} />
+							))}
+						</Text>
+					)}
+
+					{props.tags && props.tags.length > 0 && (
+						<Text style={styles.postTags}>
+							{props.tags?.map((tag) => `${tag.name} `)}
+						</Text>
+					)}
 				</View>
 				<View>
-					<Text style={styles.postTitle}>{props.title}</Text>
-					<Text style={styles.postDescription}>
-						{props.content}
-						{props.links && props.links.length > -1 ? (
-							<Text style={styles.link}>
-								{"\n"}
-								Посилання:{" "}
-								{props.links?.map((link) => (
-									<Link href={link.url} />
-								))}
-							</Text>
-						) : (
-							null
-						)}
+					{props.images && props.images.length > 0 && (
+						<View style={styles.images}>
+							<View style={styles.imageGrid}>
+								{props.images.slice(0, 3).map((image) => {
+									const imagesCount = props.images?.length;
 
-						{props.tags && props.tags.length > 0 ? (
-							<Text style={styles.postTags}>
-								{"\n"}
-								{props.tags?.map((tag) => `${tag.name} `)}
-							</Text>
-						) : (
-							null
-						)}
-					</Text>
+									let imageStyle = styles.gridImage;
+									if (imagesCount === 1)
+										imageStyle = styles.fullWidthImage;
+									else if (imagesCount === 2)
+										imageStyle = styles.halfWidthImage;
 
-					{images && images.length > 0 ? (
-						<View style={styles.imageGrid}>
-							{images?.map((image) => {
-								const imagesCount = images?.length;
+									return (
+										<Image
+											key={image.id}
+											source={{
+												uri: `${SERVER_HOST}media/${image.filename}`,
+											}}
+											style={imageStyle}
+											resizeMode="cover"
+										/>
+									);
+								})}
+							</View>
 
-								let imageStyle = styles.gridImage;
-								if (imagesCount === 1)
-									imageStyle = styles.fullWidthImage;
-								else if (imagesCount === 2)
-									imageStyle = styles.halfWidthImage;
+							<View style={styles.imageGrid}>
+								{props.images.slice(4, 7).map((image) => {
+									const imagesCount = props.images?.length;
 
-								return (
-									<Image
-										source={{
-											uri: image.file,
-										}}
-										style={imageStyle}
-										resizeMode="cover"
-									/>
-								);
-							})}
+									let imageStyle = styles.gridImage;
+									if (imagesCount === 1)
+										imageStyle = styles.fullWidthImage;
+									else if (imagesCount === 2)
+										imageStyle = styles.halfWidthImage;
+
+									return (
+										<Image
+											key={image.id}
+											source={{
+												uri: `${SERVER_HOST}media/${image.filename}`,
+											}}
+											style={imageStyle}
+											resizeMode="cover"
+										/>
+									);
+								})}
+							</View>
+							<View style={styles.imageGrid}>
+								{props.images.slice(7, 10).map((image) => {
+									const imagesCount = props.images?.length;
+
+									let imageStyle = styles.gridImage;
+									if (imagesCount === 1)
+										imageStyle = styles.fullWidthImage;
+									else if (imagesCount === 2)
+										imageStyle = styles.halfWidthImage;
+
+									return (
+										<Image
+											key={image.id}
+											source={{
+												uri: `${SERVER_HOST}media/${image.filename}`,
+											}}
+											style={imageStyle}
+											resizeMode="cover"
+										/>
+									);
+								})}
+							</View>
+							<View style={styles.imageGrid}>
+								{props.images.slice(10).map((image) => {
+									const imagesCount = props.images?.length;
+
+									let imageStyle = styles.gridImage;
+									if (imagesCount === 1)
+										imageStyle = styles.fullWidthImage;
+									else if (imagesCount === 2)
+										imageStyle = styles.halfWidthImage;
+
+									return (
+										<Image
+											key={image.id}
+											source={{
+												uri: `${SERVER_HOST}media/${image.filename}`,
+											}}
+											style={imageStyle}
+											resizeMode="cover"
+										/>
+									);
+								})}
+							</View>
 						</View>
-					) : null}
+					)}
 
 					<View style={styles.statsContainer}>
 						<View style={styles.statItem}>

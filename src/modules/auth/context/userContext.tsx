@@ -19,13 +19,12 @@ interface IUserContext {
   setUser: (user: IUser | null) => void;
   getToken: () => Promise<string | null>;
   verify: (email: string, code: string) => Promise<Result<string>>;
+  fetchUser: () => Promise<void>;
   changeUserPartOne: (
     data: IChangeUserPartOne,
-    id: number
   ) => Promise<Result<IUser>>;
   changeUserPartTwo: (
     data: IChangeUserPartTwo,
-    id: number
   ) => Promise<Result<IUser>>;
   addSecondUserInfo: (
     data: ISecondRegisterForm,
@@ -41,6 +40,7 @@ const initialValue: IUserContext = {
   setUser: () => {},
   getToken: async () => null,
   verify: async () => ({ status: "error", message: "Not implemented" }),
+  fetchUser: async () => {},
   changeUserPartOne: async () => ({
     status: "error",
     message: "Not implemented",
@@ -52,7 +52,7 @@ const initialValue: IUserContext = {
   addSecondUserInfo: async () => ({
     status: "error",
     message: "Not implemented",
-  }),
+  })
 };
 
 const userContext = createContext<IUserContext>(initialValue);
@@ -79,22 +79,23 @@ export function UserContextProvider({ children }: IUserContextProviderProps) {
   } = authUser(setUser);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = await AsyncStorage.getItem("token");
-      if (!token) return;
-
-      const response = await getData(token);
-      if (response.status === "success") {
-        setUser(response.data);
-      } else {
-        console.log("Ошибка при загрузке пользователя:", response.message);
-        setUser(null);
-        await AsyncStorage.removeItem("token");
-      }
-    };
-
     fetchUser();
   }, []);
+
+  async function fetchUser() {
+    const token = await AsyncStorage.getItem("token");
+    if (!token) return;
+
+    const response = await getData(token);
+    if (response.status === "success") {
+      setUser(response.data);
+    } else {
+      console.log("Ошибка при загрузке пользователя:", response.message);
+      setUser(null);
+      await AsyncStorage.removeItem("token");
+    }
+  };
+
 
   function isAuthenticated() {
     return user !== null;
@@ -117,6 +118,7 @@ export function UserContextProvider({ children }: IUserContextProviderProps) {
         changeUserPartOne,
         changeUserPartTwo,
         addSecondUserInfo,
+        fetchUser
       }}
     >
       {children}

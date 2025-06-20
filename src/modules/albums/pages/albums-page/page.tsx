@@ -33,7 +33,6 @@ export function Albums() {
   const { user } = useUserContext();
   const [refresh, setRefresh] = useState(false);
   const avatars = user?.Profile.avatars;
-  const userPhoto = user?.profileImage as string;
 
   const { albums, refetch } = useAllAlbums();
   const [modalVisible, setModalVisible] = useState(false);
@@ -53,7 +52,7 @@ export function Albums() {
     <>
       <SettingsHeader selectedPage={"albums"} />
       <View style={{ gap: 15 }}>
-        <MyPhotosBlock images={avatars ?? []} />
+        <MyPhotosBlock />
       </View>
     </>
   );

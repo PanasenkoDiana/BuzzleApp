@@ -1,0 +1,72 @@
+import { StyleSheet } from "react-native";
+import { COLORS } from "../../../../shared/ui/colors";
+
+export const styles = StyleSheet.create({
+	container: {
+        flex: 1,
+		flexDirection: "column",
+		borderWidth: 1,
+		borderRadius: 10,
+        padding: 10,
+		borderColor: COLORS.lightGray,
+		backgroundColor: COLORS.white,
+	},
+    header: {
+        fontSize: 18,
+        fontWeight: "bold",
+        marginBottom: 10,
+        textAlign: "center",
+        color: "#222",
+    },
+    myMessage: {
+        alignSelf: "flex-end",
+        backgroundColor: "#DCF8C6",
+        borderRadius: 12,
+        padding: 10,
+        marginVertical: 4,
+        maxWidth: "75%",
+        fontSize: 16,
+    },
+    theirMessage: {
+        alignSelf: "flex-start",
+        backgroundColor: "#F1F0F0",
+        borderRadius: 12,
+        padding: 10,
+        marginVertical: 4,
+        maxWidth: "75%",
+        fontSize: 16,
+    },
+    inputContainer: {
+        flexDirection: "row",
+        alignItems: "center",
+        marginTop: 8,
+        paddingVertical: 6,
+        borderTopWidth: 1,
+        borderColor: "#eee",
+        backgroundColor: "#fafafa",
+    },
+    input: {
+        flex: 1,
+        borderWidth: 1,
+        borderColor: "#ccc",
+        borderRadius: 20,
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        marginRight: 8,
+        fontSize: 16,
+        backgroundColor: "#fff",
+    },
+    sendButton: {
+        backgroundColor: "#007AFF",
+        borderRadius: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 18,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    sendButtonText: {
+        color: "#fff",
+        fontWeight: "bold",
+        fontSize: 16,
+    },
+});

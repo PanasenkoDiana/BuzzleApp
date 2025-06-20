@@ -12,13 +12,20 @@ import { Input } from "../../../../shared/ui/input";
 import { SearchIcon } from "../../../../shared/ui/icons";
 import { COLORS } from "../../../../shared/ui/colors";
 import { useState } from "react";
-
+import { IUser } from "../../../auth/types";
+import { SERVER_HOST } from "../../../../shared/constants";
+import { DefaultAvatar } from "../../../../shared/ui/images";
+import { useNavigation } from "@react-navigation/native";
+import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import type { RootStackParamList } from "../../types/types"; 
+import { useRouter } from "expo-router";
 interface ContactsPageProps {
-	contacts: Contact[];
+	contacts: IUser[];
 }
 
 export function ContactsPage(props: ContactsPageProps) {
 	const [searchText, setSearchText] = useState("");
+	const router = useRouter();
 
 	const lowerInput = searchText.toLowerCase();
 
@@ -55,29 +62,29 @@ export function ContactsPage(props: ContactsPageProps) {
 		.filter((contact) => contact !== null);
 
 	const sortedContacts = filteredContacts.sort((a, b) => {
-		const nameA = a.name || '';
-		const nameB = b.name || '';
-		const surnameA = a.surname || '';
-		const surnameB = b.surname || '';
-		const usernameA = a.username || '';
-		const usernameB = b.username || '';
-	
-		const priorityA = nameA ? 0 : (surnameA ? 1 : 2);
-		const priorityB = nameB ? 0 : (surnameB ? 1 : 2);
-	
+		const nameA = a.name || "";
+		const nameB = b.name || "";
+		const surnameA = a.surname || "";
+		const surnameB = b.surname || "";
+		const usernameA = a.username || "";
+		const usernameB = b.username || "";
+
+		const priorityA = nameA ? 0 : surnameA ? 1 : 2;
+		const priorityB = nameB ? 0 : surnameB ? 1 : 2;
+
 		if (priorityA !== priorityB) {
 			return priorityA - priorityB;
 		}
 
 		if (nameA > nameB) return 1;
 		if (nameA < nameB) return -1;
-		
+
 		if (surnameA > surnameB) return 1;
 		if (surnameA < surnameB) return -1;
 
 		if (usernameA > usernameB) return 1;
 		if (usernameA < usernameB) return -1;
-	
+
 		return 0;
 	});
 
@@ -93,15 +100,35 @@ export function ContactsPage(props: ContactsPageProps) {
 				data={sortedContacts}
 				contentContainerStyle={styles.list}
 				renderItem={({ item }) => (
-					<TouchableOpacity style={styles.contact}>
-						<Image
-							source={{
-								uri:
-									item.profileImage ||
-									"https://www.gravatar.com/avatar/",
-							}}
-							style={styles.contactImage}
-						/>
+					<TouchableOpacity
+						style={styles.contact}
+						onPress={() =>
+							router.push( {
+								pathname:"/chat",
+								params:{
+								recipientId: item.username,
+								recipientName: `${
+									item.name || ""
+								} ${item.surname || ""}`.trim() || `@${item.username}`,},
+							})
+						}
+					>
+						{item?.Profile?.avatars?.length > 0 &&
+						item.Profile.avatars[item.Profile.avatars.length - 1]
+							?.image ? (
+							<Image
+								source={{
+									uri: `${SERVER_HOST}media/${
+										item.Profile.avatars[
+											item.Profile.avatars.length - 1
+										].image.filename
+									}`,
+								}}
+								style={styles.contactImage}
+							/>
+						) : (
+							<DefaultAvatar style={styles.contactImage} />
+						)}
 						<View style={styles.contactInfo}>
 							{item.name || item.surname ? (
 								item.name ? (
