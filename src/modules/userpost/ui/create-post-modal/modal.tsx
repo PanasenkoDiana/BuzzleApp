@@ -30,21 +30,16 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
   const { tags } = useAllTags();
   const [selectedBase64Images, setSelectedBase64Images] = useState<string[]>([]);
 
-  const { control, handleSubmit, reset } = useForm<IPostForm>({
-    defaultValues: {
-      title: "",
-      content: "",
-      tags: [],
-      images: [],
-    },
-  });
-
-  useEffect(() => {
-    if (!isVisible) {
-      reset();
-      setSelectedBase64Images([]);
-    }
-  }, [isVisible]);
+	const { control, handleSubmit, reset } = useForm<IPostForm>({
+		defaultValues: {
+			title: "",
+			topic: "",
+			content: "",
+			tags: [],
+			link: "",
+			images: [],
+		},
+	});
 
   async function pickImages() {
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -101,43 +96,71 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
     }
   }
 
-  return (
-    <Modal title="Створення публікації" visible={isVisible} onClose={onClose}>
-      <ScrollView
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
-        keyboardShouldPersistTaps="handled"
-      >
-        <View style={{ paddingHorizontal: 16 }}>
-          <Controller
-            control={control}
-            name="title"
-            rules={{ required: "Напишіть назву публікації" }}
-            render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-              <Input
-                label="Назва публікації"
-                value={value}
-                onChangeText={onChange}
-                placeholder="Напишіть назву публікації"
-                onBlur={onBlur}
-                error={error?.message}
-              />
-            )}
-          />
+	return (
+		<Modal
+			title="Створення публікації"
+			visible={isVisible}
+			onClose={onClose}
+		>
+			<ScrollView
+				contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
+				keyboardShouldPersistTaps="handled"
+			>
+				<View style={{ paddingHorizontal: 16 }}>
+					<Controller
+						control={control}
+						name="title"
+						rules={{ required: "Напишіть назву публікації" }}
+						render={({
+							field: { value, onChange, onBlur },
+							fieldState: { error },
+						}) => (
+							<Input
+								label="Назва публікації"
+								value={value}
+								onChangeText={onChange}
+								placeholder="Напишіть назву публікації"
+								onBlur={onBlur}
+								error={error?.message}
+							/>
+						)}
+					/>
 
-          <Controller
-            control={control}
-            name="content"
-            render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-              <Input
-                label="Опис"
-                value={value}
-                onChangeText={onChange}
-                placeholder="Напишіть опис публікації"
-                onBlur={onBlur}
-                error={error?.message}
-              />
-            )}
-          />
+					<Controller
+						control={control}
+						name="topic"
+						render={({
+							field: { value, onChange, onBlur },
+							fieldState: { error },
+						}) => (
+							<Input
+								label="Тема публікації"
+								value={value}
+								onChangeText={onChange}
+								placeholder="Напишіть тему публікації"
+								onBlur={onBlur}
+								error={error?.message}
+							/>
+						)}
+					/>
+
+					<Controller
+						control={control}
+						name="content"
+						render={({
+							field: { value, onChange, onBlur },
+							fieldState: { error },
+						}) => (
+							<Input
+								label="Опис"
+								value={value}
+								onChangeText={onChange}
+								placeholder="Напишіть опис публікації"
+								onBlur={onBlur}
+								error={error?.message}
+							/>
+						)}
+					/>
 
           <Controller
             control={control}

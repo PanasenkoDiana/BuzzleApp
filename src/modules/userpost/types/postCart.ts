@@ -3,9 +3,9 @@ import { IUser } from "../../auth/types"
 
 export interface IPost {
     id: number
-    name: string
+    title: string
     topic?: string
-    text?: string
+    content?: string
     tags?: ITag[]
     link?: string
     images?: IImage[],
@@ -13,10 +13,12 @@ export interface IPost {
 }
 
 export interface ICreatePost {
-	title: string;
-	content: string;
-	tags?: (string | ITag)[];
-	images: string[]; 
+    title: string
+    topic?: string
+    content?: string
+    tags?: ITag[]
+    link?: string
+    images?: IImage[],
 }
 
 export interface IPostForm extends ICreatePost {
