@@ -16,7 +16,7 @@ export interface ICreatePost {
 	title: string;
 	content: string;
 	tags?: (string | ITag)[];
-	images: IImage[]; 
+	images: string[]; 
 }
 
 export interface IPostForm extends ICreatePost {

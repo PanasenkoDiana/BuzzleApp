@@ -61,18 +61,17 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
     });
 
     if (!result.canceled && result.assets.length > 0) {
-      const base64Imgs = result.assets
-        .map((asset) => {
-          if (!asset.base64) return null;
-          // Убираем префикс, если он есть
-          return asset.base64.startsWith("data:")
-            ? asset.base64.split(",")[1]
-            : asset.base64;
-        })
-        .filter(Boolean) as string[];
-
-      setSelectedBase64Images((prev) => [...prev, ...base64Imgs]);
+      const base64Imgs = result.assets;
+      
+      setSelectedBase64Images([]);
+    
+      const newImages = base64Imgs
+        .map((image) => image.base64)
+        .filter((base64): base64 is string => typeof base64 === 'string');
+    
+      setSelectedBase64Images(newImages);
     }
+    
   }
 
   function removeImage(index: number) {
@@ -83,10 +82,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
     try {
       const postData: IPostForm = {
         ...data,
-        images: selectedBase64Images.map((base64, i) => ({
-          filename: `image_${Date.now()}_${i}.png`,
-          file: base64,
-        })),
+        images: selectedBase64Images
       };
 
       const result = await createPost(postData);

@@ -17,7 +17,6 @@ import { useUserContext } from "../../../../../auth/context/userContext";
 import { IUser } from "../../../../../auth/types";
 import { usePost } from "../../../../hooks";
 
-
 interface PostCardProps {
   id: number;
   postUser: IUser;
@@ -44,44 +43,47 @@ export function PostCard({
   const [modalVisible, setModalVisible] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, right: 0 });
   const threeDotsRef = useRef(null);
+  const { deletePost } = usePost();
 
+  useEffect(() => {
+    console.log(
+      "post user:",
+      postUser,
+      title,
+      tags,
+      description,
+      images,
+      likes,
+      views,
+      id,
+      onDeleted
+    );
+  }, []);
 
-	useEffect(()=>{
-		console.log("post user:",postUser,
-	title,
-	tags,
-	description,
-	images,
-	likes,
-	views,
-	id,
-	onDeleted,)
-	},[])
+  const handleEdit = async () => {
+    setModalVisible(false);
+    try {
+      const response = await fetch(`${SERVER_HOST}api/posts/change`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          id,
+          name: title,
+          text: description,
+          tags: tags?.map((tag) => tag.name),
+        }),
+      });
 
-	const handleEdit = async () => {
-		setModalVisible(false);
-		try {
-			const response = await fetch(`${SERVER_HOST}api/posts/change`, {
-				method: "PUT",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify({
-					id,
-					name: title,
-					text: description,
-					tags: tags?.map((tag) => tag.name),
-				}),
-			});
+      if (!response.ok) {
+        throw new Error("Failed to update post");
+      }
 
-			if (!response.ok) {
-				throw new Error("Failed to update post");
-			}
-
-			Alert.alert("Успіх", "Пост успішно оновлено");
-		} catch (error) {
-			Alert.alert("Помилка", "Не вдалося оновити пост");
-			console.error("Error updating post:", error);
-		}
-	};
+      Alert.alert("Успіх", "Пост успішно оновлено");
+    } catch (error) {
+      Alert.alert("Помилка", "Не вдалося оновити пост");
+      console.error("Error updating post:", error);
+    }
+  };
 
   const handleDelete = () => {
     setModalVisible(false);
@@ -100,7 +102,10 @@ export function PostCard({
                 Alert.alert("Видалено", "Допис успішно видалено");
                 if (onDeleted) onDeleted(id);
               } else {
-                Alert.alert("Помилка", result?.message || "Не вдалося видалити пост");
+                Alert.alert(
+                  "Помилка",
+                  result?.message || "Не вдалося видалити пост"
+                );
               }
             } catch (error) {
               Alert.alert("Помилка", "Не вдалося видалити пост");
@@ -132,52 +137,54 @@ export function PostCard({
     }
   };
 
-	return (
-		<View style={styles.cardContainer}>
-			<View style={styles.profileContainer}>
-				<View style={styles.userInfo}>
-					<Image
-						source={{
-							uri: `${SERVER_HOST}media/${postUser.Profile.avatars[postUser.Profile.avatars.length - 1].image.filename}`,
-						}}
-						style={styles.avatar}
-					/>
-					<View>
-						<Text style={styles.fullName}>
-							{postUser.name} {postUser.surname}
-						</Text>
-						<Text style={styles.signature}>✎</Text>
-					</View>
-					<TouchableOpacity
-						ref={threeDotsRef}
-						style={{ marginLeft: "auto", padding: 8 }}
-						onPress={openMenu}
-					>
-						<Ionicons
-							name="ellipsis-vertical"
-							size={22}
-							color={COLORS.black}
-						/>
-					</TouchableOpacity>
-				</View>
-			</View>
+  return (
+    <View style={styles.cardContainer}>
+      <View style={styles.profileContainer}>
+        <View style={styles.userInfo}>
+          <Image
+            source={{
+              uri: `${SERVER_HOST}media/${
+                postUser?.Profile?.avatars?.[
+                  postUser.Profile.avatars.length - 1
+                ]?.image?.filename
+              }`,
+            }}
+            style={styles.avatar}
+          />
+          <View>
+            <Text style={styles.fullName}>
+              {postUser.name} {postUser.surname}
+            </Text>
+            <Text style={styles.signature}>✎</Text>
+          </View>
+          <TouchableOpacity
+            ref={threeDotsRef}
+            style={{ marginLeft: "auto", padding: 8 }}
+            onPress={openMenu}
+          >
+            <Ionicons name="ellipsis-vertical" size={22} color={COLORS.black} />
+          </TouchableOpacity>
+        </View>
+      </View>
 
       <Text style={styles.postTitle}>{title}</Text>
       <Text style={styles.postDescription}>
         {description}
         {"\n"}
-        <Text style={styles.postTags}>{tags?.map((tag) => `${tag.name} `)}</Text>
+        <Text style={styles.postTags}>
+          {tags?.map((tag) => `${tag.name} `)}
+        </Text>
       </Text>
 
-			<View style={styles.imageGrid}>
-				{images?.map((imageUrl) => (
-					<Image
-						key={imageUrl.id}
-						source={{ uri: `${SERVER_HOST}media/${imageUrl.filename}` }}
-						style={[styles.gridImage, styles.largeImage]}
-					/>
-				))}
-			</View>
+      <View style={styles.imageGrid}>
+        {images?.map((imageUrl) => (
+          <Image
+            key={imageUrl.id}
+            source={{ uri: `${SERVER_HOST}media/${imageUrl.filename}` }}
+            style={[styles.gridImage, styles.largeImage]}
+          />
+        ))}
+      </View>
 
       <View style={styles.statsContainer}>
         <View style={styles.statItem}>
@@ -229,7 +236,10 @@ export function PostCard({
               // handleEdit оставил как есть
               onPress={() => {
                 setModalVisible(false);
-                Alert.alert("Редагування", "Функція редагування поки що не реалізована");
+                Alert.alert(
+                  "Редагування",
+                  "Функція редагування поки що не реалізована"
+                );
               }}
             >
               <Ionicons
@@ -238,7 +248,9 @@ export function PostCard({
                 color={COLORS.black}
                 style={{ marginRight: 8 }}
               />
-              <Text style={{ fontSize: 16, color: COLORS.black }}>Редагувати допис</Text>
+              <Text style={{ fontSize: 16, color: COLORS.black }}>
+                Редагувати допис
+              </Text>
             </TouchableOpacity>
 
             <View
@@ -263,7 +275,9 @@ export function PostCard({
                 color={COLORS.error}
                 style={{ marginRight: 8 }}
               />
-              <Text style={{ fontSize: 16, color: COLORS.error }}>Видалити публікацію</Text>
+              <Text style={{ fontSize: 16, color: COLORS.error }}>
+                Видалити публікацію
+              </Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
