@@ -21,6 +21,8 @@ export interface ICreatePost {
     images?: IImage[],
 }
 
-export interface IPostForm extends ICreatePost {
-	id?: number;
+export interface IPostForm extends Omit<ICreatePost, 'tags' | 'images'> {
+    id: number
+    tags?: string[]
+    images?: string[]
 }
