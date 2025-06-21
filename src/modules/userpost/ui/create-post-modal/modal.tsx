@@ -19,6 +19,7 @@ import { usePost } from "../../hooks";
 import { TagsSelector } from "../tags-selector";
 import { useAllTags } from "../../hooks/useAllTags";
 import { COLORS } from "../../../../shared/ui/colors";
+import { Links, ILink } from "../links";
 
 interface ICreatePostModalProps {
 	isVisible: boolean;
@@ -35,10 +36,9 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 	const { control, handleSubmit, reset } = useForm<IPostForm>({
 		defaultValues: {
 			title: "",
-			topic: "",
 			content: "",
 			tags: [],
-			link: "",
+			links: "",
 			images: [],
 		},
 	});
@@ -82,7 +82,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 		try {
 			const postData = {
 				...data,
-				images: selectedBase64Images,
+				images: selectedBase64Images
 			};
 			console.log("Submitting post:", data);
 
@@ -115,7 +115,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
 				keyboardShouldPersistTaps="handled"
 			>
-				<View style={{ paddingHorizontal: 16 }}>
+				<View style={{ paddingHorizontal: 16, gap: 10 }}>
 					<Controller
 						control={control}
 						name="title"
@@ -129,24 +129,6 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 								value={value}
 								onChangeText={onChange}
 								placeholder="Напишіть назву публікації"
-								onBlur={onBlur}
-								error={error?.message}
-							/>
-						)}
-					/>
-
-					<Controller
-						control={control}
-						name="topic"
-						render={({
-							field: { value, onChange, onBlur },
-							fieldState: { error },
-						}) => (
-							<Input
-								label="Тема публікації"
-								value={value}
-								onChangeText={onChange}
-								placeholder="Напишіть тему публікації"
 								onBlur={onBlur}
 								error={error?.message}
 							/>
@@ -185,19 +167,9 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 
 					<Controller
 						control={control}
-						name="link"
-						render={({
-							field: { value, onChange, onBlur },
-							fieldState: { error },
-						}) => (
-							<Input
-								label="Посилання на ресурс"
-								value={value}
-								onChangeText={onChange}
-								placeholder="Додайте посилання до цікавої публікації"
-								onBlur={onBlur}
-								error={error?.message}
-							/>
+						name="links"
+						render={({ field: { value, onChange } }) => (
+							<Links value={value} onChange={onChange} />
 						)}
 					/>
 

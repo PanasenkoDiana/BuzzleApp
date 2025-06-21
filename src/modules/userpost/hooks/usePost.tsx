@@ -16,6 +16,7 @@ export function usePost() {
 		data: IPostForm
 	): Promise<Result<IPost> | undefined> {
 		try {
+			console.log(data)
 			const token = await AsyncStorage.getItem("token");
 			const response = await fetch(`${SERVER_HOST}api/posts/create`, {
 				method: "POST",

@@ -31,6 +31,12 @@ export default function RootLayout() {
 							headerShown: false,
 						}}
 					/>
+					<Stack.Screen
+						name="(chat)"
+						options={{
+							headerShown: false,
+						}}
+					/>
 
 					{/* <Stack.Screen name="main" options={{
                         headerShown: false

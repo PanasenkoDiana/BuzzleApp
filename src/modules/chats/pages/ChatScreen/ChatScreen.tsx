@@ -1,28 +1,58 @@
 import { useState, useEffect, useRef } from "react";
-import { View, Text, TextInput, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, Image } from "react-native";
 import { styles } from "./ChatScreen.styles";
 import { io, Socket } from "socket.io-client";
 import { useLocalSearchParams } from "expo-router";
 import { SERVER_HOST } from "../../../../shared/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ArrowIcon, CheckIcon, GalleryIcon, SendIcon } from "../../../../shared/ui/icons";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS } from "../../../../shared/ui/colors";
+import { DefaultAvatar } from "../../../../shared/ui/images";
+import { useRecipient } from "../../hooks/useRecipient";
+import { IUser } from "../../../auth/types";
 
 const SOCKET_URL = SERVER_HOST;
 
 type Message = {
-    id?: number; // если есть id в базе
+    id?: number;
     content: string;
     senderId: number;
     chatGroupId?: number;
-    sentAt?: string; // дата для сортировки
+    sentAt?: string;
 };
 
 export function ChatScreen() {
-    const { recipientId, recipientName } = useLocalSearchParams<{ recipientId: string; recipientName: string }>();
+    const { recipientId, recipientName, recipientUsername } = useLocalSearchParams<{ recipientId: string; recipientName: string; recipientUsername: string }>();
     const [messages, setMessages] = useState<Message[]>([]);
     const [newMessage, setNewMessage] = useState("");
     const [chatGroupId, setChatGroupId] = useState<number | null>(null);
     const [currentUserId, setCurrentUserId] = useState<number | null>(null);
     const socketRef = useRef<Socket | null>(null);
+    const [thisRecipient, setThisRecipient] = useState<IUser | null>(null);
+
+    const { recipient, getRecipient } = useRecipient();
+
+    // Загружаем получателя по ID и сразу сохраняем в состояние
+    useEffect(() => {
+        async function fetchRecipient() {
+            if (!recipientId) return;
+
+            const result = await getRecipient(+recipientId);
+            console.log("Получили результат:", result);
+            if (result && result.data) {
+                setThisRecipient(result.data);
+            }
+        }
+        fetchRecipient();
+    }, [recipientId]);
+
+    // Можно отследить обновление состояния thisRecipient
+    useEffect(() => {
+        if (thisRecipient) {
+            console.log("Обновился thisRecipient:", thisRecipient);
+        }
+    }, [thisRecipient]);
 
     useEffect(() => {
         const loadUserId = async () => {
@@ -48,7 +78,7 @@ export function ChatScreen() {
                         "Content-Type": "application/json",
                         ...(token ? { Authorization: `Bearer ${token}` } : {}),
                     },
-                    body: JSON.stringify({ recipientUsername: recipientId }),
+                    body: JSON.stringify({ recipientUsername }),
                 });
 
                 const data = await response.json();
@@ -61,8 +91,8 @@ export function ChatScreen() {
                 console.error("Ошибка при получении chatGroupId", e);
             }
         }
-        initChatGroup();
-    }, [recipientId]);
+        if (recipientUsername) initChatGroup();
+    }, [recipientUsername]);
 
     useEffect(() => {
         if (!chatGroupId) return;
@@ -78,7 +108,6 @@ export function ChatScreen() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    // Сортируем по времени отправки, от старых к новым
                     const sorted = data
                         .map((msg: any) => ({
                             id: msg.id,
@@ -99,16 +128,12 @@ export function ChatScreen() {
         fetchHistory();
     }, [chatGroupId]);
 
-    // Подключаемся к сокету, входим в комнату по chatGroupId и слушаем сообщения
     useEffect(() => {
         if (!chatGroupId) return;
 
         socketRef.current = io(SOCKET_URL, { transports: ["websocket"] });
-
-        // Заходим в комнату
         socketRef.current.emit("join_group", chatGroupId);
 
-        // Слушаем новые сообщения из группы
         socketRef.current.on("group_message", (msg: Message) => {
             if (msg.chatGroupId === chatGroupId) {
                 setMessages((prev) => [...prev, msg]);
@@ -125,7 +150,6 @@ export function ChatScreen() {
 
         const token = await AsyncStorage.getItem("token");
 
-        // Отправка на сервер HTTP (сохранение)
         const response = await fetch(`${SERVER_HOST}api/chats/messages`, {
             method: "POST",
             headers: {
@@ -153,35 +177,77 @@ export function ChatScreen() {
             sentAt: msgObj.sent_at,
         };
 
-        // Добавляем сообщение локально (сразу в UI)
         setMessages((prev) => [...prev, formattedMessage]);
         setNewMessage("");
-
-        // Отправляем в сокет, чтобы другие пользователи получили
         socketRef.current?.emit("group_message", formattedMessage);
     };
 
+    function formatTime(isoString?: string): string {
+        if (!isoString) return "";
+        const date = new Date(isoString);
+        return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    }
+
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Chat with {recipientName}</Text>
+            <View style={styles.headerView}>
+                <View style={styles.headerHelp}>
+                    <TouchableOpacity style={styles.backButton}>
+                        <ArrowIcon width={20} height={20} stroke={COLORS.lightGray} />
+                    </TouchableOpacity>
+                    <View style={styles.recipientHeader}>
+                        {thisRecipient?.Profile?.avatars?.length ? (
+                            <Image
+                                source={{ uri: `${SERVER_HOST}media/${thisRecipient.Profile.avatars[thisRecipient.Profile.avatars.length - 1].image.filename}` }}
+                                style={styles.recipientAvatar}
+                            />
+                        ) : (
+                            <DefaultAvatar style={styles.recipientAvatar} />
+                        )}
+                        <Text style={styles.header}>{thisRecipient?.name ?? "Загрузка..."}</Text>
+                    </View>
+                </View>
+
+                <Ionicons name="ellipsis-vertical" size={22} color={COLORS.black} />
+            </View>
+
             <FlatList
                 data={messages}
                 keyExtractor={(item) => item.id?.toString() ?? Math.random().toString()}
                 renderItem={({ item }) => (
-                    <Text style={item.senderId === currentUserId ? styles.myMessage : styles.theirMessage}>
-                        {item.content}
-                    </Text>
+                    <View style={item.senderId === currentUserId ? styles.myMessage : styles.theirMessage}>
+                        {item.senderId !== currentUserId && thisRecipient?.Profile?.avatars?.length ? (
+                            <Image
+                                source={{ uri: `${SERVER_HOST}media/${thisRecipient.Profile.avatars[thisRecipient.Profile.avatars.length - 1].image.filename}` }}
+                                style={styles.messageAvatar}
+                            />
+                        ) : (
+                            item.senderId !== currentUserId && <DefaultAvatar style={styles.messageAvatar} />
+                        )}
+                        <View style={item.senderId === currentUserId ? styles.myMessageText : styles.theirMessageText}>
+                            <Text style={styles.messageText}>{item.content}</Text>
+                            <Text style={styles.messageData}>
+                                {formatTime(item.sentAt)}
+                                <CheckIcon width={20} height={20} />
+                            </Text>
+                        </View>
+                    </View>
                 )}
             />
+
             <View style={styles.inputContainer}>
                 <TextInput
                     style={styles.input}
                     value={newMessage}
                     onChangeText={setNewMessage}
-                    placeholder="Type a message..."
+                    placeholder="Повідомлення"
                 />
-                <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-                    <Text style={styles.sendButtonText}>Send</Text>
+                <TouchableOpacity style={styles.optionDiv}>
+                    <GalleryIcon />
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.submitButton} onPress={sendMessage}>
+                    <SendIcon />
                 </TouchableOpacity>
             </View>
         </View>

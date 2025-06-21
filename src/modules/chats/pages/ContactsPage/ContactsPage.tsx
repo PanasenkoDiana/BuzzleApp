@@ -106,7 +106,8 @@ export function ContactsPage(props: ContactsPageProps) {
 							router.push( {
 								pathname:"/chat",
 								params:{
-								recipientId: item.username,
+								recipientId: item.id,
+								recipientUsername: item.username,
 								recipientName: `${
 									item.name || ""
 								} ${item.surname || ""}`.trim() || `@${item.username}`,},

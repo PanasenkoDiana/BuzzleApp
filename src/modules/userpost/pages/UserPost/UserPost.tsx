@@ -51,6 +51,7 @@ export default function UserPost(props: {
             <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
           }
           data={myPosts}
+          contentContainerStyle={{ gap: 5 }}
           keyExtractor={(post) => post.id.toString()}
           extraData={refresh}
           ListHeaderComponent={props.haveHeader ? <Main /> : null}

@@ -152,14 +152,14 @@ export function PostCard(props: IPostCardProps) {
 				<Text style={styles.postTitle}>{props.title}</Text>
 				<View style={styles.textInfo}>
 					<Text style={styles.postDescription}>{props.content}</Text>
-					{props.links && props.links.length > 0 && (
+					{/* {props.links && props.links.length > 0 && (
 						<Text style={styles.link}>
 							Посилання:{" "}
 							{props.links?.map((link) => (
-								<Link href={link.url} />
+								<Text>{link.url}</Text>
 							))}
 						</Text>
-					)}
+					)} */}
 
 					{props.tags && props.tags.length > 0 && (
 						<Text style={styles.postTags}>
@@ -238,7 +238,7 @@ export function PostCard(props: IPostCardProps) {
 								})}
 							</View>
 							<View style={styles.imageGrid}>
-								{props.images.slice(10).map((image) => {
+								{props.images.slice(9).map((image) => {
 									const imagesCount = props.images?.length;
 
 									let imageStyle = styles.gridImage;

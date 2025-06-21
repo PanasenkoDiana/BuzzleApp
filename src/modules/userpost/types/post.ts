@@ -21,14 +21,16 @@ export interface ICreatePost {
 	title: string;
 	content?: string;
 	tags?: ITag[];
-	links?: string;
+	links?: string[];
 	images?: string[];
 }
 
-export interface IPostForm extends Omit<ICreatePost, "tags" | "images"> {
+export interface IPostForm
+	extends Omit<ICreatePost, "tags" | "images" | "links"> {
 	id: number;
-	tags?: string[];
+	tags?: [];
 	images?: string[];
+	links?: string[];
 }
 
 export interface ILink {

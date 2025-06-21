@@ -10,7 +10,6 @@ export function useAllMyPhotos(){
     const [ error, setError ] = useState<string | null>(null)
 	const { getToken } = useUserContext()
 
-
     async function getMyPhotos(){
         try {
 			setIsLoading(true);
