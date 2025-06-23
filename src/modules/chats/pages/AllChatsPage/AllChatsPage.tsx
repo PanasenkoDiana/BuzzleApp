@@ -2,25 +2,12 @@ import { View, Text, FlatList, TouchableOpacity, Image } from "react-native";
 import { styles } from "./AllChatsPage.styles";
 import { useRouter } from "expo-router";
 
-type GroupChat = {
-	id: string;
-	name: string;
-	avatar?: string;
-};
-
-const groupChats: GroupChat[] = [
-	{ id: "1", name: "Frontend Team", avatar: "https://i.pravatar.cc/150?img=20" },
-	{ id: "2", name: "Backend Team", avatar: "https://i.pravatar.cc/150?img=21" },
-	{ id: "3", name: "Designers", avatar: "https://i.pravatar.cc/150?img=22" },
-];
-
 export function AllChatsPage() {
 	const router = useRouter();
 
 	return (
 		<View style={styles.container}>
-			<FlatList
-				data={groupChats}
+			{/* <FlatList
 				keyExtractor={item => item.id}
 				renderItem={({ item }) => (
 					<TouchableOpacity
@@ -54,7 +41,7 @@ export function AllChatsPage() {
 						<Text style={{ fontSize: 18 }}>{item.name}</Text>
 					</TouchableOpacity>
 				)}
-			/>
+			/> */}
 		</View>
 	);
 }

@@ -362,8 +362,8 @@ export function ChatScreen() {
 				/>
 
 				<KeyboardAvoidingView
-					behavior={Platform.OS === "android" ? "height" : "padding"}
-					keyboardVerticalOffset={Platform.OS === "android" ? 0 : 90}
+					behavior="padding"
+					keyboardVerticalOffset={50}
 				>
 					<View style={styles.inputContainer}>
 						<TextInput
