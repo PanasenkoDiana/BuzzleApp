@@ -7,8 +7,6 @@ import { ContactsPage } from "../ContactsPage";
 import { NotificationsPage } from "../NotificationsPage";
 import { COLORS } from "../../../../shared/ui/colors";
 import { AllChatsPage } from "../AllChatsPage";
-
-import { ChatMessage } from "../../types/types";
 import { useFriends } from "../../../friends/hooks/useFriends";
 
 export function ChatsPage() {
