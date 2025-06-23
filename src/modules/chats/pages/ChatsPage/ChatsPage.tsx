@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text } from "react-native";
 import { ChatsLayout } from "../../entities/ui/ChatsLayout";
 import { useEffect, useState } from "react";
 import { ChatIcon, ContactsIcon } from "../../../../shared/ui/icons";
@@ -8,7 +8,9 @@ import { NotificationsPage } from "../NotificationsPage";
 import { COLORS } from "../../../../shared/ui/colors";
 import { AllChatsPage } from "../AllChatsPage";
 
+
 import { ChatMessage } from "../../types/types";
+import { useRouter } from "expo-router";
 
 const contacts = [
 	{
@@ -378,9 +380,20 @@ export const notifications: ChatMessage[] = [
 
 export function ChatsPage() {
 	const [selectedPage, setSelectedPage] = useState<string>("contacts");
+	const router = useRouter();
 
 	useEffect(() => {
-		console.log(selectedPage);
+		switch (selectedPage) {
+			case 'contacts':
+				router.push('/contacts');
+				break;
+			case 'notifications':
+				router.push('/notifications');
+				break;
+			case 'chats':
+				router.push('/group-chats');
+				break;
+		}
 	}, [selectedPage]);
 
 	return (
