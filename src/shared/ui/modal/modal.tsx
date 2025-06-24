@@ -72,8 +72,8 @@ function InCenterWithoutHeader(props: IModalProps) {
             {...otherProps}
         >
             <View style={styles.centerModal}>
-                <View style={styles.centerModalContent}>
-                    <View  style={{justifyContent:'flex-start', alignItems:'center'}}>
+                <View style={styles.centerModalContentWithoutHeader}>
+                    <View  style={{justifyContent:'flex-start', alignItems:'center', gap: 20, padding: 10}}>
                         {children}
                     </View>
                 </View>

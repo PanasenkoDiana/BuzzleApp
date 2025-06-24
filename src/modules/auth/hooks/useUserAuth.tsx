@@ -3,8 +3,11 @@ import { IUser, IChangeUserPartOne, IChangeUserPartTwo } from "../types";
 import { ISecondRegisterForm } from "../ui/second-register-modal/modal.types";
 import { SERVER_HOST } from "../../../shared/constants";
 import { Result } from "../../../shared/types/result";
+import { useUserContext } from "../context/userContext";
 
 export function authUser(setUser: (user: IUser | null) => void) {
+
+
 	async function getData(token: string): Promise<Result<IUser> | undefined> {
 		try {
 			console.log(1)
@@ -138,14 +141,17 @@ export function authUser(setUser: (user: IUser | null) => void) {
 
 	async function changeUserPartOne(
 		data: IChangeUserPartOne,
-		id: number
+		token: string
 	): Promise<Result<IUser>> {
 		try {
 			const response = await fetch(
-				`${SERVER_HOST}api/user/change/part-one/${id}`,
+				`${SERVER_HOST}api/user/change/part-one`,
 				{
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					headers: { 
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					},
 					body: JSON.stringify(data),
 				}
 			);
@@ -165,16 +171,21 @@ export function authUser(setUser: (user: IUser | null) => void) {
 
 	async function changeUserPartTwo(
 		data: IChangeUserPartTwo,
-		id: number
+		token: string
 	): Promise<Result<IUser>> {
 		try {
+			// alert(JSON.stringify(token, null, 4));
+
 			const { repeatPassword, ...newData } = data
 
 			const response = await fetch(
-				`${SERVER_HOST}api/user/change/part-two/${id}`,
+				`${SERVER_HOST}api/user/change/part-two`,
 				{
 					method: "POST",
-					headers: { "Content-Type": "application/json" },
+					headers: { 
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					},
 					body: JSON.stringify(newData),
 				}
 			);

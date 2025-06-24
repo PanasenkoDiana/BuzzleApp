@@ -14,8 +14,10 @@ export function useCreateAlbum(){
 
     async function CreateAlbumPhoto(data: ICreateAlbumModalForm){
         try {
+            const tokenFunc = await getToken()
+            if (tokenFunc.status === 'error') return
+            const token = tokenFunc.data
 			setIsLoading(true);
-            const token = await getToken()
             const response = await fetch(`${SERVER_HOST}api/albums/create`, {
                 method: "POST",
                 headers: {'Content-Type':'application/json',

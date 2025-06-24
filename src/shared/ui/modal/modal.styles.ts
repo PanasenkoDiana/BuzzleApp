@@ -49,4 +49,12 @@ export const styles = StyleSheet.create({
 		height: 'auto',
 		gap: 10,
 	},
+
+	centerModalContentWithoutHeader: {
+		backgroundColor: COLORS.white,
+		borderRadius: 15,
+		width: "90%",
+		height: 'auto',
+		gap: 10,
+	},
 });

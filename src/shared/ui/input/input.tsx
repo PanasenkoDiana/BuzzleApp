@@ -172,5 +172,69 @@ function Code({ label, value, onChangeText, onBlur, error }: ICodeInputProps) {
 	);
 }
 
+
+
+function EyeIconOut(props: IInputPasswordProps) {
+	const { label, error, style, disabled, ...otherProps } = props;
+
+	const [hidden, setHidden] = useState(true);
+
+	return (
+		<View>
+			{label && (
+				<Text
+					style={[
+						styles.label,
+						disabled ? { color: COLORS.lightGray } : null,
+					]}
+				>
+					{label}
+				</Text>
+			)}
+
+			<View style={{ gap: 5 }}>
+				<View style={styles.inputWrapper}>
+					<TextInput
+						placeholderTextColor={
+							disabled ? COLORS.lightGray : COLORS.black
+						}
+						style={[
+							styles.inputEyeOut,
+							style,
+							disabled
+								? {
+										borderColor: COLORS.lightGray,
+										color: COLORS.lightGray,
+								  }
+								: null,
+						]}
+						{...otherProps}
+						secureTextEntry={hidden}
+					/>
+					<TouchableOpacity
+						style={styles.rightIcon}
+						onPress={() => setHidden(!hidden)}
+					>
+						{hidden ? (
+							<EyeSlashIcon width={30} height={30} />
+						) : (
+							<EyeIcon width={30} height={30} stroke="#81818D" />
+						)}
+					</TouchableOpacity>
+				</View>
+				<View style={{ height: 20 }}>
+					{error && (
+						<View style={styles.errorBlock}>
+							<ErrorIcon width={16} height={16} />
+							<Text style={styles.errorText}>{error}</Text>
+						</View>
+					)}
+				</View>
+			</View>
+		</View>
+	);
+}
+
 Input.Password = Password;
+Input.PasswordEyeIconOut = EyeIconOut;
 Input.Code = Code;

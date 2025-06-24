@@ -8,13 +8,13 @@ export function useCreateMyPhotos(){
     const [ myPhotos, setMyPhotos ] = useState<IMyPhotosList | null>(null)
     const [ isLoading, setIsLoading ] = useState<boolean>(false)
     const [ error, setError ] = useState<string | null>(null)
-    const { getToken } =  useUserContext()
-
-
-    async function CreatePhoto(image: string){
+    // const { getToken } =  useUserContext()
+    
+    
+    async function CreatePhoto(image: string, token: string){
+        // const token = await getToken()
         try {
 			setIsLoading(true);
-            const token = await getToken()
             const response = await fetch(`${SERVER_HOST}api/user/photo/create`, {
                 method: "POST",
                 headers: {'Content-Type':'application/json',

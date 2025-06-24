@@ -16,9 +16,14 @@ export function useAllAlbums(){
 
 
     async function getAlbums(){
+		const tokenFunc = await getToken()
+
+		if (tokenFunc.status === 'error') return
+		
+		const token = tokenFunc.data
+
         try {
 			setIsLoading(true);
-			const token = await getToken()
             const response = await fetch(`${SERVER_HOST}api/albums/all`, {
 				headers: { Authorization: `Bearer ${token}` },
 			})

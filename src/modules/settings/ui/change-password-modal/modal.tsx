@@ -58,8 +58,8 @@ export function ChangePasswordModal(props: IChangePasswordModalProps) {
 
     return (
 
-        <>
-            { modalVariant === 'partOne' && <Modal.InCenterWithoutHeader title='Пароль' visible={props.visible} onClose={props.onClose}> 
+        <View >
+            { modalVariant === 'partOne' && <Modal.InCenterWithoutHeader title='Пароль' visible={props.visible} onClose={props.onClose} style={{gap: 200}}> 
             <View style={styles.navPassword}>
                 <Text style={styles.navPasswordTitle}>Пароль</Text>
                 <TouchableOpacity onPress={
@@ -76,7 +76,7 @@ export function ChangePasswordModal(props: IChangePasswordModalProps) {
                     control={control}
                     name="password"
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <Input.Password
+                        <Input.PasswordEyeIconOut
                             label="Новий пароль"
                             value={value}
                             onChangeText={onChange}
@@ -91,7 +91,7 @@ export function ChangePasswordModal(props: IChangePasswordModalProps) {
                     control={control}
                     name="confirmPassword"
                     render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <Input.Password
+                        <Input.PasswordEyeIconOut
                             label="Підтвердіть новий пароль"
                             value={value}
                             onChangeText={onChange}
@@ -109,34 +109,36 @@ export function ChangePasswordModal(props: IChangePasswordModalProps) {
 
 
         { modalVariant === 'partTwo' && 
-        <Modal.InCenterWithoutHeader title='Пароль' visible={props.visible} onClose={props.onClose}>
-                <Text style={styles.verifyModalTitle}>Підтвердження для зміни паролю</Text>
-                <Text style={styles.verifyModalText}>Ми надіслали 6-значний код на вашу пошту (you@example.com). Введіть його нижче, щоб підтвердити акаунт</Text>
-                <Controller
-                    control={controlPartTwo}
-                    name="code"
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <Input.Code
-                            label="Підтвердіть новий пароль"
-                            value={value}
-                            onChangeText={onChange}
-                            // placeholder="Напишіть підтвердження нового паролю"
-                            onBlur={onBlur}
-                            error={error?.message}
-                        />
-                    )}
-                />
+        <Modal.InCenter title='' visible={props.visible} onClose={props.onClose} >
+                <View style={{flex: 1, gap: 15}}>
+                    <Text style={styles.verifyModalTitle}>Підтвердження для зміни паролю</Text>
+                    <Text style={styles.verifyModalText}>Ми надіслали 6-значний код на вашу пошту (you@example.com). Введіть його нижче, щоб підтвердити акаунт</Text>
+                    <Controller
+                        control={controlPartTwo}
+                        name="code"
+                        render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                            <Input.Code
+                                label="Код підтвердження"
+                                value={value}
+                                onChangeText={onChange}
+                                // placeholder="Напишіть підтвердження нового паролю"
+                                onBlur={onBlur}
+                                error={error?.message}
+                            />
+                        )}
+                    />
 
-                <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-                    <TouchableOpacity onPress={props.onClose} style={styles.dismissButton}>
-                        <Text style={styles.dismissButtonTitle}>Скасувати</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSubmitPartTwo(onPartTwoSubmit)} style={styles.createButton}>
-                        <Text style={styles.createButtonTitle}>Зберегти</Text>
-                    </TouchableOpacity>
+                    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
+                        <TouchableOpacity onPress={props.onClose} style={styles.dismissButton}>
+                            <Text style={styles.dismissButtonTitle}>Скасувати</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={handleSubmitPartTwo(onPartTwoSubmit)} style={styles.createButton}>
+                            <Text style={styles.createButtonTitle}>Підтвердити</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-        </Modal.InCenterWithoutHeader>
+        </Modal.InCenter>
         }
-        </>
+        </View>
     )
 }

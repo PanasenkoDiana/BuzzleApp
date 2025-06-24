@@ -12,7 +12,7 @@ import {
 import { IChangeUserPartOne } from "../../../auth/types";
 
 export function SettingsPagePartOne() {
-    const { user, changeUserPartOne } = useUserContext();
+    const { user, changeUserPartOne, getToken } = useUserContext();
     const [isRedact, setIsRedact] = useState(false);
     const [image, setImage] = useState<string | null>(null);
 
@@ -57,7 +57,10 @@ export function SettingsPagePartOne() {
         if (!image || !user) return;
 
         try {
-            const response = await changeUserPartOne(data, user.id);
+            const token = await getToken() 
+            if (!token) return
+            if (token.status === 'error') return console.error("Ошибка токена")
+            const response = await changeUserPartOne(data, token.data);
             if (response.status === "error") {
                 console.error("Ошибка при обновлении пользователя:", response.message);
             } else {

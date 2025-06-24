@@ -17,7 +17,7 @@ import { useDeleteMyPhoto } from "../../../hooks/useDeleteMyPhoto";
 export function MyPhotosBlock(props: { images: Avatar[] }){
 
 
-    const { user } = useUserContext()
+    const { user,  getToken } = useUserContext()
 
     const { deleteFunction } = useDeleteMyPhoto()
 
@@ -48,7 +48,11 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
 
         if (!photo) return
 
-        await refetch(photo)
+        const token = await getToken()
+
+        if (token.status === 'error') return
+
+        await refetch(photo, token.data)
 
     }
 
@@ -77,9 +81,9 @@ export function MyPhotosBlock(props: { images: Avatar[] }){
                 keyExtractor={(image) => image.id.toString()}
                 // ListHeaderComponent={<AlbumImage image={`${SERVER_HOST}media/${props.images}`} />}
                 renderItem={({item})=> (
-                    <AlbumImage.Small image={`${SERVER_HOST}media/${item.image.filename}`} id={item.id} deleteFunction={()=>{deleteFunction}} />
+                    <AlbumImage.Small image={`${SERVER_HOST}media/${item.image.filename}`} id={item.id} deleteFunction={deleteFunction} />
                 )}
-                style= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row', justifyContent: 'flex-start'}}
+                contentContainerStyle= {{width: '100%', flexWrap: 'wrap', gap: 10, flexDirection:'row'}}
             />
             {/* <View style={styles.myPhotosList}>
 

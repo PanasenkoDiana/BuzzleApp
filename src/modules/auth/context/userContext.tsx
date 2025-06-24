@@ -23,18 +23,18 @@ interface IUserContext {
 	isAuthenticated: () => boolean;
 	setUser: (user: IUser | null) => void;
 	// setToken: (token: string | null) => void;
-	getToken: () => void
+	getToken: () => Promise<Result<string>>
 	verify: (
 		email: string,
 		code: string
 	) => Promise<Result<string> | undefined>;
 	changeUserPartOne: (
 		data: IChangeUserPartOne,
-		id: number
+		token: string
 	) => Promise<Result<IUser>>;
 	changeUserPartTwo: (
 		data: IChangeUserPartTwo,
-		id: number
+		token: string
 	) => Promise<Result<IUser>>;
 	addSecondUserInfo: (
 		data: ISecondRegisterForm,
@@ -115,12 +115,13 @@ export function UserContextProvider({ children }: IUserContextProviderProps) {
 		return user !== null;
 	}
 
-	async function getToken() {
+	async function getToken(): Promise<Result<string>>{
 		const token = await AsyncStorage.getItem("token")
 
-		if (!token) return
+		if (!token) return { status: "error", message: "Not implemented" }
 
-		return token
+		// console.log('token: ' + token)
+		return { status: 'success', data: token }
 	}
 
 	// useEffect(()=>{

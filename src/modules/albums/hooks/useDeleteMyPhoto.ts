@@ -12,9 +12,11 @@ export function useDeleteMyPhoto(){
 
 
     async function DeletePhoto(id: number){
+        const tokenFunc = await getToken()
+        if (tokenFunc.status === 'error') return
+        const token = tokenFunc.data
         try {
             setIsLoading(true);
-            const token = await getToken()
             const response = await fetch(`${SERVER_HOST}api/user/photo/delete`, {
                 method: "DELETE",
                 headers: {'Content-Type':'application/json',

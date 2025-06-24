@@ -13,7 +13,7 @@ import { COLORS } from "../../../../shared/ui/colors"
 import { ChangePasswordModal } from '../change-password-modal'
  
 export function SettingsPagePartTwo() {
-	const { user, changeUserPartTwo } = useUserContext()
+	const { user, changeUserPartTwo, getToken } = useUserContext()
 	const { handleSubmit, control } = useForm<IChangeUserPartTwo>()
 	const [ isRedact, setIsRedact ] = useState(false)
 	const [ isPasswordChangeModal, setIsPasswordChangeModal ] = useState(false)
@@ -23,11 +23,19 @@ export function SettingsPagePartTwo() {
 			console.error("Passwords do not match")
 			return
 		}
-		console.log("data: " + data)
+		// console.log("data: " + data)
+		
+		const token = await getToken()
+
+		if (!token) return
+		// console.log('token: ' + token)
 
 		if (!user) return
-		const response = changeUserPartTwo(data, user.id)
-		console.log("Response:" + response)
+		if (token.status ==='success'){
+			const response = changeUserPartTwo(data, token.data)
+			console.log("Response:" + response)
+
+		}
 	}
 
 	useEffect(() => {

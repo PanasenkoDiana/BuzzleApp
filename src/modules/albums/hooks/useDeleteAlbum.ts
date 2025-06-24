@@ -13,8 +13,10 @@ export function useDeleteAlbum() {
 
 
     async function DeleteAlbum(id: number){
+        const tokenFunc = await getToken()
+        if (tokenFunc.status === 'error') return
+        const token = tokenFunc.data
         try {
-            const token = await getToken()
             setIsLoading(true);
             const response = await fetch(`${SERVER_HOST}api/albums/delete`, {
                 method: "DELETE",
