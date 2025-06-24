@@ -10,8 +10,7 @@ export default function ChatLayout() {
 
 
 
-            <ChatsLayout selectedPage="chats" setSelectedPage={(selectedPage: string) => {}}>
-                {/* <View></View> */}
+            <ChatsLayout selectedPage="notifications" setSelectedPage={(selectedPage: string) => {}}>
                 <Stack screenOptions={{headerShown: false}}>
                     <Stack.Screen name="chat" options={{title:"Чат"}}/>   
                 </Stack>

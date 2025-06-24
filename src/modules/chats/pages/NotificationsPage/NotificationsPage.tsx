@@ -20,7 +20,7 @@ function formatMessageTime(isoString: string): string {
 
 	return isToday
 		? messageDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-		: messageDate.toLocaleDateString("ru-RU"); // формат: 21.05.2025
+		: messageDate.toLocaleDateString("ru-RU");
 }
 
 export function NotificationsPage(props: INotificationsPage) {
@@ -39,6 +39,12 @@ export function NotificationsPage(props: INotificationsPage) {
 				keyExtractor={(item) => item.id.toString()}
 				renderItem={({ item }) => {
 					const lastMessage = item.messages[item.messages.length - 1];
+					const member = item.members?.[1];
+
+					// Пропустить, если нет второго участника (например, данные ещё не загружены или пусты)
+					if (!member) return null;
+
+					const profileImage = member.Profile?.avatars?.at(-1)?.image?.filename;
 
 					return (
 						<TouchableOpacity
@@ -46,36 +52,36 @@ export function NotificationsPage(props: INotificationsPage) {
 								router.push({
 									pathname: "/chat",
 									params: {
-										recipientId: item.members[1].id,
-										recipientUsername: item.members[1].username,
+										recipientId: member.id,
+										recipientUsername: member.username,
 										recipientName:
-											`${item.members[1].name || ""} ${item.members[1].surname || ""}`.trim() ||
-											`@${item.members[1].username}`,
+											`${member.name || ""} ${member.surname || ""}`.trim() ||
+											`@${member.username}`,
 									},
 								})
 							}
 						>
 							<View style={styles.notification}>
 								<View>
-									<Image
-										source={{
-											uri: `${SERVER_HOST}media/${
-												item.members[1].Profile.avatars.at(-1)?.image.filename
-											}`,
-										}}
-										style={styles.contactImage}
-									/>
+									{profileImage ? (
+										<Image
+											source={{ uri: `${SERVER_HOST}media/${profileImage}` }}
+											style={styles.contactImage}
+										/>
+									) : (
+										<View style={styles.contactImagePlaceholder} />
+									)}
 								</View>
 								<View style={styles.infoContainer}>
 									<View style={styles.nameContainer}>
 										<View>
 											<Text style={styles.contactName}>
-												{item.members[1].name && item.members[1].surname
-													? `${item.members[1].name} ${item.members[1].surname}`
-													: item.members[1].surname
-													? item.members[1].surname
-													: item.members[1].username
-													? `@${item.members[1].username}`
+												{member.name && member.surname
+													? `${member.name} ${member.surname}`
+													: member.surname
+													? member.surname
+													: member.username
+													? `@${member.username}`
 													: ""}
 											</Text>
 											<Text>{lastMessage?.content}</Text>

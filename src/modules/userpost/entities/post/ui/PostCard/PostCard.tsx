@@ -26,45 +26,6 @@ interface IPostCardProps extends IPost {
 	onDeleted?: (id: number) => void;
 }
 
-const images: IImage[] = [
-	{
-		id: 1,
-		filename:
-			"https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg",
-		file: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg",
-		uploadedAt: new Date(),
-		avatar: null,
-		userId: null,
-		user: null,
-		postId: null,
-		post: null,
-	},
-	{
-		id: 2,
-		filename:
-			"https://upload.wikimedia.org/wikipedia/commons/e/e9/Goldfish3.jpg",
-		file: "https://upload.wikimedia.org/wikipedia/commons/e/e9/Goldfish3.jpg",
-		uploadedAt: new Date(),
-		avatar: null,
-		userId: null,
-		user: null,
-		postId: null,
-		post: null,
-	},
-	{
-		id: 3,
-		filename:
-			"https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg",
-		file: "https://upload.wikimedia.org/wikipedia/commons/6/6e/Golde33443.jpg",
-		uploadedAt: new Date(),
-		avatar: null,
-		userId: null,
-		user: null,
-		postId: null,
-		post: null,
-	},
-];
-
 export function PostCard(props: IPostCardProps) {
 	const [modalVisible, setModalVisible] = useState(false);
 	const [deleteModalVisible, setDeleteModalVisible] =
@@ -152,15 +113,6 @@ export function PostCard(props: IPostCardProps) {
 				<Text style={styles.postTitle}>{props.title}</Text>
 				<View style={styles.textInfo}>
 					<Text style={styles.postDescription}>{props.content}</Text>
-					{/* {props.links && props.links.length > 0 && (
-						<Text style={styles.link}>
-							Посилання:{" "}
-							{props.links?.map((link) => (
-								<Text>{link.url}</Text>
-							))}
-						</Text>
-					)} */}
-
 					{props.tags && props.tags.length > 0 && (
 						<Text style={styles.postTags}>
 							{props.tags?.map((tag) => `${tag.name} `)}
@@ -216,7 +168,7 @@ export function PostCard(props: IPostCardProps) {
 								})}
 							</View>
 							<View style={styles.imageGrid}>
-								{props.images.slice(7, 10).map((image) => {
+								{props.images.slice(6, 9).map((image) => {
 									const imagesCount = props.images?.length;
 
 									let imageStyle = styles.gridImage;
@@ -237,6 +189,7 @@ export function PostCard(props: IPostCardProps) {
 									);
 								})}
 							</View>
+
 							<View style={styles.imageGrid}>
 								{props.images.slice(9).map((image) => {
 									const imagesCount = props.images?.length;

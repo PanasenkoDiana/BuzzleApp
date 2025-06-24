@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
 		marginBottom: 20,
 		textAlign: "center",
 	},
+	
 
 	scrollContent: {
 		flexGrow: 1,

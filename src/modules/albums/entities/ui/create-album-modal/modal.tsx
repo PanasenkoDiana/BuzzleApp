@@ -25,7 +25,7 @@ export function CreateAlbumModal(props: ICreateAlbumModalProps) {
     return(
         <Modal.InCenter title="Створити альбом" visible={props.isVisible} onClose={props.onClose} >
             <View style={{ gap: 10}} >
-                <View style={{ width: '100%' }}>
+                <View style={{ width: '200%' }}>
                     <Controller
                         control={control}
                         name="name"
