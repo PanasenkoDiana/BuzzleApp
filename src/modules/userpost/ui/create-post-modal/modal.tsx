@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { Controller, useForm } from "react-hook-form";
 import * as ImagePicker from "expo-image-picker";
-
 import { Input } from "../../../../shared/ui/input";
 import { Modal } from "../../../../shared/ui/modal";
 import { styles } from "./modal.styles";
@@ -27,7 +26,7 @@ interface ICreatePostModalProps {
 }
 
 export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
-	const { createPost } = usePost();
+	const { createPost, getAllPosts, getMyPosts } = usePost();
 	const { tags } = useAllTags();
 	const [selectedBase64Images, setSelectedBase64Images] = useState<string[]>(
 		[]
@@ -37,6 +36,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 		defaultValues: {
 			title: "",
 			content: "",
+			topic: "",
 			tags: [],
 			links: [],
 			images: [],
@@ -99,6 +99,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 					result?.message || "Failed to create post"
 				);
 			}
+			Promise.all([getAllPosts(), getMyPosts()]);
 		} catch (error) {
 			console.error("Create Post Error:", error);
 			Alert.alert("Error", "Unexpected error occurred");
@@ -148,6 +149,24 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 								value={value}
 								onChangeText={onChange}
 								placeholder="Напишіть опис публікації"
+								onBlur={onBlur}
+								error={error?.message}
+							/>
+						)}
+					/>
+
+					<Controller
+						control={control}
+						name="topic"
+						render={({
+							field: { value, onChange, onBlur },
+							fieldState: { error },
+						}) => (
+							<Input
+								label="Тема"
+								value={value}
+								onChangeText={onChange}
+								placeholder="Напишіть тему публікації"
 								onBlur={onBlur}
 								error={error?.message}
 							/>

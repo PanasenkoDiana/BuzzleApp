@@ -8,8 +8,7 @@ import {
 	KeyboardAvoidingView,
 } from "react-native";
 import { Fragment, useRef, useEffect } from "react";
-import { useLocalSearchParams } from "expo-router";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { styles } from "./ChatScreen.styles";
 import {
 	ArrowIcon,
@@ -21,9 +20,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { COLORS } from "../../../../shared/ui/colors";
 import { DefaultAvatar } from "../../../../shared/ui/images";
 import { useRecipient } from "../../hooks/useRecipient";
-
 import { SERVER_HOST } from "../../../../shared/constants";
-import { Message, useChat } from "./Chat.hooks";
+import { Message, useChat } from "../ChatsHook/Chat.hooks";
 
 export function ChatScreen() {
 	const { recipientId, recipientName, recipientUsername } =
@@ -32,6 +30,7 @@ export function ChatScreen() {
 			recipientName: string;
 			recipientUsername: string;
 		}>();
+
 	const router = useRouter();
 	const { getRecipient } = useRecipient();
 
@@ -48,9 +47,7 @@ export function ChatScreen() {
 
 	useEffect(() => {
 		if (flatListRef.current && grouped.length > 0) {
-			setTimeout(() => {
-				flatListRef.current?.scrollToEnd({ animated: true });
-			}, 100);
+			flatListRef.current.scrollToEnd({ animated: true });
 		}
 	}, [grouped]);
 
@@ -148,15 +145,24 @@ export function ChatScreen() {
 										<Text style={styles.messageText}>
 											{msg.content}
 										</Text>
-										<Text style={styles.messageData}>
-											{new Date(
-												msg.sentAt ?? ""
-											).toLocaleTimeString([], {
-												hour: "2-digit",
-												minute: "2-digit",
-											})}
+										<View
+											style={{
+												alignSelf: "flex-end",
+												flexDirection: "row",
+												alignItems: "center",
+												marginTop: 4,
+											}}
+										>
+											<Text style={styles.messageData}>
+												{new Date(
+													msg.sentAt ?? ""
+												).toLocaleTimeString([], {
+													hour: "2-digit",
+													minute: "2-digit",
+												})}
+											</Text>
 											<CheckIcon width={10} height={10} />
-										</Text>
+										</View>
 									</View>
 								</View>
 							))}

@@ -31,9 +31,16 @@ export function useChat(
 	const [thisRecipient, setThisRecipient] = useState<IUser | null>(null);
 	const socketRef = useRef<Socket | null>(null);
 
+	// Чтобы не отправлять одни и те же запросы повторно
+	const savedRecipientUsername = useRef<string | undefined>(undefined);
+	const savedRecipientId = useRef<string | undefined>(undefined);
+
 	useEffect(() => {
 		async function fetchRecipient() {
-			if (!recipientId || !getRecipient) return;
+			if (!recipientId || savedRecipientId.current === recipientId || !getRecipient) return;
+
+			savedRecipientId.current = recipientId;
+
 			const result = await getRecipient(+recipientId);
 			if (result?.data) setThisRecipient(result.data);
 		}
@@ -55,6 +62,10 @@ export function useChat(
 	}, []);
 
 	useEffect(() => {
+		if (!recipientUsername || savedRecipientUsername.current === recipientUsername) return;
+
+		savedRecipientUsername.current = recipientUsername;
+
 		async function initChatGroup() {
 			try {
 				const token = await AsyncStorage.getItem("token");
@@ -64,9 +75,7 @@ export function useChat(
 						method: "POST",
 						headers: {
 							"Content-Type": "application/json",
-							...(token
-								? { Authorization: `Bearer ${token}` }
-								: {}),
+							...(token ? { Authorization: `Bearer ${token}` } : {}),
 						},
 						body: JSON.stringify({ recipientUsername }),
 					}
@@ -82,7 +91,8 @@ export function useChat(
 				console.error("Ошибка при получении chatGroupId", e);
 			}
 		}
-		if (recipientUsername) initChatGroup();
+
+		initChatGroup();
 	}, [recipientUsername]);
 
 	useEffect(() => {
@@ -95,9 +105,7 @@ export function useChat(
 					`${SERVER_HOST}api/chats/messages/${chatGroupId}`,
 					{
 						headers: {
-							...(token
-								? { Authorization: `Bearer ${token}` }
-								: {}),
+							...(token ? { Authorization: `Bearer ${token}` } : {}),
 						},
 					}
 				);
@@ -114,8 +122,7 @@ export function useChat(
 						}))
 						.sort(
 							(a: Message, b: Message) =>
-								new Date(a.sentAt!).getTime() -
-								new Date(b.sentAt!).getTime()
+								new Date(a.sentAt!).getTime() - new Date(b.sentAt!).getTime()
 						);
 
 					setMessages(sorted);
@@ -146,8 +153,7 @@ export function useChat(
 	}, [chatGroupId]);
 
 	const sendMessage = async () => {
-		if (!newMessage.trim() || !chatGroupId || currentUserId === null)
-			return;
+		if (!newMessage.trim() || !chatGroupId || currentUserId === null) return;
 
 		const token = await AsyncStorage.getItem("token");
 

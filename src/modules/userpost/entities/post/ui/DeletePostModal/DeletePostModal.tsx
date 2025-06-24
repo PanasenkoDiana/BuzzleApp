@@ -9,6 +9,7 @@ interface IDeletePostModal {
 	isVisible: boolean;
 	onClose: () => void;
 	setStatus: (status: number) => void;
+	onRefresh: () => void;
 }
 
 export function DeletePostModal(props: IDeletePostModal) {
@@ -18,6 +19,7 @@ export function DeletePostModal(props: IDeletePostModal) {
 		props.onClose();
 		try {
 			await deletePost(id);
+			props.onRefresh()
 			props.setStatus(1);
 		} catch (error) {
 			props.setStatus(2);

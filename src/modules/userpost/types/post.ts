@@ -20,6 +20,7 @@ export interface IPost {
 export interface ICreatePost {
 	title: string;
 	content?: string;
+	topic?: string;
 	tags?: ITag[];
 	links?: string[];
 	images?: string[];

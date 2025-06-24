@@ -106,25 +106,6 @@ export const styles = StyleSheet.create({
 		gap: 5,
 	},
 
-	// myMessage: {
-	//     alignSelf: "flex-end",
-	//     backgroundColor: "#DCF8C6",
-	//     borderRadius: 12,
-	//     padding: 10,
-	//     marginVertical: 4,
-	//     maxWidth: "75%",
-	//     fontSize: 16,
-	// },
-	// theirMessage: {
-	//     alignSelf: "flex-start",
-	//     backgroundColor: "#F1F0F0",
-	//     borderRadius: 12,
-	//     padding: 10,
-	//     marginVertical: 4,
-	//     maxWidth: "75%",
-	//     fontSize: 16,
-	// },
-
 	myMessage: {
 		alignSelf: "flex-end",
 		flexDirection: "row",
@@ -150,27 +131,33 @@ export const styles = StyleSheet.create({
 	myMessageText: {
 		minHeight: 40,
 		backgroundColor: COLORS.lightGray,
-		flexDirection: "row",
+		flexDirection: "column",
 		justifyContent: "flex-end",
-		paddingHorizontal: 5,
+		paddingHorizontal: 10,
+		paddingVertical: 8,
 		alignItems: "center",
-		borderRadius: 5,
+		borderRadius: 12,
+		maxWidth: "100%",
 	},
 
 	theirMessageText: {
 		minHeight: 40,
 		borderColor: COLORS.lightGray,
 		borderWidth: 1,
-		flexDirection: "row",
+		flexDirection: "column",
 		justifyContent: "flex-start",
-		paddingHorizontal: 5,
+		paddingHorizontal: 10,
+		paddingVertical: 8,
 		alignItems: "center",
-		borderRadius: 5,
+		borderRadius: 12,
+		maxWidth: "100%",
 	},
 
 	messageText: {
 		fontSize: 16,
 		fontFamily: "GTWalsheimPro-Regular",
+		flexShrink: 1, 
+		flexWrap: "wrap", 
 	},
 
 	messageData: {
@@ -182,6 +169,7 @@ export const styles = StyleSheet.create({
 		position: "relative",
 		justifyContent: "flex-end",
 	},
+
 	dateSeparatorContainer: {
 		alignItems: "center",
 		marginVertical: 10,

@@ -8,17 +8,17 @@ import { useEffect } from "react";
 import { useUserContext } from "../../modules/auth/context/userContext";
 
 export default function MainLayout() {
-	const pathname = usePathname(); // например: "/main/userPost"
+	const pathname = usePathname();
 	const selectedPage = pathname?.split("/").filter(Boolean).pop() || "unknown";
 	const { fetchUser } = useUserContext();
 
 	useEffect(() => {
 		fetchUser();
 	}, [pathname]);
-
+	
 	return (
 		<View style={styles.container}>
-			<Header selectedPage={selectedPage} whatCreate="post" />
+			<Header />
 
 			<View style={styles.content}>
 				<Stack

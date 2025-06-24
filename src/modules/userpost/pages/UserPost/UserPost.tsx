@@ -63,6 +63,7 @@ export default function UserPost(props: {
 						images={item.images}
 						likes={item.likes}
 						views={item.views}
+						onRefresh={onRefresh}
 					/>
 				)}
 				showsVerticalScrollIndicator={false}

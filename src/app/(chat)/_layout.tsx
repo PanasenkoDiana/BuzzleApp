@@ -6,7 +6,7 @@ import { Header } from "../../shared/ui/header";
 export default function ChatLayout() {
     return(
         <View style={{flex:1}}>
-            <Header selectedPage="chats" whatCreate="post" />
+            <Header />
 
 
 

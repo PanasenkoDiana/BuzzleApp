@@ -4,9 +4,20 @@ import { ChatMessage } from "../../types/types";
 import { useRouter } from "expo-router";
 import { useAllChats } from "../../hooks/useAllChats";
 import { SERVER_HOST } from "../../../../shared/constants";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IUser } from "../../../auth/types";
+import { useFriends } from "../../../friends/hooks/useFriends";
 
 interface INotificationsPage {
 	notifications: ChatMessage[];
+}
+
+interface IChat {
+	id: number;
+	members?: IUser[];
+	messages: { sent_at: string; content: string }[];
+	content?: string;
 }
 
 function formatMessageTime(isoString: string): string {
@@ -27,21 +38,47 @@ export function NotificationsPage(props: INotificationsPage) {
 	const router = useRouter();
 	const { chats } = useAllChats();
 
-	const sortedNotifications = [...props.notifications].sort((a, b) => {
-		return new Date(b.sent_at).getTime() - new Date(a.sent_at).getTime();
+	const { friends, getAllFriends } = useFriends();
+
+	const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+
+	useEffect(() => {
+		const loadUserId = async () => {
+			const token = await AsyncStorage.getItem("token");
+			if (!token) return;
+			try {
+				const payload = JSON.parse(atob(token.split(".")[1]));
+				setCurrentUserId(payload.id);
+			} catch (err) {
+				console.warn("Ошибка при чтении токена:", err);
+			}
+		};
+		loadUserId();
+		getAllFriends();
+	}, []);
+	const safeChats: IChat[] = chats ?? [];
+	const filteredChats = safeChats.filter((chat: IChat) => {
+		if (!currentUserId) return false;
+		const member = chat.members?.find((m: IUser) => m.id !== currentUserId);
+		if (!member) return false;
+		return friends.some((friend) => friend.id === member.id);
+	});
+
+	const sortedChats = [...filteredChats].sort((a, b) => {
+		const lastAMsg = a.messages[a.messages.length - 1];
+		const lastBMsg = b.messages[b.messages.length - 1];
+		return new Date(lastBMsg.sent_at).getTime() - new Date(lastAMsg.sent_at).getTime();
 	});
 
 	return (
 		<View style={styles.container}>
 			<FlatList
-				data={chats}
+				data={sortedChats}
 				contentContainerStyle={styles.list}
 				keyExtractor={(item) => item.id.toString()}
 				renderItem={({ item }) => {
 					const lastMessage = item.messages[item.messages.length - 1];
-					const member = item.members?.[1];
-
-					// Пропустить, если нет второго участника (например, данные ещё не загружены или пусты)
+					const member = item.members?.find((m: IUser) => m.id !== currentUserId);
 					if (!member) return null;
 
 					const profileImage = member.Profile?.avatars?.at(-1)?.image?.filename;

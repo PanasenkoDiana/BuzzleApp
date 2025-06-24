@@ -1,1 +1,0 @@
-export { DeletePostModalResult } from "./DeletePostModalResult";

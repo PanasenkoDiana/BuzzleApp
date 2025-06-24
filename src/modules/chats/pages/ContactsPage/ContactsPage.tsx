@@ -15,9 +15,6 @@ import { useState } from "react";
 import { IUser } from "../../../auth/types";
 import { SERVER_HOST } from "../../../../shared/constants";
 import { DefaultAvatar } from "../../../../shared/ui/images";
-import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import type { RootStackParamList } from "../../types/types"; 
 import { useRouter } from "expo-router";
 interface ContactsPageProps {
 	contacts: IUser[];

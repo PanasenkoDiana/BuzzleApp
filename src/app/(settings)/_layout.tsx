@@ -16,7 +16,7 @@ export default function ModalsLayout() {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<Header whatCreate="album" selectedPage={selectedPage} />
+			<Header />
 
 			<View style={{flex: 1}}>
 				<Stack

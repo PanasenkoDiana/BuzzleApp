@@ -18,12 +18,11 @@ import { IUser } from "../../../../../auth/types";
 import { usePost } from "../../../../hooks";
 import { IPost } from "../../../../types/post";
 import { DeletePostModal } from "../DeletePostModal";
-import { DeletePostModalResult } from "../DeletePostModalResult";
 import { Link } from "expo-router";
 import { DefaultAvatar } from "../../../../../../shared/ui/images";
 
 interface IPostCardProps extends IPost {
-	onDeleted?: (id: number) => void;
+	onRefresh: () => void;
 }
 
 export function PostCard(props: IPostCardProps) {
@@ -240,7 +239,6 @@ export function PostCard(props: IPostCardProps) {
 				</View>
 			</View>
 
-			{/* Модальное меню */}
 			<Modal
 				visible={modalVisible}
 				transparent
@@ -267,7 +265,6 @@ export function PostCard(props: IPostCardProps) {
 							minWidth: 180,
 						}}
 					>
-						{/* Другие действия */}
 						<TouchableOpacity
 							style={{
 								flexDirection: "row",
@@ -332,17 +329,7 @@ export function PostCard(props: IPostCardProps) {
 				isVisible={deleteModalVisible}
 				onClose={() => setDeleteModalVisible(false)}
 				setStatus={setStatus}
-			/>
-
-			<DeletePostModalResult
-				id={props.id}
-				title={props.title}
-				onClose={() => {
-					setResultVisible(false);
-					setStatus(0);
-				}}
-				isVisible={resultVisible}
-				status={status}
+				onRefresh={props.onRefresh}
 			/>
 		</View>
 	);
