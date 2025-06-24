@@ -3,7 +3,7 @@ import { COLORS } from '../../../../shared/ui/colors';
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
     },
     text: {
         fontFamily: "GTWalsheimPro-Regular",
@@ -19,6 +19,11 @@ export const styles = StyleSheet.create({
     link: {
         flexDirection: 'row',
         alignItems: 'center',
+        width: '100%',
+        gap: 10
+    },
+    input: {
+        flex: 1,  // Это заставит контейнер инпута занимать все доступное пространство
     },
     button: {
         height: 30,

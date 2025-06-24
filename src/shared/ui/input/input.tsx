@@ -12,7 +12,15 @@ import {
 import { COLORS } from "../colors";
 
 export function Input(props: IInputProps) {
-	const { label, error, rightIcon, style, disabled, ...otherProps } = props;
+	const {
+		label,
+		error,
+		rightIcon,
+		style,
+		disabled,
+		multiline,
+		...otherProps
+	} = props;
 
 	return (
 		<View>
@@ -36,7 +44,7 @@ export function Input(props: IInputProps) {
 							// rightIcon ? styles : undefined,
 							style,
 						]}
-						multiline={true}
+						multiline={multiline ? true : false}
 						{...otherProps}
 					/>
 					{rightIcon && (
@@ -104,14 +112,12 @@ function Password(props: IInputPasswordProps) {
 						)}
 					</TouchableOpacity>
 				</View>
-				<View style={{ height: 20 }}>
-					{error && (
-						<View style={styles.errorBlock}>
-							<ErrorIcon width={16} height={16} />
-							<Text style={styles.errorText}>{error}</Text>
-						</View>
-					)}
-				</View>
+				{error && (
+					<View style={styles.errorBlock}>
+						<ErrorIcon width={16} height={16} />
+						<Text style={styles.errorText}>{error}</Text>
+					</View>
+				)}
 			</View>
 		</View>
 	);

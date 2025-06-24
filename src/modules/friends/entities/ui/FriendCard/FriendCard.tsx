@@ -10,6 +10,7 @@ import { SERVER_HOST } from "../../../../../shared/constants";
 import defaultAvatar from "../../../../../../assets/default_avatar.png";
 import { IUser } from "../../../../auth/types";
 import { DefaultAvatar } from "../../../../../shared/ui/images";
+import { router } from "expo-router";
 
 interface IFriendCard extends IUser {
 	variant: "friend" | "request" | "myRequest" | "notFriend" | string;
@@ -76,6 +77,19 @@ export function FriendCard(props: IFriendCard) {
 				<View style={styles.buttons}>
 					<TouchableOpacity
 						style={[styles.button, styles.leftButton]}
+						onPress={() =>
+							router.push({
+								pathname: "/chat",
+								params: {
+									recipientId: props.id,
+									recipientUsername: props.username,
+									recipientName:
+										`${props.name || ""} ${
+											props.surname || ""
+										}`.trim() || `@${props.username}`,
+								},
+							})
+						}
 					>
 						<Text style={styles.leftButtonText}>Повідомлення</Text>
 					</TouchableOpacity>

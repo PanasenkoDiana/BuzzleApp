@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
 		fontSize: 16,
 		color: COLORS.black,
 		marginBottom: 5,
-		paddingLeft: 5,
+		marginLeft: 5,
 		fontWeight: "400",
 	},
 	inputWrapper: {
@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
 		flexDirection: "row",
 		alignItems: "center",
 		justifyContent: 'center',
+		width: "100%",
 		// gap: 10,
 	},
 	rightIcon: {
@@ -23,11 +24,11 @@ export const styles = StyleSheet.create({
 		alignItems: "center",
 		width: 30,
 		height: 30,
-		right: 20,
+		right: 10,
 		zIndex: 2,
 	},
 	input: {
-		width: "95%",
+		flex: 1,
 		paddingLeft: 10,
 		minHeight: 42,
 		borderWidth: 1,

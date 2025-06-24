@@ -36,7 +36,8 @@ export function usePost() {
 			}
 
 			if (result.status === "success") {
-				await getAllPosts();
+				getAllPosts();
+				getMyPosts();
 				return result;
 			}
 		} catch (error) {

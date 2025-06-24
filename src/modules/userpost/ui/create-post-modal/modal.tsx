@@ -38,7 +38,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 			title: "",
 			content: "",
 			tags: [],
-			links: "",
+			links: [],
 			images: [],
 		},
 	});
@@ -82,7 +82,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 		try {
 			const postData = {
 				...data,
-				images: selectedBase64Images
+				images: selectedBase64Images,
 			};
 			console.log("Submitting post:", data);
 
@@ -115,7 +115,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 				contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}
 				keyboardShouldPersistTaps="handled"
 			>
-				<View style={{ paddingHorizontal: 16, gap: 10 }}>
+				<View style={styles.container}>
 					<Controller
 						control={control}
 						name="title"
@@ -144,6 +144,7 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 						}) => (
 							<Input
 								label="Опис"
+								multiline={true}
 								value={value}
 								onChangeText={onChange}
 								placeholder="Напишіть опис публікації"
@@ -168,8 +169,8 @@ export function CreatePostModal({ isVisible, onClose }: ICreatePostModalProps) {
 					<Controller
 						control={control}
 						name="links"
-						render={({ field: { value, onChange } }) => (
-							<Links value={value} onChange={onChange} />
+						render={({ field: { onChange } }) => (
+							<Links onChange={onChange} />
 						)}
 					/>
 

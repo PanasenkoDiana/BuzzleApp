@@ -61,7 +61,7 @@ export function LoginForm() {
 				</TouchableOpacity>
 			</View>
 			<Text style={{fontSize: 24, marginBottom: 20, fontFamily: 'GTWalsheimPro-Regular'}}>Раді тебе знову бачити!</Text>
-			<View>
+			<View style={{width: "100%", gap: 10}}>
 				<Controller
 					control={control}
 					name="email"

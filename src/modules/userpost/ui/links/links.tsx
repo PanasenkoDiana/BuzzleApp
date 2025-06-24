@@ -11,55 +11,55 @@ export interface ILink {
 }
 
 interface ILinksProps {
-	value: string[];
 	onChange: (links: string[]) => void;
 }
 
-export function Links({ value, onChange }: ILinksProps) {
+export function Links({ onChange }: ILinksProps) {
 	const [links, setLinks] = useState<ILink[]>([{ id: 0, url: "" }]);
 	const [nextId, setNextId] = useState(1);
 
 	function handleAddLink() {
-        const newLink = [...links, { id: nextId, url: "" }];
-        setLinks(newLink);
-        setNextId(nextId + 1);
-    
-        const linksOnly = newLink.map((link) => link.url);
-        onChange(linksOnly);
-    }
-    
-    function handleRemoveLink(id: number) {
-        const newLink = links.filter((link) => link.id !== id);
-        setLinks(newLink);
-    
-        const linksOnly = newLink.map((link) => link.url);
-        onChange(linksOnly);
-    }
-    
-    function handleChangeLink(id: number, value: string) {
-        const newLink = links.map((link) =>
-            link.id === id ? { ...link, url: value } : link
-        );
-        setLinks(newLink);
-    
-        const linksOnly = newLink.map((link) => link.url);
-        onChange(linksOnly);
-    }
-    
+		const newLink = [...links, { id: nextId, url: "" }];
+		setLinks(newLink);
+		setNextId(nextId + 1);
+
+		const linksOnly = newLink.map((link) => link.url);
+		onChange(linksOnly);
+	}
+
+	function handleRemoveLink(id: number) {
+		const newLink = links.filter((link) => link.id !== id);
+		setLinks(newLink);
+
+		const linksOnly = newLink.map((link) => link.url);
+		onChange(linksOnly);
+	}
+
+	function handleChangeLink(id: number, value: string) {
+		const newLink = links.map((link) =>
+			link.id === id ? { ...link, url: value } : link
+		);
+		setLinks(newLink);
+
+		const linksOnly = newLink.map((link) => link.url);
+		onChange(linksOnly);
+	}
+
 	return (
 		<View style={styles.container}>
 			<Text style={styles.text}>Посилання</Text>
 			<View style={styles.linksContainer}>
 				{links.map((link) => (
-					<View style={styles.link}>
-						<Input
-							key={link.id}
-							value={link.url}
-							onChangeText={(value) =>
-								handleChangeLink(link.id, value)
-							}
-							placeholder="Напишіть посилання на ресурс"
-						/>
+					<View key={link.id} style={styles.link}>
+						<View style={styles.input}>
+							<Input
+								value={link.url}
+								onChangeText={(value) =>
+									handleChangeLink(link.id, value)
+								}
+								placeholder="Напишіть посилання на ресурс"
+							/>
+						</View>
 						{link.id === 0 ? (
 							links.length >= 5 ? null : (
 								<TouchableOpacity

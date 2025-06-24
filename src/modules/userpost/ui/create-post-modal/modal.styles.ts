@@ -3,12 +3,7 @@ import { COLORS } from "../../../../shared/ui/colors";
 
 export const styles = StyleSheet.create({
 	container: {
-		alignSelf: "center",
-		padding: 0,
-		borderRadius: 15,
-		backgroundColor: COLORS.white,
-		borderWidth: 2,
-		borderColor: COLORS.lightGray,
+		paddingHorizontal: 10
 	},
 
 	title: {

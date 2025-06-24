@@ -79,7 +79,7 @@ export function RegisterForm() {
 				</TouchableOpacity>
 			</View>
 			<Text style={styles.pageText}>Приєднуйся до World IT</Text>
-			<View style={{ gap: 20 }}>
+			<View style={{ width: "100%", gap: 20, paddingHorizontal: 20 }}>
 				<View style={{ gap: 10 }}>
 					<Controller
 						control={control}
