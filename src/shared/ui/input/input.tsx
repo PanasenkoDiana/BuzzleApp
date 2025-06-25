@@ -19,6 +19,7 @@ export function Input(props: IInputProps) {
 		style,
 		disabled,
 		multiline,
+		leftIcon,
 		...otherProps
 	} = props;
 
@@ -37,10 +38,14 @@ export function Input(props: IInputProps) {
 
 			<View style={{ gap: 5 }}>
 				<View style={styles.inputWrapper}>
+					{leftIcon && (
+						<View style={styles.leftIcon}>{leftIcon}</View>
+					)}
 					<TextInput
 						style={[
 							styles.input,
 							disabled ? { borderColor: COLORS.lightGray } : null,
+							leftIcon ? styles.ifLeftIcon : null,
 							// rightIcon ? styles : undefined,
 							style,
 						]}

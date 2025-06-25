@@ -1,9 +1,8 @@
-import { View, Text, TextInput, FlatList, Image } from "react-native";
-
+import { View, Text, TextInput, FlatList, Image, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
 import { IAddUserToGroupModalProps } from "./modal.types";
 import { SearchIcon } from "../../../../shared/ui/icons";
 import { COLORS } from "../../../../shared/ui/colors";
-import { useEffect, useState } from "react";
 import { useFriends } from "../../../friends/hooks/useFriends";
 import { DefaultAvatar } from "../../../../shared/ui/images";
 import { SERVER_HOST } from "../../../../shared/constants";
@@ -15,16 +14,15 @@ import { ModalInCenter } from "../../../../shared/ui/modal/modal";
 export function AddUserToGroupModal(props: IAddUserToGroupModalProps) {
 	const { friends, getAllFriends } = useFriends();
 	const [searchText, setSearchText] = useState("");
-	const [selectedUsers, setSelectedUsers] = useState<number[]>([]); // массив id выбранных
+	const [selectedUsers, setSelectedUsers] = useState<number[]>([]);
 
 	const lowerInput = searchText.toLowerCase();
 
 	const filteredContacts = friends
 		.map((friend) => {
-			const fullName =
-				friend.name && friend.surname
-					? `${friend.name} ${friend.surname}`.toLowerCase()
-					: "";
+			const fullName = friend.name && friend.surname
+				? `${friend.name} ${friend.surname}`.toLowerCase()
+				: "";
 
 			if (lowerInput.includes("@")) {
 				const username = `@${friend.username}`;
@@ -43,7 +41,7 @@ export function AddUserToGroupModal(props: IAddUserToGroupModalProps) {
 
 			return null;
 		})
-		.filter((contact) => contact !== null);
+		.filter((contact) => contact !== null) as typeof friends;
 
 	const sortedContacts = filteredContacts.sort((a, b) => {
 		const nameA = a.name || "";
@@ -65,16 +63,14 @@ export function AddUserToGroupModal(props: IAddUserToGroupModalProps) {
 		<ModalInCenter visible={props.isVisible} onClose={props.onClose}>
 			<View style={styles.container}>
 				<Text style={styles.title}>Додати учасника</Text>
-
-				<View style={styles.searchBar}>
-					<Input
-						style={styles.searchInput}
-						placeholder="Пошук"
-						rightIcon={<SearchIcon fill={COLORS.gray} />}
-						onChangeText={setSearchText}
-						value={searchText}
-					/>
-				</View>
+				
+				<Input
+					style={styles.searchInput}
+					placeholder="Пошук"
+					leftIcon={<SearchIcon fill={COLORS.gray} />}
+					onChangeText={setSearchText}
+					value={searchText}
+				/>
 
 				<Text style={styles.selectText}>Вибрано: {selectedUsers.length}</Text>
 
@@ -97,8 +93,7 @@ export function AddUserToGroupModal(props: IAddUserToGroupModalProps) {
 									/>
 								) : (
 									<DefaultAvatar
-										borderRadius={1000}
-										style={{ width: 45, height: 45 }}
+										style={{ width: 45, height: 45, borderRadius: 100 }}
 									/>
 								)}
 
@@ -116,6 +111,22 @@ export function AddUserToGroupModal(props: IAddUserToGroupModalProps) {
 						);
 					}}
 				/>
+
+				<View style={styles.buttonsBlock}>
+					<TouchableOpacity style={styles.dismissButton} onPress={props.onClose}>
+						<Text style={styles.dismissButtonText}>Назад</Text>
+					</TouchableOpacity>
+
+					<TouchableOpacity
+						style={styles.saveButton}
+						onPress={() => {
+							props.onSave(selectedUsers);
+							props.onClose();
+						}}
+					>
+						<Text style={styles.saveButtonText}>Зберегти зміни</Text>
+					</TouchableOpacity>
+				</View>
 			</View>
 		</ModalInCenter>
 	);

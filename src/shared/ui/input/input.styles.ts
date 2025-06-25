@@ -27,6 +27,19 @@ export const styles = StyleSheet.create({
 		right: 10,
 		zIndex: 2,
 	},
+	leftIcon: {
+		justifyContent: "center",
+		alignItems: "center",
+		width: 30,
+		height: 30,
+		zIndex: 2,
+		position: 'absolute',
+		left: 10,
+	},
+	ifLeftIcon: {
+		paddingLeft: 40,
+		// backgroundColor: ''
+	},
 	input: {
 		flex: 1,
 		paddingLeft: 10,

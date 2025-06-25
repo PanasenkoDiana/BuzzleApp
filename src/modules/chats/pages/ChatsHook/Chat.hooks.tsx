@@ -9,7 +9,7 @@ const SOCKET_URL = SERVER_HOST;
 export type Message = {
 	id?: number;
 	content: string;
-	senderId: number;
+	authorId: number;
 	chatGroupId?: number;
 	sentAt?: string;
 };
@@ -179,7 +179,7 @@ export function useChat(
 		const formattedMessage: Message = {
 			id: msgObj.id,
 			content: msgObj.content,
-			senderId: currentUserId,
+			authorId: currentUserId,
 			chatGroupId,
 			sentAt: msgObj.sent_at,
 		};
@@ -189,7 +189,7 @@ export function useChat(
 		socketRef.current?.emit("group_message", {
 			groupId: chatGroupId,
 			content: formattedMessage.content,
-			senderId: formattedMessage.senderId,
+			senderId: formattedMessage.authorId,
 		});
 	};
 

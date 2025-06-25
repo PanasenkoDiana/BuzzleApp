@@ -12,8 +12,10 @@ export interface ChatMessage {
 	sent_at: Date;
 	attached_image?: string | null;
 }
+
 export type RootStackParamList = {
-    ChatScreen: {
-        recipientId: string;
-        recipientName: string;
-    }};
+	ChatScreen: {
+		recipientId: string;
+		recipientName: string;
+	};
+};

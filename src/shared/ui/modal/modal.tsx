@@ -90,3 +90,6 @@ export function ModalInCenterWithoutHeader(props: IModalProps) {
 		</Modal>
 	);
 }
+
+Modalka.InCenter = ModalInCenter
+Modalka.InCenterWithoutHeader = ModalInCenterWithoutHeader

@@ -19,12 +19,14 @@ export const styles = StyleSheet.create({
     },
     AvatarButton: {
         flexDirection: 'row',
+        alignItems: 'center',
         gap: 4,
     },
     AvatarText: {
         fontFamily: "GTWalsheimPro-Regular",
         fontSize: 16,
         color: COLORS.darkPlum,
+        fontWeight:  '900',
     },
     MembersView: {
         borderWidth: 1,
@@ -34,6 +36,7 @@ export const styles = StyleSheet.create({
         width: 300,
         flexDirection: 'column',
         alignSelf: 'center',
+        gap: 15,
     },
     MembersHeader: {
         flexDirection: 'row',
@@ -48,7 +51,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        gap: 5,
+        gap: 10,
     },
     contactName: {
         fontFamily: "GTWalsheimPro-Regular",

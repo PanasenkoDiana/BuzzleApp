@@ -1,38 +1,34 @@
 import { useEffect, useState } from "react";
 import { SERVER_HOST } from "../../../shared/constants";
 import { useUserContext } from "../../auth/context/userContext";
+import { IGroupChat, IGroupForm } from "../entities/create-group-chat-modal/modal.types";
 
 export function useAllChats() {
-    const [chats, setChats] = useState()
-    const { getToken } = useUserContext()
+	const [chats, setChats] = useState<IGroupChat[] | null>(null);
+	const { getToken } = useUserContext();
 
+	async function getAllChats() {
+		try {
+			const token = await getToken();
+			const response = await fetch(`${SERVER_HOST}api/chats/all`, {
+				method: "GET",
+				headers: { Authorization: `Bearer ${token}` },
+			});
 
-    async function getAllChats(){
-        try {
+			const result = await response.json();
 
-            const token = await getToken()
+			setChats(result);
+			return response;
+		} catch (err) {
+			console.log(err);
+		}
+	}
 
-            const response = await fetch(`${SERVER_HOST}api/chats/all`,{
-                method: 'GET',
-                headers: { Authorization: `Bearer ${token}` },
-            })
+	useEffect(() => {
+		getAllChats();
+	}, []);
 
-            const result = await response.json()
+	// const chats
 
-            setChats(result)
-
-
-            return response
-
-        } catch(err) {
-            console.log(err)
-        }
-    }
-
-
-    useEffect(()=>{
-        getAllChats()
-    },[])
-
-    return { chats, getAllChats }
+	return { chats, getAllChats };
 }
